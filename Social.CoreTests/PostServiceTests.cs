@@ -2,6 +2,7 @@
 using Social.Core.Application;
 using Social.Core.Ports.Outgoing;
 using Moq;
+using Social.Core.Ports.Incomming;
 
 namespace SocialCoreTests
 {
@@ -10,7 +11,8 @@ namespace SocialCoreTests
         private Mock<IPostRepository> _mockPostRepo;
         private Mock<ICommentRepository> _mockCommentRepo;
         private Mock<IVoteRepository> _mockVoteRepo;
-        private PostService _service;
+        private IPostUseCases _service;
+        private ICommentUseCases _commentService;
         private Guid _postId;
         private Guid _userId;
         private Post _post;
@@ -23,6 +25,12 @@ namespace SocialCoreTests
             _mockVoteRepo = new Mock<IVoteRepository>();
 
             _service = new PostService(
+                _mockPostRepo.Object,
+                _mockCommentRepo.Object,
+                _mockVoteRepo.Object
+            );
+
+            _commentService = new CommentServices(
                 _mockPostRepo.Object,
                 _mockCommentRepo.Object,
                 _mockVoteRepo.Object
@@ -77,7 +85,7 @@ namespace SocialCoreTests
         public async Task AddComment_ShouldCallCommentRepository()
         {
             var commentAuthor = Guid.NewGuid();
-            await _service.AddComment(_postId, commentAuthor, "Nice!");
+            await _commentService.AddComment(_postId, commentAuthor, "Nice!");
 
             _mockCommentRepo.Verify(r => r.AddAsync(It.IsAny<Comment>()), Times.Once);
         }
@@ -88,7 +96,7 @@ namespace SocialCoreTests
             var comment = Comment.CreateNewComment(_userId, "Old Comment");
             _mockCommentRepo.Setup(r => r.GetByIdAsync(comment.Id)).ReturnsAsync(comment);
 
-            await _service.UpdateCommentAsync(_postId, comment.Id, _userId, "New Comment");
+            await _commentService.UpdateCommentAsync(comment.Id, _userId, "New Comment");
 
             Assert.AreEqual("New Comment", comment.Content);
             _mockCommentRepo.Verify(r => r.UpdateAsync(comment), Times.Once);
@@ -100,7 +108,7 @@ namespace SocialCoreTests
             var comment = Comment.CreateNewComment(_userId, "To Delete");
             _mockCommentRepo.Setup(r => r.GetByIdAsync(comment.Id)).ReturnsAsync(comment);
 
-            await _service.DeleteComment(_postId, comment.Id, _userId);
+            await _commentService.DeleteComment(_postId, comment.Id, _userId);
 
             _mockCommentRepo.Verify(r => r.DeleteAsync(comment.Id), Times.Once);
         }

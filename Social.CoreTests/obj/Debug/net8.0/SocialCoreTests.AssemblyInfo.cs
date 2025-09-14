@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SocialCoreTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17e4fe104a3c76717562b16416f914ed74eacea7")]
 [assembly: System.Reflection.AssemblyProductAttribute("SocialCoreTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SocialCoreTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

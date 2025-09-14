@@ -5,13 +5,14 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Social.Core.Ports.Incomming;
 
 namespace SocialCoreTests
 {
     public class ProfileServiceTests
     {
         private Mock<IProfileRepository> _mockRepo;
-        private ProfileService _service;
+        private IProfileUseCases _service;
 
         [SetUp]
         public void Setup()

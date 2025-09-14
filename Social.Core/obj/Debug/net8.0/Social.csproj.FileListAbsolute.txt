@@ -33,3 +33,4 @@ C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-co
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\Social.pdb
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\Social.genruntimeconfig.cache
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\ref\Social.dll
+C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\Social.sourcelink.json
