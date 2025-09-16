@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\profileservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\profileservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\postservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\postservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\profileservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\profileservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\ports\\incomming\\ipostusecases.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,11 +34,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ProfileServiceTests.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ProfileServiceTests.cs",
               "RelativeDocumentMoniker": "Social.CoreTests\\ProfileServiceTests.cs",
@@ -50,10 +54,6 @@
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "ICommentUseCases.cs",
@@ -63,18 +63,17 @@
               "RelativeToolTip": "Social.Core\\Core\\Ports\\Incomming\\ICommentUseCases.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-13T08:53:09.507Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-13T08:53:09.507Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "PostServiceTests.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\PostServiceTests.cs",
               "RelativeDocumentMoniker": "Social.CoreTests\\PostServiceTests.cs",
               "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\PostServiceTests.cs",
               "RelativeToolTip": "Social.CoreTests\\PostServiceTests.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAYwBwAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAADkAAAAAAAAAAAAYwEgAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-14T04:55:04.759Z",
               "EditorCaption": ""
@@ -89,8 +88,7 @@
               "RelativeToolTip": "Social.Core\\Core\\Application\\PostService.cs",
               "ViewState": "AgIAACAAAAAAAAAAAAAiwEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-13T08:52:14.685Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-13T08:52:14.685Z"
             },
             {
               "$type": "Document",
@@ -102,8 +100,7 @@
               "RelativeToolTip": "Social.Core\\Core\\Ports\\Incomming\\IPostUseCases.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-13T08:22:40.709Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-13T08:22:40.709Z"
             },
             {
               "$type": "Document",
@@ -115,8 +112,7 @@
               "RelativeToolTip": "Social.Core\\Core\\Application\\CommentServices.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAiwEoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-14T04:51:13.5Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-14T04:51:13.5Z"
             }
           ]
         }

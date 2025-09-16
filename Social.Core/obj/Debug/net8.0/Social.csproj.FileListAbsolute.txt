@@ -26,7 +26,6 @@ C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-co
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\Social.csproj.Up2Date
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\Social.dll
 C:\Users\pibm9\Documents\Datamatiker\Programmering\4. semester\CatchUp-Social-core\Social.Core\obj\Debug\net8.0\refint\Social.dll

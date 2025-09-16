@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rNE3sDTWJ5Q=",
+  "dgSpecHash": "jDra0KehkvU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\SocialCoreTests.csproj",
+  "projectFilePath": "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\SocialCoreTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pibm9\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\pibm9\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",

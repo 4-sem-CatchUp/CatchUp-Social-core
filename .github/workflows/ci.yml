@@ -1,0 +1,47 @@
+name: Trigger Gitlab Pipeline via Tailscale
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    brancehs: ["**"]
+
+jobs:
+  trigger-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Trigger Gitlab Pipeline
+        env: 
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITLAB_URL: "http://skoleserver"
+          GITLAB_PROJECT_ID: "2"
+          GITLAB_REF: ${{ github.ref_name }} # Finder Automatisk branchens navn
+        run: |
+          # Bestem pipeline baseret paa event
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main"]
+            # Fuld integrations test ved push til main
+            PIPELINE_VARIABLES='{"FULL_PIPELINE": "true"}'
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Integrations tests ved pull request
+            PIPELINE_VARIABLES='{"INTEGRATION_TESTS": "true"}'
+          else
+            # Linting/unit tests ved push til branches
+            PIPELINE_VARIABLES='{"LINT_AND_UNIT": "true"}'
+          fi
+
+          # Trigger pipeline med de rette variabler
+          curl --request POST \
+            --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+            --header "Content-Type: application/json" \
+            "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/pipeline?ref=$GITLAB_REF" \
+            --data "$PIPELINE_VARIABLES"
