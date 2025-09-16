@@ -2,9 +2,9 @@ name: .NET Core CI (Lint & Unit Tests)
 
 on:
   push:
-    branches: ["**"]
+    branches: ["**"]  # Kører ved push til alle branches
   pull_request:
-    branches: ["**"]
+    branches: ["**"]  # Kører ved pull requests
 
 jobs:
   lint-and-test:
@@ -17,8 +17,9 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 8.0.x  # Brug den version, dit projekt kræver
 
+      # Caching af NuGet-pakker (gør workflowen hurtigere)
       - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
@@ -27,19 +28,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+      # Gendanner alle afhængigheder
       - name: Restore dependencies
         run: dotnet restore CatchUp.Social.sln
 
+      # Byg løsningen for at fange kompileringsfejl
       - name: Build solution
         run: dotnet build CatchUp.Social.sln --configuration Release
 
+      # Kører linting (tjekker kodeformatering)
       - name: Run linting (dotnet format)
         run: dotnet format --verify-no-changes --severity error
 
+      # Kører unit tests med NUnit
       - name: Run unit tests
         run: dotnet test Social.CoreTests/Social.CoreTests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --verbosity normal
         continue-on-error: true  # Kør videre, selv hvis tests fejler
 
+      # Uploader testresultater (selv hvis tests fejler)
       - name: Upload test results
         if: always()  # Upload uanset om tests kører eller fejler
         uses: actions/upload-artifact@v4
