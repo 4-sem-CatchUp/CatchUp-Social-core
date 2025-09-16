@@ -10,13 +10,13 @@
         public VoteAction Action { get; set; } = VoteAction.Add;
 
     }
-    public enum VoteTargetType 
-    { 
+    public enum VoteTargetType
+    {
         Post,
-        Comment 
+        Comment
     }
-    public enum VoteAction 
-    { 
+    public enum VoteAction
+    {
         Add,
         Remove,
         Update

@@ -35,7 +35,7 @@
         public Post() { }
         public Post(Guid authorId,
                     string title,
-                    string content, 
+                    string content,
                     DateTime createdAt)
         {
             AuthorId = authorId;
@@ -73,7 +73,7 @@
                 CreatedAt = DateTime.UtcNow,
             };
         }
-        public Comment AddComment(Guid authorId, string text) 
+        public Comment AddComment(Guid authorId, string text)
         {
             var comment = Comment.CreateNewComment(authorId, text);
             _comments.Add(comment);
@@ -86,8 +86,8 @@
             var vote = Votes.FirstOrDefault(v => v.UserId == userId);
             if (vote != null)
             {
-                if (vote.Upvote != upvote) 
-                {  
+                if (vote.Upvote != upvote)
+                {
                     vote.Upvote = upvote;
                     vote.Action = VoteAction.Update;
                 }
@@ -97,7 +97,7 @@
                     vote.Action = VoteAction.Remove;
                 }
             }
-            
+
 
             else
             {
@@ -121,10 +121,10 @@
             return vote?.Upvote;
         }
 
-        public void UpdatePost(string? newTitle, string? newContent) 
-        { 
+        public void UpdatePost(string? newTitle, string? newContent)
+        {
             if (newTitle != null)
-                Title = newTitle; 
+                Title = newTitle;
             if (newContent != null)
                 Content = newContent;
         }

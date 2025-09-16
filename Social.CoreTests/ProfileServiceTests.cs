@@ -31,7 +31,7 @@ namespace SocialCoreTests
             var result = await _service.CreateProfileAsync(userName);
 
             // Assert
-            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.That(result, Is.Not.EqualTo(Guid.Empty));
             _mockRepo.Verify(r => r.AddProfileAsync(It.Is<Profile>(p => p.Name == userName)), Times.Once);
         }
 
@@ -47,8 +47,8 @@ namespace SocialCoreTests
             await _service.UpdateProfileAsync(profileId, "NewName", null, "NewBio");
 
             // Assert
-            Assert.AreEqual("NewName", profile.Name);
-            Assert.AreEqual("NewBio", profile.Bio);
+            Assert.That(profile.Name, Is.EqualTo("NewName"));
+            Assert.That(profile.Bio, Is.EqualTo("NewBio"));
             _mockRepo.Verify(r => r.UpdateProfileAsync(profile), Times.Once);
         }
 

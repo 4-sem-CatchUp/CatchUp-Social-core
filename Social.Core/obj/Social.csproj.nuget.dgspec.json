@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj": {}
+    "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj": {}
   },
   "projects": {
-    "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj": {
+    "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
+        "projectUniqueName": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
         "projectName": "Social",
-        "projectPath": "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
+        "projectPath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
         "packagesPath": "C:\\Users\\pibm9\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\obj\\",
+        "outputPath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

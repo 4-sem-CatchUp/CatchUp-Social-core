@@ -54,9 +54,9 @@ namespace SocialCoreTests
             var postId = await _service.CreatePostAsync(_userId, "Title", "Content");
 
             Assert.IsNotNull(captured);
-            Assert.AreEqual(_userId, captured.AuthorId);
-            Assert.AreEqual("Title", captured.Title);
-            Assert.AreEqual(postId, captured.Id);
+            Assert.That(captured.AuthorId, Is.EqualTo(_userId));
+            Assert.That(captured.Title, Is.EqualTo("Title"));
+            Assert.That(captured.Id, Is.EqualTo(postId));
             _mockPostRepo.Verify(r => r.AddAsync(It.IsAny<Post>()), Times.Once);
         }
 
@@ -68,8 +68,8 @@ namespace SocialCoreTests
 
             await _service.UpdatePostAsync(_postId, "New Title", "New Content");
 
-            Assert.AreEqual("New Title", post.Title);
-            Assert.AreEqual("New Content", post.Content);
+            Assert.That(post.Title, Is.EqualTo("New Title"));
+            Assert.That(post.Content, Is.EqualTo("New Content"));
             _mockPostRepo.Verify(r => r.UpdateAsync(post), Times.Once);
         }
 
@@ -98,7 +98,7 @@ namespace SocialCoreTests
 
             await _commentService.UpdateCommentAsync(comment.Id, _userId, "New Comment");
 
-            Assert.AreEqual("New Comment", comment.Content);
+            Assert.That(comment.Content, Is.EqualTo("New Comment"));
             _mockCommentRepo.Verify(r => r.UpdateAsync(comment), Times.Once);
         }
 

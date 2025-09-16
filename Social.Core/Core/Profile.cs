@@ -20,11 +20,11 @@
         }
         public void UpdateProfile(string? name, byte[]? profilePic, string? bio)
         {
-            if(name != null)
+            if (name != null)
                 Name = name;
-            if(profilePic != null)
+            if (profilePic != null)
                 ProfilePic = profilePic;
-            if(bio != null)
+            if (bio != null)
                 Bio = bio;
         }
         public void AddFriend(Guid friendId)

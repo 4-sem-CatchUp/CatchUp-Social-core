@@ -29,7 +29,7 @@ namespace Social.Core.Application
         {
             var post = await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
-            
+
             var vote = post.AddVote(userId, upVote);
 
             if (vote.Action == VoteAction.Add)
@@ -49,14 +49,14 @@ namespace Social.Core.Application
 
         public async Task DeletePost(Guid postId)
         {
-            var post =  await _postRepository.GetByIdAsync(postId)
+            var post = await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
             await _postRepository.DeleteAsync(postId);
         }
 
         public async Task UpdatePostAsync(Guid postId, string? newTitle, string? newContent)
         {
-            var post =  await _postRepository.GetByIdAsync(postId)
+            var post = await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
             post.UpdatePost(newTitle, newContent);
             await _postRepository.UpdateAsync(post);

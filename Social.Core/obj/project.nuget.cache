@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aXLuNF1MBTI=",
+  "dgSpecHash": "ySGbFyqeZJk=",
   "success": true,
-  "projectFilePath": "c:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
+  "projectFilePath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pibm9\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\pibm9\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",

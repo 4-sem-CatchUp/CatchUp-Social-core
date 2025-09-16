@@ -1,47 +1,48 @@
-name: Trigger Gitlab Pipeline via Tailscale
+name: .NET Core CI (Lint & Unit Tests)
 
 on:
   push:
     branches: ["**"]
   pull_request:
-    brancehs: ["**"]
+    branches: ["**"]
 
 jobs:
-  trigger-pipeline:
+  lint-and-test:
+    name: Linting & Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+          dotnet-version: 8.0.x
 
-      - name: Trigger Gitlab Pipeline
-        env: 
-          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-          GITLAB_URL: "http://skoleserver"
-          GITLAB_PROJECT_ID: "2"
-          GITLAB_REF: ${{ github.ref_name }} # Finder Automatisk branchens navn
-        run: |
-          # Bestem pipeline baseret paa event
-          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main"]
-            # Fuld integrations test ved push til main
-            PIPELINE_VARIABLES='{"FULL_PIPELINE": "true"}'
-          elif [ "${{ github.event_name }}" == "pull_request" ]; then
-            # Integrations tests ved pull request
-            PIPELINE_VARIABLES='{"INTEGRATION_TESTS": "true"}'
-          else
-            # Linting/unit tests ved push til branches
-            PIPELINE_VARIABLES='{"LINT_AND_UNIT": "true"}'
-          fi
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
-          # Trigger pipeline med de rette variabler
-          curl --request POST \
-            --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-            --header "Content-Type: application/json" \
-            "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/pipeline?ref=$GITLAB_REF" \
-            --data "$PIPELINE_VARIABLES"
+      - name: Restore dependencies
+        run: dotnet restore CatchUp.Social.sln
+
+      - name: Build solution
+        run: dotnet build CatchUp.Social.sln --configuration Release
+
+      - name: Run linting (dotnet format)
+        run: dotnet format --verify-no-changes --severity error
+
+      - name: Run unit tests
+        run: dotnet test Social.CoreTests/Social.CoreTests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --verbosity normal
+        continue-on-error: true  # Kør videre, selv hvis tests fejler
+
+      - name: Upload test results
+        if: always()  # Upload uanset om tests kører eller fejler
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results
+          path: "**/test_results.trx"

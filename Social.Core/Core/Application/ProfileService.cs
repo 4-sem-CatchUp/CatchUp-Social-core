@@ -39,6 +39,6 @@ namespace Social.Core.Application
             await _profileRepository.UpdateProfileAsync(profile);
         }
 
-        
+
     }
 }

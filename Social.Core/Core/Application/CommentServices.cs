@@ -12,7 +12,7 @@ namespace Social.Core.Application
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
-            _voteRepository = voteRepository; 
+            _voteRepository = voteRepository;
         }
         public async Task AddComment(Guid postId, Guid authorId, string text)
         {

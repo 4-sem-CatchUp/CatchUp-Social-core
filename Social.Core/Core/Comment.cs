@@ -1,47 +1,47 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace Social.Core
 {
-	public class Comment
-	{
-		public Guid Id { get; private set; } = Guid.NewGuid();
-		public Guid AuthorId { get; private set; }
+    public class Comment
+    {
+        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid AuthorId { get; private set; }
 
         public string Content { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-		private readonly List<Vote> _votes = new();
+        private readonly List<Vote> _votes = new();
 
         public IReadOnlyList<Vote> Votes => _votes.AsReadOnly();
         private int _karma;
-        public int Karma 
-		{ 
-			get { return _karma; }
-			set 
-			{ 
-				foreach (var vote in Votes)
-				{
-					_karma += vote.Upvote ? 1 : -1;
+        public int Karma
+        {
+            get { return _karma; }
+            set
+            {
+                foreach (var vote in Votes)
+                {
+                    _karma += vote.Upvote ? 1 : -1;
                 }
             }
         }
         public Comment() { }
-		public Comment(Guid authorId,
-					string text,
-					DateTime timeStamp,
-					List<Vote> votes)
-		{
-			AuthorId = authorId;
-			Content = text;
-			Timestamp = timeStamp;
-			_votes = votes;
-			
+        public Comment(Guid authorId,
+                    string text,
+                    DateTime timeStamp,
+                    List<Vote> votes)
+        {
+            AuthorId = authorId;
+            Content = text;
+            Timestamp = timeStamp;
+            _votes = votes;
+
         }
 
-		public static Comment CreateNewComment(Guid authorId, string text)
-		{
-			return new Comment { AuthorId = authorId, Content = text };
-		}
+        public static Comment CreateNewComment(Guid authorId, string text)
+        {
+            return new Comment { AuthorId = authorId, Content = text };
+        }
 
         public Vote AddVote(Guid userId, bool upvote)
         {

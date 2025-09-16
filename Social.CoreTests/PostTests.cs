@@ -18,11 +18,11 @@ namespace SocialCoreTests
         [Test]
         public void CreateNewPost_ShouldInitializeProperties()
         {
-            Assert.AreEqual(_authorId, _post.AuthorId);
-            Assert.AreEqual("Title", _post.Title);
-            Assert.AreEqual("Content", _post.Content);
-            Assert.AreEqual(0, _post.Votes.Count);
-            Assert.AreEqual(0, _post.Comments.Count);
+            Assert.That(_post.AuthorId, Is.EqualTo(_authorId));
+            Assert.That(_post.Title, Is.EqualTo("Title"));
+            Assert.That(_post.Content, Is.EqualTo("Content"));
+            Assert.That(_post.Votes.Count, Is.EqualTo(0));
+            Assert.That(_post.Comments.Count, Is.EqualTo(0));
         }
 
         // --- READ / GET ---
@@ -52,12 +52,12 @@ namespace SocialCoreTests
         {
             var userId = Guid.NewGuid();
             _post.AddVote(userId, true);
-            Assert.AreEqual(1, _post.Votes.Count);
-            Assert.AreEqual(1, _post.Karma);
+            Assert.That(_post.Votes.Count, Is.EqualTo(1));
+            Assert.That(_post.Karma, Is.EqualTo(1));
 
             _post.AddVote(userId, false); // ændrer til downvote
-            Assert.AreEqual(1, _post.Votes.Count);
-            Assert.AreEqual(-1, _post.Karma);
+            Assert.That(_post.Votes.Count, Is.EqualTo(1));
+            Assert.That(_post.Karma, Is.EqualTo(-1));
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace SocialCoreTests
             _post.AddVote(userId, true);
             _post.AddVote(userId, true); // samme vote = fjernes
 
-            Assert.AreEqual(0, _post.Votes.Count);
-            Assert.AreEqual(0, _post.Karma);
+            Assert.That(_post.Votes.Count, Is.EqualTo(0));
+            Assert.That(_post.Karma, Is.EqualTo(0));
         }
 
         [Test]
@@ -77,9 +77,9 @@ namespace SocialCoreTests
             var commentAuthor = Guid.NewGuid();
             _post.AddComment(commentAuthor, "Nice post!");
 
-            Assert.AreEqual(1, _post.Comments.Count);
-            Assert.AreEqual(commentAuthor, _post.Comments[0].AuthorId);
-            Assert.AreEqual("Nice post!", _post.Comments[0].Content);
+            Assert.That(_post.Comments.Count, Is.EqualTo(1));
+            Assert.That(_post.Comments[0].AuthorId, Is.EqualTo(commentAuthor));
+            Assert.That(_post.Comments[0].Content, Is.EqualTo("Nice post!"));
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace SocialCoreTests
             _post.Content = newContent;
 
             // Assert
-            Assert.AreEqual(newTitle, _post.Title);
-            Assert.AreEqual(newContent, _post.Content);
+            Assert.That(_post.Title, Is.EqualTo(newTitle));
+            Assert.That(_post.Content, Is.EqualTo(newContent));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace SocialCoreTests
 
             comment.UpdateComment("New Comment");
 
-            Assert.AreEqual("New Comment", comment.Content);
+            Assert.That(comment.Content, Is.EqualTo("New Comment"));
         }
 
         // --- DELETE ---
@@ -122,7 +122,7 @@ namespace SocialCoreTests
             // Act
             _post.RemoveComment(commentId); // vi laver denne metode i Post
             // Assert
-            Assert.AreEqual(0, _post.Comments.Count);
+            Assert.That(_post.Comments.Count, Is.EqualTo(0));
         }
     }
 

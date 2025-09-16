@@ -19,9 +19,9 @@ namespace SocialCoreTests
             profile.UpdateProfile("NewName", new byte[] { 1, 2, 3 }, "NewBio");
 
             // Assert
-            Assert.AreEqual("NewName", profile.Name);
+            Assert.That(profile.Name, Is.EqualTo("NewName"));
             CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, profile.ProfilePic);
-            Assert.AreEqual("NewBio", profile.Bio);
+            Assert.That(profile.Bio, Is.EqualTo("NewBio"));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace SocialCoreTests
             profile.AddFriend(friendId);
 
             // Assert
-            Assert.AreEqual(1, profile.Friends.Count);
+            Assert.That(profile.Friends.Count, Is.EqualTo(1));
         }
     }
 }
