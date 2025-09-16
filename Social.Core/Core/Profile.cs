@@ -9,14 +9,17 @@
         public DateOnly DateOfSub { get; private set; }
             = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
-        public Profile() { }
+        public Profile() 
+        { 
+            Name = "New User";
+        }
         public Profile(string name)
         {
             Name = name;
         }
         public static Profile CreateNewProfile(string name)
         {
-            return new Profile(name) { };
+            return new Profile(name);
         }
         public void UpdateProfile(string? name, byte[]? profilePic, string? bio)
         {

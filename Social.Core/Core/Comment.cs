@@ -6,7 +6,7 @@ namespace Social.Core
         public Guid Id { get; private set; } = Guid.NewGuid();
         public Guid AuthorId { get; private set; }
 
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 

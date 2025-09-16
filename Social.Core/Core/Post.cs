@@ -5,9 +5,9 @@
         public Guid Id { get; private set; } = Guid.NewGuid();
         public Guid AuthorId { get; set; }
 
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
-        public string Content { get; set; }
+        public required string Content { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -32,7 +32,11 @@
                 return _karma;
             }
         }
-        public Post() { }
+        public Post() 
+        {
+            Title = "Nyt indlæg";
+            Content = "Indhold kommer snart...";
+        }
         public Post(Guid authorId,
                     string title,
                     string content,
