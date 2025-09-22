@@ -1,4 +1,4 @@
-﻿namespace Social.Core
+namespace Social.Core
 {
     public class Post
     {
@@ -32,6 +32,13 @@
                 return _karma;
             }
         }
+        /// <summary>
+        /// Initializes a new Post with default placeholder values for Title and Content.
+        /// </summary>
+        /// <remarks>
+        /// Sets Title to "Nyt indlæg" and Content to "Indhold kommer snart...".
+        /// Other properties (e.g., Id, CreatedAt, collections) retain their default initializations.
+        /// </remarks>
         public Post()
         {
             Title = "Nyt indlæg";

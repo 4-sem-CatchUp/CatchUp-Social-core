@@ -1,4 +1,4 @@
-﻿using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 using Microsoft.AspNetCore.Http.Connections;
 using Social.Core;
@@ -12,6 +12,9 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
+        /// <summary>
+        /// Initializes a new instance of <see cref="PostService"/> with the required repositories and subscription use case.
+        /// </summary>
         public PostService(IPostRepository postRepository,
             ICommentRepository commentRepository,
             IVoteRepository voteRepository,
@@ -25,6 +28,13 @@ namespace Social.Core.Application
             _subscriptionService = subscribeUseCases;
         }
 
+        /// <summary>
+        /// Creates and persists a new post authored by the specified user.
+        /// </summary>
+        /// <param name="authorId">The ID of the user who will own the post.</param>
+        /// <param name="title">The post's title.</param>
+        /// <param name="content">The post's content body.</param>
+        /// <returns>The ID of the newly created post.</returns>
         public async Task<Guid> CreatePostAsync(Guid authorId, string title, string content)
         {
             var post = Post.CreateNewPost(authorId, title, content);

@@ -1,4 +1,4 @@
-﻿using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 
 namespace Social.Core.Application
@@ -10,6 +10,9 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
+        /// <summary>
+        /// Initializes a new instance of <see cref="CommentServices"/> with required repositories and subscription service.
+        /// </summary>
         public CommentServices(IPostRepository postRepository,
             ICommentRepository commentRepository,
             IVoteRepository voteRepository,
@@ -22,6 +25,13 @@ namespace Social.Core.Application
             _profileRepository = profileRepository;
             _subscriptionService = subscriptionService;
         }
+        /// <summary>
+        /// Adds a new comment with the given text authored by <paramref name="authorId"/> to the post identified by <paramref name="postId"/> and persists it.
+        /// </summary>
+        /// <param name="postId">ID of the post to add the comment to.</param>
+        /// <param name="authorId">ID of the profile creating the comment.</param>
+        /// <param name="text">Content of the comment.</param>
+        /// <exception cref="InvalidOperationException">Thrown if the post with <paramref name="postId"/> does not exist.</exception>
         public async Task AddComment(Guid postId, Guid authorId, string text)
         {
             var post = await _postRepository.GetByIdAsync(postId)
