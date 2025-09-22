@@ -36,6 +36,12 @@ jobs:
       - name: Build solution
         run: dotnet build CatchUp.Social.sln --configuration Release
 
+        
+      # Tjek kodeformatering med CSharpier
+      - name: Check formatting with CSharpier
+        run: dotnet csharpier check .
+
+
       # Kører linting (tjekker kodeformatering)
       - name: Run linting (dotnet format)
         run: dotnet format --verify-no-changes --severity error
