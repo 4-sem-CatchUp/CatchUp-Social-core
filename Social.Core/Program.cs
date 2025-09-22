@@ -1,4 +1,3 @@
-
 namespace Social
 {
     public class Program
@@ -26,7 +25,6 @@ namespace Social
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -8,10 +8,14 @@ namespace Social.Core.Application
         private readonly List<Subscription> _subscriptions = new();
         private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly INotificationSender _notificationSender;
+
         /// <summary>
         /// Initializes a new instance of <see cref="SubscriptionService"/> with the required dependencies.
         /// </summary>
-        public SubscriptionService(ISubscriptionRepository subscriptionRepository, INotificationSender notificationSender)
+        public SubscriptionService(
+            ISubscriptionRepository subscriptionRepository,
+            INotificationSender notificationSender
+        )
         {
             _subscriptionRepository = subscriptionRepository;
             _notificationSender = notificationSender;
@@ -54,7 +58,9 @@ namespace Social.Core.Application
         /// <exception cref="InvalidOperationException">Thrown if no matching subscription exists.</exception>
         public void Unsubscribe(Profile subscriber, Profile publisher)
         {
-            var subscription = _subscriptions.FirstOrDefault(s => s.Subscriber.Id == subscriber.Id && s.Publisher.Id == publisher.Id);
+            var subscription = _subscriptions.FirstOrDefault(s =>
+                s.Subscriber.Id == subscriber.Id && s.Publisher.Id == publisher.Id
+            );
             if (subscription != null)
             {
                 _subscriptions.Remove(subscription);

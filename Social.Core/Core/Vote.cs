@@ -8,17 +8,18 @@
         public Guid UserId { get; set; }
         public bool Upvote { get; set; }
         public VoteAction Action { get; set; } = VoteAction.Add;
-
     }
+
     public enum VoteTargetType
     {
         Post,
-        Comment
+        Comment,
     }
+
     public enum VoteAction
     {
         Add,
         Remove,
-        Update
+        Update,
     }
 }

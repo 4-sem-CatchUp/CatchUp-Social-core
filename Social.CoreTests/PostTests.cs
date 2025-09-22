@@ -125,5 +125,4 @@ namespace SocialCoreTests
             Assert.That(_post.Comments.Count, Is.EqualTo(0));
         }
     }
-
 }

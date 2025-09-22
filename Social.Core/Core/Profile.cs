@@ -6,9 +6,9 @@ namespace Social.Core
         public string Name { get; set; }
         public byte[] ProfilePic { get; set; } = Array.Empty<byte>();
         public string Bio { get; set; } = string.Empty;
-        public DateOnly DateOfSub { get; private set; }
-            = DateOnly.FromDateTime(DateTime.UtcNow);
+        public DateOnly DateOfSub { get; private set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
+
         /// <summary>
         /// Initializes a new Profile instance with default values.
         /// </summary>
@@ -19,6 +19,7 @@ namespace Social.Core
         {
             Name = "New User";
         }
+
         /// <summary>
         /// Initializes a new <see cref="Profile"/> with the specified display name.
         /// </summary>
@@ -27,10 +28,12 @@ namespace Social.Core
         {
             Name = name;
         }
+
         public static Profile CreateNewProfile(string name)
         {
             return new Profile(name);
         }
+
         public void UpdateProfile(string? name, byte[]? profilePic, string? bio)
         {
             if (name != null)
@@ -40,6 +43,7 @@ namespace Social.Core
             if (bio != null)
                 Bio = bio;
         }
+
         public void AddFriend(Guid friendId)
         {
             if (!Friends.Contains(friendId))

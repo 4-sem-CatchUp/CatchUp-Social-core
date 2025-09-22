@@ -1,6 +1,4 @@
 ﻿namespace Social.Infrastructure
 {
-    public class SocialDbContext
-    {
-    }
+    public class SocialDbContext { }
 }

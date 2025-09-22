@@ -1,11 +1,11 @@
-﻿using Social.Core;
-using Social.Core.Application;
-using Social.Core.Ports.Outgoing;
+﻿using System;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Threading.Tasks;
+using Social.Core;
+using Social.Core.Application;
 using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Outgoing;
 
 namespace SocialCoreTests
 {
@@ -32,7 +32,10 @@ namespace SocialCoreTests
 
             // Assert
             Assert.That(result, Is.Not.EqualTo(Guid.Empty));
-            _mockRepo.Verify(r => r.AddProfileAsync(It.Is<Profile>(p => p.Name == userName)), Times.Once);
+            _mockRepo.Verify(
+                r => r.AddProfileAsync(It.Is<Profile>(p => p.Name == userName)),
+                Times.Once
+            );
         }
 
         [Test]
@@ -75,7 +78,9 @@ namespace SocialCoreTests
             var profile = new Profile("User");
 
             _mockRepo.Setup(r => r.GetProfileByIdAsync(profileId)).ReturnsAsync(profile);
-            _mockRepo.Setup(r => r.GetProfileByIdAsync(friendId)).ReturnsAsync(new Profile("Friend"));
+            _mockRepo
+                .Setup(r => r.GetProfileByIdAsync(friendId))
+                .ReturnsAsync(new Profile("Friend"));
 
             // Act
             await _service.AddFriendAsync(profileId, friendId);

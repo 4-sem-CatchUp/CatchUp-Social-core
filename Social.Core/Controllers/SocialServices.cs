@@ -5,7 +5,5 @@ namespace Social.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SocialServices : ControllerBase
-    {
-    }
+    public class SocialServices : ControllerBase { }
 }
