@@ -12,8 +12,8 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
-        public PostService(IPostRepository postRepository, 
-            ICommentRepository commentRepository, 
+        public PostService(IPostRepository postRepository,
+            ICommentRepository commentRepository,
             IVoteRepository voteRepository,
             IProfileRepository profileRepository,
             ISubscribeUseCases subscribeUseCases)

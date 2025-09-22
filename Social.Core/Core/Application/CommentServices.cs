@@ -10,7 +10,7 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
-        public CommentServices(IPostRepository postRepository, 
+        public CommentServices(IPostRepository postRepository,
             ICommentRepository commentRepository,
             IVoteRepository voteRepository,
             IProfileRepository profileRepository,
@@ -21,7 +21,7 @@ namespace Social.Core.Application
             _voteRepository = voteRepository;
             _profileRepository = profileRepository;
             _subscriptionService = subscriptionService;
-         }
+        }
         public async Task AddComment(Guid postId, Guid authorId, string text)
         {
             var post = await _postRepository.GetByIdAsync(postId)
