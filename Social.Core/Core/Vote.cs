@@ -8,7 +8,7 @@
         public Guid UserId { get; set; }
         public bool Upvote { get; set; }
         public VoteAction Action { get; set; } = VoteAction.Add;
-
+        
     }
     public enum VoteTargetType
     {

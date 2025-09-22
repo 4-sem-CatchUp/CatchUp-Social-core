@@ -35,5 +35,6 @@
             if (!Friends.Contains(friendId))
                 Friends.Add(friendId);
         }
+
     }
 }

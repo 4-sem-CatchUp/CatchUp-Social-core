@@ -10,11 +10,14 @@ namespace Social.Core.Application
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IVoteRepository _voteRepository;
+        private readonly ISubscribeUseCases _subscriptionService;
+        private readonly IProfileRepository _profileRepository;
         public PostService(IPostRepository postRepository, ICommentRepository commentRepository, IVoteRepository voteRepository)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _voteRepository = voteRepository;
+
         }
 
         public async Task<Guid> CreatePostAsync(Guid authorId, string title, string content)
@@ -38,6 +41,11 @@ namespace Social.Core.Application
                 await _voteRepository.UpdateAsync(vote);
             else if (vote.Action == VoteAction.Remove)
                 await _voteRepository.DeleteAsync(vote.Id);
+
+            // Notify post author about the new vote
+            var profile = await _profileRepository.GetProfileByIdAsync(post.AuthorId)
+                ?? throw new InvalidOperationException("Profile not found");
+            await _subscriptionService.Notify(profile, $"Your post ({post.Id}) received a new vote.");
 
         }
 

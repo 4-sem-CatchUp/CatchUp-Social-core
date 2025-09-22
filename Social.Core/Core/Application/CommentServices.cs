@@ -8,11 +8,19 @@ namespace Social.Core.Application
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IVoteRepository _voteRepository;
-        public CommentServices(IPostRepository postRepository, ICommentRepository commentRepository, IVoteRepository voteRepository)
+        private readonly ISubscribeUseCases _subscriptionService;
+        private readonly IProfileRepository _profileRepository;
+        public CommentServices(IPostRepository postRepository, 
+            ICommentRepository commentRepository, 
+            IVoteRepository voteRepository, 
+            IProfileRepository profileRepository,
+            ISubscribeUseCases subscribeUseCase)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _voteRepository = voteRepository;
+            _subscriptionService = subscribeUseCase;
+            _profileRepository = profileRepository;
         }
         public async Task AddComment(Guid postId, Guid authorId, string text)
         {
@@ -21,6 +29,13 @@ namespace Social.Core.Application
 
             var comment = post.AddComment(authorId, text);
             await _commentRepository.AddAsync(comment);
+
+            // Notify post author about the new comment
+            var profile = await _profileRepository.GetProfileByIdAsync(post.AuthorId)
+                ?? throw new InvalidOperationException("Profile not found");
+
+            await _subscriptionService.Notify(profile, $"New comment ({comment.Id} ) on your post ( {postId} )");
+
         }
 
         public async Task VoteComment(Guid commentId, bool upVote, Guid userId)
@@ -36,6 +51,11 @@ namespace Social.Core.Application
                 await _voteRepository.UpdateAsync(vote);
             else if (vote.Action == VoteAction.Remove)
                 await _voteRepository.DeleteAsync(vote.Id);
+
+            // Notify comment author about the new vote
+            var profile = await _profileRepository.GetProfileByIdAsync(comment.AuthorId)
+                ?? throw new InvalidOperationException("Profile not found");
+            await _subscriptionService.Notify(profile, $"Your comment ({comment.Id}) received a new vote.");
         }
 
 
