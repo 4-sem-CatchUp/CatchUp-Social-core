@@ -1,8 +1,8 @@
-﻿using Social.Core;
+﻿using Moq;
+using Social.Core;
 using Social.Core.Application;
-using Social.Core.Ports.Outgoing;
-using Moq;
 using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Outgoing;
 
 namespace SocialCoreTests
 {
@@ -29,8 +29,6 @@ namespace SocialCoreTests
             _mockSubscriptionService = new Mock<ISubscribeUseCases>();
             _mockProfileRepo = new Mock<IProfileRepository>();
 
-
-
             _service = new PostService(
                 _mockPostRepo.Object,
                 _mockCommentRepo.Object,
@@ -45,7 +43,6 @@ namespace SocialCoreTests
                 _mockVoteRepo.Object,
                 _mockProfileRepo.Object,
                 _mockSubscriptionService.Object
-
             );
 
        
@@ -57,16 +54,16 @@ namespace SocialCoreTests
             
             _mockProfileRepo.Setup(r => r.GetProfileByIdAsync(_userId))
                 .ReturnsAsync(new Profile { Id = _userId, Name = "Test User" });
-
         }
 
         [Test]
         public async Task CreatePostAsync_ShouldAddPost()
         {
             Post? captured = null;
-            _mockPostRepo.Setup(r => r.AddAsync(It.IsAny<Post>()))
-                         .Callback<Post>(p => captured = p)
-                         .Returns(Task.CompletedTask);
+            _mockPostRepo
+                .Setup(r => r.AddAsync(It.IsAny<Post>()))
+                .Callback<Post>(p => captured = p)
+                .Returns(Task.CompletedTask);
 
             var postId = await _service.CreatePostAsync(_userId, "Title", "Content");
 
@@ -147,11 +144,12 @@ namespace SocialCoreTests
                 TargetId = _postId,
                 UserId = _userId,
                 Upvote = true,
-                VoteTargetType = VoteTargetType.Post
+                VoteTargetType = VoteTargetType.Post,
             };
 
-            _mockVoteRepo.Setup(r => r.GetUserVoteAsync(_postId, VoteTargetType.Post, _userId))
-                         .ReturnsAsync(vote);
+            _mockVoteRepo
+                .Setup(r => r.GetUserVoteAsync(_postId, VoteTargetType.Post, _userId))
+                .ReturnsAsync(vote);
 
             var result = await _service.GetUserPostVote(_postId, _userId);
 

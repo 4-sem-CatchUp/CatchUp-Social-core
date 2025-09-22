@@ -1,11 +1,12 @@
-﻿using Social.Core.Ports.Outgoing;
-using Social.Core;
+﻿using Social.Core;
+using Social.Core.Ports.Outgoing;
 
 namespace Social.Infrastructure
 {
     public class PostDbAdapter : IPostRepository
     {
         private readonly SocialDbContext _context;
+
         public PostDbAdapter(SocialDbContext context)
         {
             _context = context;
@@ -35,8 +36,6 @@ namespace Social.Infrastructure
         {
             throw new NotImplementedException();
         }
-
-
 
         //public async Task AddPostAsync(Post post)
         //{

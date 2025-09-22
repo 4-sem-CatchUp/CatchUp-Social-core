@@ -8,23 +8,28 @@ namespace Social.Core.Application
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IVoteRepository _voteRepository;
-        private readonly ISubscribeUseCases _subscriptionService;
         private readonly IProfileRepository _profileRepository;
-        public CommentServices(IPostRepository postRepository, 
-            ICommentRepository commentRepository, 
-            IVoteRepository voteRepository, 
+        private readonly ISubscribeUseCases _subscriptionService;
+
+        public CommentServices(
+            IPostRepository postRepository,
+            ICommentRepository commentRepository,
+            IVoteRepository voteRepository,
             IProfileRepository profileRepository,
-            ISubscribeUseCases subscribeUseCase)
+            ISubscribeUseCases subscriptionService
+        )
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _voteRepository = voteRepository;
-            _subscriptionService = subscribeUseCase;
             _profileRepository = profileRepository;
+            _subscriptionService = subscriptionService;
         }
+
         public async Task AddComment(Guid postId, Guid authorId, string text)
         {
-            var post = await _postRepository.GetByIdAsync(postId)
+            var post =
+                await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
 
             var comment = post.AddComment(authorId, text);
@@ -40,7 +45,8 @@ namespace Social.Core.Application
 
         public async Task VoteComment(Guid commentId, bool upVote, Guid userId)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId)
+            var comment =
+                await _commentRepository.GetByIdAsync(commentId)
                 ?? throw new InvalidOperationException("Comment not found");
 
             var vote = comment.AddVote(userId, upVote);
@@ -58,16 +64,20 @@ namespace Social.Core.Application
             await _subscriptionService.Notify(profile, $"Your comment ({comment.Id}) received a new vote.");
         }
 
-
         public async Task<bool?> GetUserCommentVote(Guid postId, Guid commentId, Guid userId)
         {
-            var vote = await _voteRepository.GetUserVoteAsync(commentId, VoteTargetType.Comment, userId);
+            var vote = await _voteRepository.GetUserVoteAsync(
+                commentId,
+                VoteTargetType.Comment,
+                userId
+            );
             return vote?.Upvote;
         }
 
         public async Task<bool?> DeleteComment(Guid postId, Guid commentId, Guid userId)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId)
+            var comment =
+                await _commentRepository.GetByIdAsync(commentId)
                 ?? throw new InvalidOperationException("Comment not found");
 
             if (comment.AuthorId != userId)
@@ -79,7 +89,8 @@ namespace Social.Core.Application
 
         public async Task<bool?> UpdateCommentAsync(Guid commentId, Guid userId, string newContent)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId)
+            var comment =
+                await _commentRepository.GetByIdAsync(commentId)
                 ?? throw new InvalidOperationException("Comment not found");
 
             if (comment.AuthorId != userId)
@@ -91,4 +102,3 @@ namespace Social.Core.Application
         }
     }
 }
-

@@ -22,7 +22,10 @@ namespace SocialCoreTests
         {
             _subscriptionRepoMock = new Mock<ISubscriptionRepository>();
             _notificationSenderMock = new Mock<INotificationSender>();
-            _service = new SubscriptionService(_subscriptionRepoMock.Object, _notificationSenderMock.Object);
+            _service = new SubscriptionService(
+                _subscriptionRepoMock.Object,
+                _notificationSenderMock.Object
+            );
 
             _subscriber1 = new Profile("Alice");
             _subscriber2 = new Profile("Charlie");
@@ -51,7 +54,8 @@ namespace SocialCoreTests
         public void Unsubscribe_NonExisting_ThrowsException()
         {
             Assert.Throws<InvalidOperationException>(() =>
-                _service.Unsubscribe(_subscriber1, _publisher));
+                _service.Unsubscribe(_subscriber1, _publisher)
+            );
         }
 
         [Test]
@@ -67,9 +71,13 @@ namespace SocialCoreTests
 
             // Assert
             _notificationSenderMock.Verify(
-                n => n.SendNotification(_subscriber1, message), Times.Once);
+                n => n.SendNotification(_subscriber1, message),
+                Times.Once
+            );
             _notificationSenderMock.Verify(
-                n => n.SendNotification(_subscriber2, message), Times.Once);
+                n => n.SendNotification(_subscriber2, message),
+                Times.Once
+            );
         }
 
         [Test]
@@ -82,7 +90,9 @@ namespace SocialCoreTests
             _service.Notify(_publisher, message);
 
             _notificationSenderMock.Verify(
-                n => n.SendNotification(nonSubscriber, It.IsAny<string>()), Times.Never);
+                n => n.SendNotification(nonSubscriber, It.IsAny<string>()),
+                Times.Never
+            );
         }
 
         [Test]

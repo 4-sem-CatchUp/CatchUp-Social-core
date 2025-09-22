@@ -1,5 +1,5 @@
-﻿using Social.Core.Ports.Outgoing;
-using Social.Core;
+﻿using Social.Core;
+using Social.Core.Ports.Outgoing;
 
 namespace CatchUpBackend.Social.Infrastructure
 {
