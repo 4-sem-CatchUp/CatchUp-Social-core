@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 namespace Social.Core
 {
     public class Comment
@@ -25,17 +26,15 @@ namespace Social.Core
                 }
             }
         }
+
         public Comment() { }
-        public Comment(Guid authorId,
-                    string text,
-                    DateTime timeStamp,
-                    List<Vote> votes)
+
+        public Comment(Guid authorId, string text, DateTime timeStamp, List<Vote> votes)
         {
             AuthorId = authorId;
             Content = text;
             Timestamp = timeStamp;
             _votes = votes;
-
         }
 
         public static Comment CreateNewComment(Guid authorId, string text)
@@ -59,8 +58,6 @@ namespace Social.Core
                     vote.Action = VoteAction.Remove;
                 }
             }
-
-
             else
             {
                 vote = new Vote
@@ -70,19 +67,22 @@ namespace Social.Core
                     VoteTargetType = VoteTargetType.Post,
                     UserId = userId,
                     Upvote = upvote,
-                    Action = VoteAction.Add
+                    Action = VoteAction.Add,
                 };
                 _votes.Add(vote);
             }
             return vote;
         }
-        public void UpdateComment(string newText) { Content = newText; }
+
+        public void UpdateComment(string newText)
+        {
+            Content = newText;
+        }
+
         public bool? GetUserVote(Guid userId)
         {
             var vote = Votes.FirstOrDefault(v => v.UserId == userId);
             return vote?.Upvote;
         }
-
-
     }
 }

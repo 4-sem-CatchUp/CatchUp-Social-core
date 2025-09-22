@@ -8,7 +8,11 @@ namespace Social.Core.Application
         private readonly List<Subscription> _subscriptions = new();
         private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly INotificationSender _notificationSender;
-        public SubscriptionService(ISubscriptionRepository subscriptionRepository, INotificationSender notificationSender)
+
+        public SubscriptionService(
+            ISubscriptionRepository subscriptionRepository,
+            INotificationSender notificationSender
+        )
         {
             _subscriptionRepository = subscriptionRepository;
             _notificationSender = notificationSender;
@@ -32,7 +36,9 @@ namespace Social.Core.Application
 
         public void Unsubscribe(Profile subscriber, Profile publisher)
         {
-            var subscription = _subscriptions.FirstOrDefault(s => s.Subscriber.Id == subscriber.Id && s.Publisher.Id == publisher.Id);
+            var subscription = _subscriptions.FirstOrDefault(s =>
+                s.Subscriber.Id == subscriber.Id && s.Publisher.Id == publisher.Id
+            );
             if (subscription != null)
             {
                 _subscriptions.Remove(subscription);
