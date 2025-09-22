@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\ports\\incomming\\icommentusecases.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\core\\ports\\incomming\\icommentusecases.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\postservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\postservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,14 +27,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ICommentUseCases.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Incomming\\ICommentUseCases.cs",
-              "RelativeDocumentMoniker": "Social.Core\\Core\\Ports\\Incomming\\ICommentUseCases.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Incomming\\ICommentUseCases.cs",
-              "RelativeToolTip": "Social.Core\\Core\\Ports\\Incomming\\ICommentUseCases.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Title": "PostServiceTests.cs",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\PostServiceTests.cs",
+              "RelativeDocumentMoniker": "Social.CoreTests\\PostServiceTests.cs",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\PostServiceTests.cs",
+              "RelativeToolTip": "Social.CoreTests\\PostServiceTests.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAiwCwAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T10:22:52.183Z",
+              "WhenOpened": "2025-09-22T11:11:42.85Z",
               "EditorCaption": ""
             }
           ]

@@ -12,11 +12,17 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly ISubscribeUseCases _subscriptionService;
         private readonly IProfileRepository _profileRepository;
-        public PostService(IPostRepository postRepository, ICommentRepository commentRepository, IVoteRepository voteRepository)
+        public PostService(IPostRepository postRepository, 
+            ICommentRepository commentRepository, 
+            IVoteRepository voteRepository,
+            IProfileRepository profileRepository,
+            ISubscribeUseCases subscribeUseCases)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _voteRepository = voteRepository;
+            _subscriptionService = subscribeUseCases;
+            _profileRepository = profileRepository;
 
         }
 
