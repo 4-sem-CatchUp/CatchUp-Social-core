@@ -49,9 +49,6 @@ Generated_Code/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 
-# Dotnet-tools
-.dotnet-tools/
-
 # Visual Studio profiler
 *.psess
 *.vsp

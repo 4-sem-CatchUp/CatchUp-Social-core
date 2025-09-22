@@ -4,6 +4,5 @@
     {
         void Add(Subscription subscription);
         void Remove(Subscription subscription);
-
     }
 }

@@ -1,7 +1,7 @@
-﻿using Social.Core.Ports.Incomming;
-using Social.Core.Ports.Outgoing;
-using Microsoft.AspNetCore.Http.Connections;
+﻿using Microsoft.AspNetCore.Http.Connections;
 using Social.Core;
+using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Outgoing;
 
 namespace Social.Core.Application
 {
@@ -12,11 +12,14 @@ namespace Social.Core.Application
         private readonly IVoteRepository _voteRepository;
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
-        public PostService(IPostRepository postRepository,
+
+        public PostService(
+            IPostRepository postRepository,
             ICommentRepository commentRepository,
             IVoteRepository voteRepository,
             IProfileRepository profileRepository,
-            ISubscribeUseCases subscribeUseCases)
+            ISubscribeUseCases subscribeUseCases
+        )
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
@@ -32,10 +35,10 @@ namespace Social.Core.Application
             return post.Id;
         }
 
-
         public async Task VotePost(Guid postId, bool upVote, Guid userId)
         {
-            var post = await _postRepository.GetByIdAsync(postId)
+            var post =
+                await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
 
             var vote = post.AddVote(userId, upVote);
@@ -46,7 +49,6 @@ namespace Social.Core.Application
                 await _voteRepository.UpdateAsync(vote);
             else if (vote.Action == VoteAction.Remove)
                 await _voteRepository.DeleteAsync(vote.Id);
-
         }
 
         public async Task<bool?> GetUserPostVote(Guid postId, Guid userId)
@@ -57,14 +59,16 @@ namespace Social.Core.Application
 
         public async Task DeletePost(Guid postId)
         {
-            var post = await _postRepository.GetByIdAsync(postId)
+            var post =
+                await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
             await _postRepository.DeleteAsync(postId);
         }
 
         public async Task UpdatePostAsync(Guid postId, string? newTitle, string? newContent)
         {
-            var post = await _postRepository.GetByIdAsync(postId)
+            var post =
+                await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
             post.UpdatePost(newTitle, newContent);
             await _postRepository.UpdateAsync(post);

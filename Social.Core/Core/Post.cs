@@ -32,15 +32,14 @@
                 return _karma;
             }
         }
+
         public Post()
         {
             Title = "Nyt indlæg";
             Content = "Indhold kommer snart...";
         }
-        public Post(Guid authorId,
-                    string title,
-                    string content,
-                    DateTime createdAt)
+
+        public Post(Guid authorId, string title, string content, DateTime createdAt)
         {
             AuthorId = authorId;
             Title = title;
@@ -50,13 +49,15 @@
             _comments = new List<Comment>();
         }
 
-        public Post(Guid id,
-                    Guid authorId,
-                    string title,
-                    string content,
-                    DateTime createdAt,
-                    List<Comment> comments,
-                    List<Vote> votes)
+        public Post(
+            Guid id,
+            Guid authorId,
+            string title,
+            string content,
+            DateTime createdAt,
+            List<Comment> comments,
+            List<Vote> votes
+        )
         {
             Id = id;
             AuthorId = authorId;
@@ -77,12 +78,12 @@
                 CreatedAt = DateTime.UtcNow,
             };
         }
+
         public Comment AddComment(Guid authorId, string text)
         {
             var comment = Comment.CreateNewComment(authorId, text);
             _comments.Add(comment);
             return comment;
-
         }
 
         public Vote AddVote(Guid userId, bool upvote)
@@ -101,8 +102,6 @@
                     vote.Action = VoteAction.Remove;
                 }
             }
-
-
             else
             {
                 vote = new Vote
@@ -112,7 +111,7 @@
                     VoteTargetType = VoteTargetType.Post,
                     UserId = userId,
                     Upvote = upvote,
-                    Action = VoteAction.Add
+                    Action = VoteAction.Add,
                 };
                 _votes.Add(vote);
             }
@@ -132,6 +131,7 @@
             if (newContent != null)
                 Content = newContent;
         }
+
         public void RemoveComment(Guid commentId)
         {
             var comment = Comments.FirstOrDefault(c => c.Id == commentId);
