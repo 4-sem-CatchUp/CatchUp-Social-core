@@ -32,6 +32,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore CatchUp.Social.sln
 
+        
+      # Gendanner lokale dotnet tools (fx CSharpier)
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+
       # Byg løsningen for at fange kompileringsfejl
       - name: Build solution
         run: dotnet build CatchUp.Social.sln --configuration Release
