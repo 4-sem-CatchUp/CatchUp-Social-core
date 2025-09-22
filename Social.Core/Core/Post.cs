@@ -32,7 +32,7 @@
                 return _karma;
             }
         }
-        public Post() 
+        public Post()
         {
             Title = "Nyt indlæg";
             Content = "Indhold kommer snart...";

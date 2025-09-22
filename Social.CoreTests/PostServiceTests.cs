@@ -11,6 +11,9 @@ namespace SocialCoreTests
         private Mock<IPostRepository> _mockPostRepo;
         private Mock<ICommentRepository> _mockCommentRepo;
         private Mock<IVoteRepository> _mockVoteRepo;
+        private Mock<ISubscribeUseCases> _mockSubscriptionService;
+        private Mock<IProfileRepository> _mockProfileRepo;
+
         private IPostUseCases _service;
         private ICommentUseCases _commentService;
         private Guid _postId;
@@ -23,24 +26,38 @@ namespace SocialCoreTests
             _mockPostRepo = new Mock<IPostRepository>();
             _mockCommentRepo = new Mock<ICommentRepository>();
             _mockVoteRepo = new Mock<IVoteRepository>();
+            _mockSubscriptionService = new Mock<ISubscribeUseCases>();
+            _mockProfileRepo = new Mock<IProfileRepository>();
+
+
 
             _service = new PostService(
                 _mockPostRepo.Object,
                 _mockCommentRepo.Object,
-                _mockVoteRepo.Object
+                _mockVoteRepo.Object,
+                _mockProfileRepo.Object,
+                _mockSubscriptionService.Object
             );
 
             _commentService = new CommentServices(
                 _mockPostRepo.Object,
                 _mockCommentRepo.Object,
-                _mockVoteRepo.Object
+                _mockVoteRepo.Object,
+                _mockProfileRepo.Object,
+                _mockSubscriptionService.Object
+
             );
+
 
             _postId = Guid.NewGuid();
             _userId = Guid.NewGuid();
             _post = Post.CreateNewPost(_userId, "Title", "Content");
 
             _mockPostRepo.Setup(r => r.GetByIdAsync(_postId)).ReturnsAsync(_post);
+
+            _mockProfileRepo.Setup(r => r.GetProfileByIdAsync(_userId))
+                .ReturnsAsync(new Profile { Id = _userId, Name = "Test User" });
+
         }
 
         [Test]

@@ -1,0 +1,58 @@
+# Visual Studio midlertidige filer, build-resultater og
+# bruger-specifikke filer
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build output
+bin/
+obj/
+out/
+
+# NuGet pakker
+*.nupkg
+# Pakke-mapper
+packages/
+# Hvis du bruger Paket
+.paket/
+paket-files/
+
+# Rider / JetBrains IDE
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+
+# Backup & temporary
+*.bak
+*.tmp
+*.temp
+
+# Coverage / test output
+coverage/
+*.coverage
+*.coveragexml
+TestResult.xml
+TestResults/
+
+# OS-filer
+.DS_Store
+Thumbs.db
+
+# Autogenererede filer fra tools
+Generated_Code/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Dotnet-tools
+.dotnet-tools/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx

@@ -9,8 +9,8 @@
         public DateOnly DateOfSub { get; private set; }
             = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
-        public Profile() 
-        { 
+        public Profile()
+        {
             Name = "New User";
         }
         public Profile(string name)
