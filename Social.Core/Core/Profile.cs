@@ -1,4 +1,4 @@
-﻿namespace Social.Core
+namespace Social.Core
 {
     public class Profile
     {
@@ -9,10 +9,20 @@
         public DateOnly DateOfSub { get; private set; }
             = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
+        /// <summary>
+        /// Initializes a new Profile instance with default values.
+        /// </summary>
+        /// <remarks>
+        /// Sets <see cref="Name"/> to "New User". Other properties are initialized by their field/property initializers (for example: <see cref="Id"/>, <see cref="ProfilePic"/>, <see cref="Bio"/>, <see cref="DateOfSub"/>, and <see cref="Friends"/>).
+        /// </remarks>
         public Profile()
         {
             Name = "New User";
         }
+        /// <summary>
+        /// Initializes a new <see cref="Profile"/> with the specified display name.
+        /// </summary>
+        /// <param name="name">The display name to assign to the profile.</param>
         public Profile(string name)
         {
             Name = name;

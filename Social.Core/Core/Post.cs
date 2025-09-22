@@ -1,4 +1,4 @@
-﻿namespace Social.Core
+namespace Social.Core
 {
     public class Post
     {
@@ -32,6 +32,13 @@
                 return _karma;
             }
         }
+        /// <summary>
+        /// Initializes a new Post with default placeholder values.
+        /// </summary>
+        /// <remarks>
+        /// Sets Title to "Nyt indlæg" and Content to "Indhold kommer snart...".
+        /// Other fields (Id, CreatedAt, collections) are initialized by their field initializers.
+        /// </remarks>
         public Post()
         {
             Title = "Nyt indlæg";
