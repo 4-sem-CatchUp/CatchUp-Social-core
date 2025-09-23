@@ -11,10 +11,6 @@
       "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\chathubtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\chathubtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|solutionrelative:.github\\workflows\\ci.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
@@ -42,47 +38,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 8,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
-              "RelativeDocumentMoniker": "Social.Core\\Program.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
-              "RelativeToolTip": "Social.Core\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T07:50:17.73Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ChatHubTests.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatHubTests.cs",
-              "RelativeDocumentMoniker": "Social.CoreTests\\ChatHubTests.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatHubTests.cs",
-              "RelativeToolTip": "Social.CoreTests\\ChatHubTests.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T07:29:10.644Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ci.yml",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
-              "RelativeDocumentMoniker": ".github\\workflows\\ci.yml",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
-              "RelativeToolTip": ".github\\workflows\\ci.yml",
-              "ViewState": "AgIAABQAAAAAAAAAAAAQwC0AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
-              "WhenOpened": "2025-09-23T07:24:12.443Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
@@ -93,7 +50,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
+              "RelativeDocumentMoniker": "Social.Core\\Program.cs",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
+              "RelativeToolTip": "Social.Core\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T07:50:17.73Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ci.yml",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
+              "RelativeDocumentMoniker": ".github\\workflows\\ci.yml",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
+              "RelativeToolTip": ".github\\workflows\\ci.yml",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwC0AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-09-23T07:24:12.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -101,12 +82,11 @@
               "RelativeToolTip": ".gitignore",
               "ViewState": "AgIAAAQAAAAAAAAAAAAwwDcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-09-23T07:25:01.06Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-23T07:25:01.06Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "IChatUseCases.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Incomming\\IChatUseCases.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Ports\\Incomming\\IChatUseCases.cs",
@@ -118,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "Chat.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Chat.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Chat.cs",
@@ -130,7 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "ChatService.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Application\\ChatService.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Application\\ChatService.cs",
@@ -138,8 +118,7 @@
               "RelativeToolTip": "Social.Core\\Core\\Application\\ChatService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T18:19:47.244Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-22T18:19:47.244Z"
             },
             {
               "$type": "Document",
