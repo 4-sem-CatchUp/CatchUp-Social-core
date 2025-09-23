@@ -49,6 +49,15 @@ namespace Social.Core.Application
                 await _voteRepository.UpdateAsync(vote);
             else if (vote.Action == VoteAction.Remove)
                 await _voteRepository.DeleteAsync(vote.Id);
+
+            // Notify post author about the new vote
+            var profile =
+                await _profileRepository.GetProfileByIdAsync(post.AuthorId)
+                ?? throw new InvalidOperationException("Profile not found");
+            await _subscriptionService.Notify(
+                profile,
+                $"Your post ({post.Id}) received a new vote."
+            );
         }
 
         public async Task<bool?> GetUserPostVote(Guid postId, Guid userId)

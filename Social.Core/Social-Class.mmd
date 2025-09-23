@@ -1,0 +1,194 @@
+classDiagram 
+	
+	class SubscriptionService  {
+		-List~Subscription~ _subscriptions 
+		-ISubscriptionRepository _subscriptionRepository 
+		-INotificationSender _notificationSender 
+		+Notify(Profile Subscriber, string message) Task
+		+Subscribe(Profile subscriber, Profile publisher) void
+		+Unsubscribe(Profile subscriber, Profile publisher) void
+	}
+	class ICommentRepository  {
+		-GetByIdAsync(Guid commentId) Task~Comment?~
+		-GetByPostIdAsync(Guid postId) Task~IReadOnlyList~Comment~~
+		-AddAsync(Comment comment) Task
+		-UpdateAsync(Comment comment) Task
+		-DeleteAsync(Guid commentId) Task
+	}
+	class IProfileUseCases  {
+		-CreateProfileAsync(string userName) Task~Guid~
+		-UpdateProfileAsync(Guid profileId, string? name, byte[]? profilePic, string? bio) Task
+		-AddFriendAsync(Guid profileId, Guid friendId) Task
+	}
+	class PostDbAdapter  {
+		-SocialDbContext _context 
+		+AddAsync(Post post) Task
+		+DeleteAsync(Guid postId) Task
+		+GetAllAsync() Task~IEnumerable~Post~~
+		+GetByIdAsync(Guid postId) Task~Post?~
+		+UpdateAsync(Post post) Task
+	}
+	class Profile  {
+		+ Id : Guid
+		+ Name : string
+		+ ProfilePic : byte[]
+		+ Bio : string
+		+ DateOfSub : DateOnly
+		+ Friends : List~Guid~
+		+CreateNewProfile(string name) Profile
+		+UpdateProfile(string? name, byte[]? profilePic, string? bio) void
+		+AddFriend(Guid friendId) void
+	}
+	class ICommentUseCases  {
+		-AddComment(Guid postId, Guid authorId, string text) Task
+		+VoteComment(Guid commentId, bool upVote, Guid userId) Task
+		+GetUserCommentVote(Guid postId, Guid commentId, Guid userId) Task~bool?~
+		+UpdateCommentAsync(Guid commentId, Guid userId, string newContent) Task~bool?~
+		+DeleteComment(Guid postId, Guid commentId, Guid userId) Task~bool?~
+	}
+	class IVoteRepository  {
+		-GetByIdAsync(Guid voteId) Task~Vote?~
+		-AddAsync(Vote vote) Task
+		-UpdateAsync(Vote vote) Task
+		-DeleteAsync(Guid voteId) Task
+		-GetUserVoteAsync(Guid targetId, VoteTargetType targetType, Guid userId) Task~Vote?~
+		-GetVotesForTargetAsync(Guid targetId, VoteTargetType targetType) Task~IReadOnlyList~Vote~~
+	}
+	class Subscription  {
+		+ Subscriber : Profile
+		+ Publisher : Profile
+		+ SubscribedOn : DateTime
+	}
+	class ISubscribeUseCase  {
+		-Subscribe(Profile subscriber, Profile publisher) void
+		-Unsubscribe(Profile subscriber, Profile publisher) void
+		-Notify(Profile Subscriber, string message) Task
+	}
+	class CommentServices  {
+		-IPostRepository _postRepository 
+		-ICommentRepository _commentRepository 
+		-IVoteRepository _voteRepository 
+		-ISubscribeUseCase _subscriptionService 
+		-IProfileRepository _profileRepository 
+		+AddComment(Guid postId, Guid authorId, string text) Task
+		+VoteComment(Guid commentId, bool upVote, Guid userId) Task
+		+GetUserCommentVote(Guid postId, Guid commentId, Guid userId) Task~bool?~
+		+DeleteComment(Guid postId, Guid commentId, Guid userId) Task~bool?~
+		+UpdateCommentAsync(Guid commentId, Guid userId, string newContent) Task~bool?~
+	}
+	class ProfileDbAdapter  {
+		+AddFriendAsync(Guid profileId, Guid friendId) Task
+		+AddProfileAsync(Profile profile) Task
+		+DeleteProfileAsync(Guid profileId) Task
+		+GetAllProfilesAsync() Task~IEnumerable~Profile~~
+		+GetProfileByIdAsync(Guid profileId) Task~Profile?~
+		+UpdateProfileAsync(Profile profile) Task
+	}
+	class ISubscriptionRepository  {
+		-Add(Subscription subscription) void
+		-Remove(Subscription subscription) void
+	}
+	class ProfileService  {
+		-IProfileRepository _profileRepository 
+		+CreateProfileAsync(string userName) Task~Guid~
+		+UpdateProfileAsync(Guid profileId, string? name, byte[]? profilePic, string? bio) Task
+		+AddFriendAsync(Guid profileId, Guid friendId) Task
+	}
+	class INotificationSender  {
+		-SendNotification(Profile recipient, string message) void
+	}
+	class Comment  {
+		-List~Vote~ _votes 
+		-int _karma 
+		+ Id : Guid
+		+ AuthorId : Guid
+		+ Content : string?
+		+ Timestamp : DateTime
+		+ Votes : IReadOnlyList~Vote~
+		+ Karma : int
+		+CreateNewComment(Guid authorId, string text) Comment
+		+AddVote(Guid userId, bool upvote) Vote
+		+UpdateComment(string newText) void
+		+GetUserVote(Guid userId) bool?
+	}
+	class Post  {
+		-List~Comment~ _comments 
+		-List~Vote~ _votes 
+		-int _karma 
+		+ Id : Guid
+		+ AuthorId : Guid
+		+ Title : string
+		+ Content : string
+		+ CreatedAt : DateTime
+		+ Comments : IReadOnlyList~Comment~
+		+ Votes : IReadOnlyList~Vote~
+		+ Karma : int
+		+CreateNewPost(Guid authorId, string title, string content) Post
+		+AddComment(Guid authorId, string text) Comment
+		+AddVote(Guid userId, bool upvote) Vote
+		+GetUserVote(Guid userId) bool?
+		+UpdatePost(string? newTitle, string? newContent) void
+		+RemoveComment(Guid commentId) void
+	}
+	class IPostUseCases  {
+		-CreatePostAsync(Guid authorId, string title, string content) Task~Guid~
+		+VotePost(Guid postId, bool upVote, Guid userId) Task
+		+GetUserPostVote(Guid postId, Guid userId) Task~bool?~
+		+UpdatePostAsync(Guid postId, string? newTitle, string? newContent) Task
+		+DeletePost(Guid postId) Task
+	}
+	class SocialDbContext  {
+	}
+	class PostService  {
+		-IPostRepository _postRepository 
+		-ICommentRepository _commentRepository 
+		-IVoteRepository _voteRepository 
+		-ISubscribeUseCase _subscriptionService 
+		-IProfileRepository _profileRepository 
+		+CreatePostAsync(Guid authorId, string title, string content) Task~Guid~
+		+VotePost(Guid postId, bool upVote, Guid userId) Task
+		+GetUserPostVote(Guid postId, Guid userId) Task~bool?~
+		+DeletePost(Guid postId) Task
+		+UpdatePostAsync(Guid postId, string? newTitle, string? newContent) Task
+	}
+	class NotificationHub  {
+		+SendNotification(Profile recipient, string message) void
+	}
+	class IProfileRepository  {
+		-AddProfileAsync(Profile profile) Task
+		-GetProfileByIdAsync(Guid profileId) Task~Profile?~
+		-UpdateProfileAsync(Profile profile) Task
+		-DeleteProfileAsync(Guid profileId) Task
+		-AddFriendAsync(Guid profileId, Guid friendId) Task
+		-GetAllProfilesAsync() Task~IEnumerable~Profile~~
+	}
+	class IPostRepository  {
+		-GetByIdAsync(Guid postId) Task~Post?~
+		-GetAllAsync() Task~IEnumerable~Post~~
+		-AddAsync(Post post) Task
+		-UpdateAsync(Post post) Task
+		-DeleteAsync(Guid postId) Task
+	}
+	class Vote  {
+		+ Id : Guid
+		+ TargetId : Guid
+		+ VoteTargetType : VoteTargetType
+		+ UserId : Guid
+		+ Upvote : bool
+		+ Action : VoteAction
+	}
+	class SocialServices  {
+	}
+	class Program  {
+		+Main(string[] args) void
+	}
+	
+	SubscriptionService --|> ISubscribeUseCase
+	PostDbAdapter --|> IPostRepository
+	CommentServices --|> ICommentUseCases
+	ProfileDbAdapter --|> IProfileRepository
+	ProfileService --|> IProfileUseCases
+	PostService --|> IPostUseCases
+	NotificationHub --|> INotificationSender
+	SocialServices --|> ControllerBase
+	

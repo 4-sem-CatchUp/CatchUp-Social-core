@@ -1,21 +1,33 @@
-# Visual Studio midlertidige filer, build-resultater og
-# bruger-specifikke filer
+# =========================
+# Visual Studio / .NET
+# =========================
 .vs/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
+*.rsuser
+*.userprefs
 
 # Build output
 bin/
 obj/
 out/
+**/bin/
+**/obj/
+TestResults/
+BenchmarkDotNet.Artifacts/
+
+# SourceLink build outputs
+*.sourcelink.json
+
+# OpenAPI generated under obj
+/obj/EndpointInfo/
+/obj/*.OpenApiFiles.cache
 
 # NuGet pakker
 *.nupkg
-# Pakke-mapper
 packages/
-# Hvis du bruger Paket
 .paket/
 paket-files/
 
@@ -35,8 +47,6 @@ paket-files/
 coverage/
 *.coverage
 *.coveragexml
-TestResult.xml
-TestResults/
 
 # OS-filer
 .DS_Store
@@ -45,7 +55,7 @@ Thumbs.db
 # Autogenererede filer fra tools
 Generated_Code/
 
-# Resharper
+# ReSharper
 _ReSharper*/
 *.[Rr]e[Ss]harper
 
@@ -53,3 +63,8 @@ _ReSharper*/
 *.psess
 *.vsp
 *.vspx
+
+# Transient caches
+.cache
+.dswa.cache.json
+.rjsm.cache.json
