@@ -26,13 +26,13 @@ namespace Social.Core.Application
             _subscriptionService = subscriptionService;
         }
 
-        public async Task AddComment(Guid postId, Guid authorId, string text)
+        public async Task AddComment(Guid postId, Guid authorId, string? text, byte[]? image)
         {
             var post =
                 await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
 
-            var comment = post.AddComment(authorId, text);
+            var comment = post.AddComment(authorId, text, image);
             await _commentRepository.AddAsync(comment);
 
             // Notify post author about the new comment

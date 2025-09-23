@@ -7,7 +7,8 @@
 
         public required string Title { get; set; }
 
-        public required string Content { get; set; }
+        public string? Content { get; set; }
+        public byte[]? Image { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -39,11 +40,12 @@
             Content = "Indhold kommer snart...";
         }
 
-        public Post(Guid authorId, string title, string content, DateTime createdAt)
+        public Post(Guid authorId, string title, string? content, byte[]? image, DateTime createdAt)
         {
             AuthorId = authorId;
             Title = title;
             Content = content;
+            Image = image;
             CreatedAt = createdAt;
             _votes = new List<Vote>();
             _comments = new List<Comment>();
@@ -53,7 +55,8 @@
             Guid id,
             Guid authorId,
             string title,
-            string content,
+            string? content,
+            byte[]? image,
             DateTime createdAt,
             List<Comment> comments,
             List<Vote> votes
@@ -63,25 +66,27 @@
             AuthorId = authorId;
             Title = title;
             Content = content;
+            Image = image;
             _votes = votes;
             CreatedAt = createdAt;
             _comments = comments;
         }
 
-        public static Post CreateNewPost(Guid authorId, string title, string content)
+        public static Post CreateNewPost(Guid authorId, string title, string? content, byte[] image)
         {
             return new Post
             {
                 AuthorId = authorId,
                 Title = title,
                 Content = content,
+                Image = image,
                 CreatedAt = DateTime.UtcNow,
             };
         }
 
-        public Comment AddComment(Guid authorId, string text)
+        public Comment AddComment(Guid authorId, string? text, byte[] image)
         {
-            var comment = Comment.CreateNewComment(authorId, text);
+            var comment = Comment.CreateNewComment(authorId, text, image);
             _comments.Add(comment);
             return comment;
         }
@@ -124,12 +129,14 @@
             return vote?.Upvote;
         }
 
-        public void UpdatePost(string? newTitle, string? newContent)
+        public void UpdatePost(string? newTitle, string? newContent, byte[]? image)
         {
             if (newTitle != null)
                 Title = newTitle;
             if (newContent != null)
                 Content = newContent;
+            if (image != null)
+                Image = image;
         }
 
         public void RemoveComment(Guid commentId)

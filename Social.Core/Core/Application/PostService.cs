@@ -28,9 +28,14 @@ namespace Social.Core.Application
             _subscriptionService = subscribeUseCases;
         }
 
-        public async Task<Guid> CreatePostAsync(Guid authorId, string title, string content)
+        public async Task<Guid> CreatePostAsync(
+            Guid authorId,
+            string title,
+            string? content,
+            byte[]? image
+        )
         {
-            var post = Post.CreateNewPost(authorId, title, content);
+            var post = Post.CreateNewPost(authorId, title, content, image);
             await _postRepository.AddAsync(post);
             return post.Id;
         }
@@ -74,12 +79,17 @@ namespace Social.Core.Application
             await _postRepository.DeleteAsync(postId);
         }
 
-        public async Task UpdatePostAsync(Guid postId, string? newTitle, string? newContent)
+        public async Task UpdatePostAsync(
+            Guid postId,
+            string? newTitle,
+            string? newContent,
+            byte[]? image
+        )
         {
             var post =
                 await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
-            post.UpdatePost(newTitle, newContent);
+            post.UpdatePost(newTitle, newContent, image);
             await _postRepository.UpdateAsync(post);
         }
     }

@@ -47,15 +47,15 @@ namespace SocialCoreTests
 
             _postId = Guid.NewGuid();
             _userId = Guid.NewGuid();
-            _post = Post.CreateNewPost(_userId, "Title", "Content");
+            _post = Post.CreateNewPost(_userId, "Title", "Content", null);
 
             _mockPostRepo.Setup(r => r.GetByIdAsync(_postId)).ReturnsAsync(_post);
-
             _mockProfileRepo
                 .Setup(r => r.GetProfileByIdAsync(_userId))
                 .ReturnsAsync(new Profile { Id = _userId, Name = "Test User" });
         }
 
+        // --- CREATE POST ---
         [Test]
         public async Task CreatePostAsync_ShouldAddPost()
         {
@@ -65,49 +65,84 @@ namespace SocialCoreTests
                 .Callback<Post>(p => captured = p)
                 .Returns(Task.CompletedTask);
 
-            var postId = await _service.CreatePostAsync(_userId, "Title", "Content");
+            var postId = await _service.CreatePostAsync(_userId, "Title", "Content", null);
 
             Assert.IsNotNull(captured);
             Assert.That(captured.AuthorId, Is.EqualTo(_userId));
             Assert.That(captured.Title, Is.EqualTo("Title"));
+            Assert.That(captured.Content, Is.EqualTo("Content"));
+            Assert.That(captured.Image, Is.Null);
             Assert.That(captured.Id, Is.EqualTo(postId));
             _mockPostRepo.Verify(r => r.AddAsync(It.IsAny<Post>()), Times.Once);
         }
 
         [Test]
+        public async Task CreatePostAsync_WithImageOnly_ShouldAddPost()
+        {
+            Post? captured = null;
+            var image = new byte[] { 1, 2, 3 };
+            _mockPostRepo
+                .Setup(r => r.AddAsync(It.IsAny<Post>()))
+                .Callback<Post>(p => captured = p)
+                .Returns(Task.CompletedTask);
+
+            var postId = await _service.CreatePostAsync(_userId, "Title", null, image);
+
+            Assert.IsNotNull(captured);
+            Assert.That(captured.Content, Is.Null);
+            Assert.That(captured.Image, Is.EqualTo(image));
+            Assert.That(captured.Id, Is.EqualTo(postId));
+        }
+
+        // --- UPDATE POST ---
+        [Test]
         public async Task UpdatePost_ShouldUpdatePostAndCallRepository()
         {
-            var post = Post.CreateNewPost(Guid.NewGuid(), "Old Title", "Old Content");
+            var post = Post.CreateNewPost(Guid.NewGuid(), "Old Title", "Old Content", null);
             _mockPostRepo.Setup(r => r.GetByIdAsync(_postId)).ReturnsAsync(post);
 
-            await _service.UpdatePostAsync(_postId, "New Title", "New Content");
+            var newImage = new byte[] { 4, 5, 6 };
+            await _service.UpdatePostAsync(_postId, "New Title", "New Content", newImage);
 
             Assert.That(post.Title, Is.EqualTo("New Title"));
             Assert.That(post.Content, Is.EqualTo("New Content"));
+            Assert.That(post.Image, Is.EqualTo(newImage));
             _mockPostRepo.Verify(r => r.UpdateAsync(post), Times.Once);
         }
 
+        // --- DELETE POST ---
         [Test]
         public async Task DeletePost_ShouldCallRepository()
         {
             await _service.DeletePost(_postId);
-
             _mockPostRepo.Verify(r => r.DeleteAsync(_postId), Times.Once);
         }
 
+        // --- ADD COMMENT ---
         [Test]
         public async Task AddComment_ShouldCallCommentRepository()
         {
             var commentAuthor = Guid.NewGuid();
-            await _commentService.AddComment(_postId, commentAuthor, "Nice!");
+            await _commentService.AddComment(_postId, commentAuthor, "Nice!", null);
 
             _mockCommentRepo.Verify(r => r.AddAsync(It.IsAny<Comment>()), Times.Once);
         }
 
         [Test]
+        public async Task AddComment_WithImageOnly_ShouldCallCommentRepository()
+        {
+            var commentAuthor = Guid.NewGuid();
+            var image = new byte[] { 7, 8, 9 };
+            await _commentService.AddComment(_postId, commentAuthor, null, image);
+
+            _mockCommentRepo.Verify(r => r.AddAsync(It.IsAny<Comment>()), Times.Once);
+        }
+
+        // --- UPDATE COMMENT ---
+        [Test]
         public async Task UpdateComment_ShouldUpdateCommentContent()
         {
-            var comment = Comment.CreateNewComment(_userId, "Old Comment");
+            var comment = Comment.CreateNewComment(_userId, "Old Comment", null);
             _mockCommentRepo.Setup(r => r.GetByIdAsync(comment.Id)).ReturnsAsync(comment);
 
             await _commentService.UpdateCommentAsync(comment.Id, _userId, "New Comment");
@@ -116,10 +151,11 @@ namespace SocialCoreTests
             _mockCommentRepo.Verify(r => r.UpdateAsync(comment), Times.Once);
         }
 
+        // --- DELETE COMMENT ---
         [Test]
         public async Task DeleteComment_ShouldCallRepository()
         {
-            var comment = Comment.CreateNewComment(_userId, "To Delete");
+            var comment = Comment.CreateNewComment(_userId, "To Delete", null);
             _mockCommentRepo.Setup(r => r.GetByIdAsync(comment.Id)).ReturnsAsync(comment);
 
             await _commentService.DeleteComment(_postId, comment.Id, _userId);
@@ -127,6 +163,7 @@ namespace SocialCoreTests
             _mockCommentRepo.Verify(r => r.DeleteAsync(comment.Id), Times.Once);
         }
 
+        // --- VOTE POST ---
         [Test]
         public async Task VotePost_ShouldCallVoteRepository()
         {

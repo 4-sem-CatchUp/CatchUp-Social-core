@@ -8,6 +8,7 @@ namespace Social.Core
         public Guid AuthorId { get; private set; }
 
         public string? Content { get; set; }
+        public byte[]? Image { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
@@ -29,17 +30,29 @@ namespace Social.Core
 
         public Comment() { }
 
-        public Comment(Guid authorId, string text, DateTime timeStamp, List<Vote> votes)
+        public Comment(
+            Guid authorId,
+            string text,
+            byte[] image,
+            DateTime timeStamp,
+            List<Vote> votes
+        )
         {
             AuthorId = authorId;
             Content = text;
+            Image = image;
             Timestamp = timeStamp;
             _votes = votes;
         }
 
-        public static Comment CreateNewComment(Guid authorId, string text)
+        public static Comment CreateNewComment(Guid authorId, string text, byte[] image)
         {
-            return new Comment { AuthorId = authorId, Content = text };
+            return new Comment
+            {
+                AuthorId = authorId,
+                Content = text,
+                Image = image,
+            };
         }
 
         public Vote AddVote(Guid userId, bool upvote)

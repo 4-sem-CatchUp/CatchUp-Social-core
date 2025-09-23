@@ -11,7 +11,7 @@ namespace SocialCoreTests
         public void Setup()
         {
             _authorId = Guid.NewGuid();
-            _post = Post.CreateNewPost(_authorId, "Title", "Content");
+            _post = Post.CreateNewPost(_authorId, "Title", "Content", null);
         }
 
         // --- CREATE ---
@@ -21,8 +21,19 @@ namespace SocialCoreTests
             Assert.That(_post.AuthorId, Is.EqualTo(_authorId));
             Assert.That(_post.Title, Is.EqualTo("Title"));
             Assert.That(_post.Content, Is.EqualTo("Content"));
+            Assert.That(_post.Image, Is.Null);
             Assert.That(_post.Votes.Count, Is.EqualTo(0));
             Assert.That(_post.Comments.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CreateNewPost_WithImageOnly_ShouldHaveNullContent()
+        {
+            var image = new byte[] { 1, 2, 3 };
+            var postWithImage = Post.CreateNewPost(_authorId, "Title", null, image);
+
+            Assert.That(postWithImage.Content, Is.Null);
+            Assert.That(postWithImage.Image, Is.EqualTo(image));
         }
 
         // --- READ / GET ---
@@ -75,53 +86,65 @@ namespace SocialCoreTests
         public void AddComment_ShouldAddComment()
         {
             var commentAuthor = Guid.NewGuid();
-            _post.AddComment(commentAuthor, "Nice post!");
+            _post.AddComment(commentAuthor, "Nice post!", null);
 
             Assert.That(_post.Comments.Count, Is.EqualTo(1));
             Assert.That(_post.Comments[0].AuthorId, Is.EqualTo(commentAuthor));
             Assert.That(_post.Comments[0].Content, Is.EqualTo("Nice post!"));
+            Assert.That(_post.Comments[0].Image, Is.Null);
         }
 
         [Test]
-        public void UpdatePost_ShouldChangeTitleAndContent()
+        public void AddComment_WithImageOnly_ShouldHaveNullContent()
         {
-            // Arrange
+            var commentAuthor = Guid.NewGuid();
+            var image = new byte[] { 1, 2, 3 };
+            _post.AddComment(commentAuthor, null, image);
+
+            Assert.That(_post.Comments.Count, Is.EqualTo(1));
+            Assert.That(_post.Comments[0].Content, Is.Null);
+            Assert.That(_post.Comments[0].Image, Is.EqualTo(image));
+        }
+
+        [Test]
+        public void UpdatePost_ShouldChangeTitleContentAndImage()
+        {
             var newTitle = "Updated Title";
             var newContent = "Updated Content";
+            var newImage = new byte[] { 4, 5, 6 };
 
-            // Act
-            _post.Title = newTitle;
-            _post.Content = newContent;
+            _post.UpdatePost(newTitle, newContent, newImage);
 
-            // Assert
             Assert.That(_post.Title, Is.EqualTo(newTitle));
             Assert.That(_post.Content, Is.EqualTo(newContent));
+            Assert.That(_post.Image, Is.EqualTo(newImage));
         }
 
         [Test]
-        public void UpdateComment_ShouldChangeContent()
+        public void UpdateComment_ShouldChangeContentAndImage()
         {
-            var post = Post.CreateNewPost(Guid.NewGuid(), "Title", "Content");
-            post.AddComment(Guid.NewGuid(), "Old Comment");
-            var comment = post.Comments.First();
+            var post = Post.CreateNewPost(Guid.NewGuid(), "Title", "Content", null);
+            var comment = post.AddComment(Guid.NewGuid(), "Old Comment", null);
 
-            comment.UpdateComment("New Comment");
+            var newContent = "New Comment";
+            var newImage = new byte[] { 7, 8, 9 };
+            comment.UpdateComment(newContent);
+            comment.Image = newImage;
 
-            Assert.That(comment.Content, Is.EqualTo("New Comment"));
+            Assert.That(comment.Content, Is.EqualTo(newContent));
+            Assert.That(comment.Image, Is.EqualTo(newImage));
         }
 
         // --- DELETE ---
         [Test]
         public void RemoveComment_ShouldDeleteComment()
         {
-            // Arrange
             var commentAuthor = Guid.NewGuid();
-            _post.AddComment(commentAuthor, "A comment");
+            _post.AddComment(commentAuthor, "A comment", null);
             var commentId = _post.Comments[0].Id;
 
-            // Act
-            _post.RemoveComment(commentId); // vi laver denne metode i Post
-            // Assert
+            _post.RemoveComment(commentId);
+
             Assert.That(_post.Comments.Count, Is.EqualTo(0));
         }
     }
