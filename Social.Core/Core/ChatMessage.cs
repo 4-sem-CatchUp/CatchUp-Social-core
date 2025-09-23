@@ -2,23 +2,28 @@
 {
     public class ChatMessage
     {
-        public Guid MessageId { get; set; }
+        public Guid MessageId { get; set; } = Guid.NewGuid();
+        public Guid ChatId { get; set; }
         public Profile Sender { get; set; }
         public string Content { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public bool Seen { get; private set; }
         public ChatMessage() { }
-        public ChatMessage(Profile sender, string content)
+        public ChatMessage(Guid chatId, Profile sender, string content)
         {
-            MessageId = Guid.NewGuid();
+            ChatId = chatId;
             Sender = sender;
             Content = content;
-            Timestamp = DateTime.UtcNow;
             Seen = false;
         }
         public void MarkAsSeen()
         {
             Seen = true;
+        }
+        public void EditContent(string newContent)
+        {
+            Content = newContent;
+            Timestamp = DateTime.UtcNow; // Update timestamp to reflect edit time
         }
     }
 }

@@ -1,23 +1,21 @@
-﻿using System;
+﻿using Moq;
+using NUnit.Framework;
+using Social.Core;
+using Social.Core.Application;
+using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Outgoing;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialCoreTests
 {
-    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-    using Moq;
-    using Social.Core;
-    using Social.Core.Application;
-    using Social.Core.Ports.Outgoing;
-
     [TestFixture]
     public class ChatServiceTests
     {
         private Mock<IChatRepository> _mockRepo;
-        private IChatNotifier _notifier;
-        private ChatService _service;
+        private Mock<IChatNotifier> _mockNotifier;
+        private IChatUseCases _service;
         private Profile _user1;
         private Profile _user2;
 
@@ -25,57 +23,97 @@ namespace SocialCoreTests
         public void Setup()
         {
             _mockRepo = new Mock<IChatRepository>();
-            _service = new ChatService(_mockRepo.Object, _notifier);
+            _mockNotifier = new Mock<IChatNotifier>();
+            _service = new ChatService(_mockRepo.Object, _mockNotifier.Object);
+
             _user1 = Profile.CreateNewProfile("Alice");
             _user2 = Profile.CreateNewProfile("Bob");
         }
 
-        //[Test]
-        //public void CreateChat_ShouldReturnChatWithParticipants()
-        //{
-        //    var participants = new List<Profile> { _user1, _user2 };
-        //    _mockRepo.Setup(r => r.CreateChat(It.IsAny<Chat>()))
-        //             .Returns((Chat c) => c);
+        [Test]
+        public async Task CreateChat_ShouldReturnChatWithParticipants()
+        {
+            var participants = new List<Profile> { _user1, _user2 };
+            _mockRepo.Setup(r => r.CreateChat(It.IsAny<Chat>())).Returns(Task.CompletedTask);
+            _mockNotifier.Setup(n => n.NotifyChatCreated(It.IsAny<Chat>())).Returns(Task.CompletedTask);
 
-        //    var chat = _service.CreateChat(_user1, participants);
+            var chat = await _service.CreateChat(_user1, participants);
 
-        //    Assert.That(chat.Participants.Count, Is.EqualTo(2));
-        //    _mockRepo.Verify(r => r.CreateChat(It.IsAny<Chat>()), Times.Once);
-        //}
+            Assert.That(chat.Participants.Count, Is.EqualTo(2));
+            _mockRepo.Verify(r => r.CreateChat(It.IsAny<Chat>()), Times.Once);
+            _mockNotifier.Verify(n => n.NotifyChatCreated(It.IsAny<Chat>()), Times.Once);
+        }
 
-        //[Test]
-        //public void SendMessage_ShouldAddMessage()
-        //{
-        //    var chat = new Chat();
-        //    chat.AddParticipant(_user1);
-        //    _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).Returns(chat);
-        //    _mockRepo.Setup(r => r.UpdateChat(It.IsAny<Chat>()));
+        [Test]
+        public async Task SendMessage_ShouldAddMessageAndTriggerNotifier()
+        {
+            var chat = new Chat();
+            chat.AddParticipant(_user1);
 
-        //    var msg = _service.SendMessage(chat.ChatId, _user1, "Hej");
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync(chat);
+            _mockRepo.Setup(r => r.AddMessage(It.IsAny<Guid>(), It.IsAny<ChatMessage>())).Returns(Task.CompletedTask);
+            _mockNotifier.Setup(n => n.NotifyMessageSent(It.IsAny<ChatMessage>())).Returns(Task.CompletedTask);
 
-        //    Assert.That(msg.Content, Is.EqualTo("Hej"));
-        //    _mockRepo.Verify(r => r.UpdateChat(chat), Times.Once);
-        //}
+            var msg = await _service.SendMessage(chat.ChatId, _user1, "Hej");
 
-        //[Test]
-        //public async Task SendMessage_ShouldTriggerNotifier()
-        //{
-        //    var repo = new Mock<IChatRepository>();
-        //    var notifier = new Mock<IChatNotifier>();
+            Assert.That(msg.Content, Is.EqualTo("Hej"));
+            _mockRepo.Verify(r => r.AddMessage(chat.ChatId, It.IsAny<ChatMessage>()), Times.Once);
+            _mockNotifier.Verify(n => n.NotifyMessageSent(It.Is<ChatMessage>(m => m.Content == "Hej")), Times.Once);
+        }
 
-        //    var service = new ChatService(repo.Object, notifier.Object);
+        [Test]
+        public async Task DeleteMessage_ShouldCallRepository()
+        {
+            var message = new ChatMessage(Guid.NewGuid(), _user1, "Hello");
+            _mockRepo.Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(message);
+            _mockRepo.Setup(r => r.DeleteMessage(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(Task.CompletedTask);
 
-        //    var chat = new Chat();
-        //    var sender = Profile.CreateNewProfile("Alice");
-        //    chat.AddParticipant(sender);
+            await _service.DeleteMessage(Guid.NewGuid(), message.MessageId, _user1);
 
-        //    repo.Setup(r => r.GetChat(It.IsAny<Guid>())).Returns(chat);
+            _mockRepo.Verify(r => r.DeleteMessage(It.IsAny<Guid>(), message.MessageId), Times.Once);
+        }
 
-        //    var msg = service.SendMessage(chat.ChatId, sender, "Hej");
+        [Test]
+        public void DeleteMessage_ByAnotherUser_ShouldThrow()
+        {
+            var message = new ChatMessage(Guid.NewGuid(), _user1, "Hello");
+            _mockRepo.Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(message);
 
-        //    notifier.Verify(n => n.NotifyMessageSent(It.Is<Message>(m => m.Content == "Hej")), Times.Once);
-        //}
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.DeleteMessage(Guid.NewGuid(), message.MessageId, _user2));
+        }
 
+        [Test]
+        public async Task EditMessage_ShouldUpdateContent()
+        {
+            var message = new ChatMessage(Guid.NewGuid(), _user1, "Old");
+            _mockRepo.Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(message);
+            _mockRepo.Setup(r => r.UpdateMessage(It.IsAny<Guid>(), It.IsAny<ChatMessage>())).Returns(Task.CompletedTask);
+
+            var edited = await _service.EditMessage(Guid.NewGuid(), message.MessageId, _user1, "New");
+
+            Assert.That(edited.Content, Is.EqualTo("New"));
+            _mockRepo.Verify(r => r.UpdateMessage(It.IsAny<Guid>(), message), Times.Once);
+        }
+
+        [Test]
+        public async Task GetMessages_ShouldReturnList()
+        {
+            var chat = new Chat(new List<Profile> { _user1 });
+            var messages = new List<ChatMessage>
+            {
+                new ChatMessage(chat.ChatId, _user1, "Hello"),
+                new ChatMessage(chat.ChatId, _user1, "World")
+            };
+
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync(chat);
+            _mockRepo.Setup(r => r.GetMessages(It.IsAny<Guid>(), It.IsAny<int>(), It.IsAny<int>()))
+                     .ReturnsAsync(messages);
+
+            var result = await _service.GetMessages(chat.ChatId, _user1, 10, 0);
+
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[0].Content, Is.EqualTo("Hello"));
+        }
     }
-
 }

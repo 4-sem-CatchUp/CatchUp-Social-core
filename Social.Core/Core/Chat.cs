@@ -27,7 +27,7 @@
         {
             if (!Participants.Any(p => p.Id == sender.Id))
                 throw new InvalidOperationException("Sender is not a participant of the chat.");
-            var message = new ChatMessage(sender, content);
+            var message = new ChatMessage(ChatId, sender, content);
             Messages.Add(message);
             return message;
         }

@@ -50,7 +50,7 @@ namespace SocialCoreTests
         public void MarkAsSeen_ShouldSetSeenTrue()
         {
             var sender = Profile.CreateNewProfile("Alice");
-            var msg = new ChatMessage(sender, "Hej");
+            var msg = new ChatMessage(Guid.NewGuid(),sender, "Hej");
             msg.MarkAsSeen();
 
             Assert.That(msg.Seen, Is.True);

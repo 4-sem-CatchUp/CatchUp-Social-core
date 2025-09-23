@@ -13,29 +13,66 @@ namespace Social.Core.Application
             _chatNotifier = chatNotifier;
         }
 
-        public Task CreateChat(Profile creator, List<Profile> participants)
+        public async Task<Chat> CreateChat(Profile creator, List<Profile> participants)
         {
-            throw new NotImplementedException();
+            var chat = new Chat(participants);
+            chat.AddParticipant(creator);
+
+            await _chatRepository.CreateChat(chat);
+            await _chatNotifier.NotifyChatCreated(chat);
+
+            return chat;
         }
 
-        public Task DeleteMessage(Guid chatId, Guid messageId, Profile deleter)
+        public async Task DeleteMessage(Guid chatId, Guid messageId, Profile deleter)
         {
-            throw new NotImplementedException();
+            var message = await _chatRepository.GetMessage(chatId, messageId);
+            if (message == null)
+                throw new InvalidOperationException("Message not found");
+            if (message.Sender.Id != deleter.Id)
+                throw new InvalidOperationException("Only the sender can delete the message");
+            await _chatRepository.DeleteMessage(chatId, messageId);
         }
 
-        public Task EditMessage(Guid chatId, Guid messageId, Profile editor, string newContent)
+        public async Task<ChatMessage> EditMessage(Guid chatId, Guid messageId, Profile editor, string newContent)
         {
-            throw new NotImplementedException();
+            var message = await _chatRepository.GetMessage(chatId, messageId);
+            if (message == null)
+                throw new InvalidOperationException("Message not found");
+
+            if (message.Sender.Id != editor.Id)
+                throw new InvalidOperationException("Only the sender can edit the message");
+            message.EditContent(newContent);
+            await _chatRepository.UpdateMessage(chatId, message);
+
+            return message;
         }
 
-        public Task GetMessages(Guid chatId, Profile requester, int count, int offset)
+        public async Task<List<ChatMessage>> GetMessages(Guid chatId, Profile requester, int count, int offset)
         {
-            throw new NotImplementedException();
+            var chat = await _chatRepository.GetChat(chatId);
+            if (chat == null)
+                throw new InvalidOperationException("Chat not found");
+
+            if (!chat.Participants.Any(p => p.Id == requester.Id))
+                throw new InvalidOperationException("Requester is not a participant of the chat");
+
+            var messages = await _chatRepository.GetMessages(chatId, count, offset);
+
+            return messages;
         }
 
-        public Task SendMessage(Guid chatId, Profile sender, string content)
+        public async Task<ChatMessage> SendMessage(Guid chatId, Profile sender, string content)
         {
-            throw new NotImplementedException();
+            var chat = await _chatRepository.GetChat(chatId);
+            if (chat == null)
+                throw new InvalidOperationException("Chat not found");
+
+            var message = chat.SendMessage(sender, content);
+            await _chatRepository.AddMessage(chatId, message);
+
+            await _chatNotifier.NotifyMessageSent(message);
+            return message;
         }
     }
 }
