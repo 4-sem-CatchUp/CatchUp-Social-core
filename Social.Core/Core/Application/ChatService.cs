@@ -1,5 +1,5 @@
-﻿using Social.Core.Ports.Outgoing;
-using Social.Core.Ports.Incomming;
+﻿using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Outgoing;
 
 namespace Social.Core.Application
 {
@@ -7,6 +7,7 @@ namespace Social.Core.Application
     {
         private readonly IChatRepository _chatRepository;
         private readonly IChatNotifier _chatNotifier;
+
         public ChatService(IChatRepository chatRepository, IChatNotifier chatNotifier)
         {
             _chatRepository = chatRepository;
@@ -34,7 +35,12 @@ namespace Social.Core.Application
             await _chatRepository.DeleteMessage(chatId, messageId);
         }
 
-        public async Task<ChatMessage> EditMessage(Guid chatId, Guid messageId, Profile editor, string newContent)
+        public async Task<ChatMessage> EditMessage(
+            Guid chatId,
+            Guid messageId,
+            Profile editor,
+            string newContent
+        )
         {
             var message = await _chatRepository.GetMessage(chatId, messageId);
             if (message == null)
@@ -48,7 +54,12 @@ namespace Social.Core.Application
             return message;
         }
 
-        public async Task<List<ChatMessage>> GetMessages(Guid chatId, Profile requester, int count, int offset)
+        public async Task<List<ChatMessage>> GetMessages(
+            Guid chatId,
+            Profile requester,
+            int count,
+            int offset
+        )
         {
             var chat = await _chatRepository.GetChat(chatId);
             if (chat == null)

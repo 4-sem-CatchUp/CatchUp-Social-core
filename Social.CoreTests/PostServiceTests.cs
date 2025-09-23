@@ -45,14 +45,14 @@ namespace SocialCoreTests
                 _mockSubscriptionService.Object
             );
 
-       
             _postId = Guid.NewGuid();
             _userId = Guid.NewGuid();
             _post = Post.CreateNewPost(_userId, "Title", "Content");
 
             _mockPostRepo.Setup(r => r.GetByIdAsync(_postId)).ReturnsAsync(_post);
-            
-            _mockProfileRepo.Setup(r => r.GetProfileByIdAsync(_userId))
+
+            _mockProfileRepo
+                .Setup(r => r.GetProfileByIdAsync(_userId))
                 .ReturnsAsync(new Profile { Id = _userId, Name = "Test User" });
         }
 

@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using Social.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using Social.Core;
 
 namespace SocialCoreTests
 {
@@ -50,11 +50,10 @@ namespace SocialCoreTests
         public void MarkAsSeen_ShouldSetSeenTrue()
         {
             var sender = Profile.CreateNewProfile("Alice");
-            var msg = new ChatMessage(Guid.NewGuid(),sender, "Hej");
+            var msg = new ChatMessage(Guid.NewGuid(), sender, "Hej");
             msg.MarkAsSeen();
 
             Assert.That(msg.Seen, Is.True);
         }
     }
-
 }

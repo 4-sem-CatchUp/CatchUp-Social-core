@@ -8,7 +8,9 @@
         public string Content { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public bool Seen { get; private set; }
+
         public ChatMessage() { }
+
         public ChatMessage(Guid chatId, Profile sender, string content)
         {
             ChatId = chatId;
@@ -16,10 +18,12 @@
             Content = content;
             Seen = false;
         }
+
         public void MarkAsSeen()
         {
             Seen = true;
         }
+
         public void EditContent(string newContent)
         {
             Content = newContent;

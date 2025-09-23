@@ -10,6 +10,5 @@
         Task UpdateMessage(Guid chatId, ChatMessage message);
         Task DeleteMessage(Guid chatId, Guid messageId);
         void UpdateChat(Chat chat);
-        
     }
 }

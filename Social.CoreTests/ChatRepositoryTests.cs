@@ -1,10 +1,10 @@
-﻿using Social.Core;
-using Social.Core.Ports.Outgoing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Social.Core;
+using Social.Core.Ports.Outgoing;
 
 namespace SocialCoreTests
 {
@@ -30,5 +30,4 @@ namespace SocialCoreTests
         //    Assert.That(loaded.ChatId, Is.EqualTo(chat.ChatId));
         //}
     }
-
 }
