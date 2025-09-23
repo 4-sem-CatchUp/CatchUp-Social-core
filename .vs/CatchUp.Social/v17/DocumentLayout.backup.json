@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\chatservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\chatservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\social.infrastructure\\notification\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\social.infrastructure\\notification\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\chatcoretests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\chatcoretests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.coretests\\chathubtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9E54D17-7500-4768-8DD2-CDD4D47CF61E}|Social.CoreTests\\SocialCoreTests.csproj|solutionrelative:social.coretests\\chathubtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|solutionrelative:.github\\workflows\\ci.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\application\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,20 +31,8 @@
       "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\core\\ports\\incomming\\ichatusecases.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\ports\\outgoing\\ichatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\core\\ports\\outgoing\\ichatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\core\\chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\social.infrastructure\\notification\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\social.infrastructure\\notification\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|c:\\users\\pibm9\\documents\\datamatiker\\programmering\\4. semester\\catchup-social-core\\social.core\\core\\application\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{54780A70-0ED8-4135-B727-158FE18CD4E9}|Social.Core\\Social.csproj|solutionrelative:social.core\\core\\application\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,8 +42,47 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 9,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
+              "RelativeDocumentMoniker": "Social.Core\\Program.cs",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Program.cs",
+              "RelativeToolTip": "Social.Core\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T07:50:17.73Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChatHubTests.cs",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatHubTests.cs",
+              "RelativeDocumentMoniker": "Social.CoreTests\\ChatHubTests.cs",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatHubTests.cs",
+              "RelativeToolTip": "Social.CoreTests\\ChatHubTests.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T07:29:10.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ci.yml",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
+              "RelativeDocumentMoniker": ".github\\workflows\\ci.yml",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.github\\workflows\\ci.yml",
+              "RelativeToolTip": ".github\\workflows\\ci.yml",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwC0AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-09-23T07:24:12.443Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
@@ -54,7 +93,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAwwDcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-09-23T07:25:01.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "IChatUseCases.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Incomming\\IChatUseCases.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Ports\\Incomming\\IChatUseCases.cs",
@@ -62,12 +114,11 @@
               "RelativeToolTip": "Social.Core\\Core\\Ports\\Incomming\\IChatUseCases.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T19:45:43.119Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-22T19:45:43.119Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Chat.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Chat.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Chat.cs",
@@ -75,91 +126,32 @@
               "RelativeToolTip": "Social.Core\\Core\\Chat.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T19:31:23.073Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-22T19:31:23.073Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "ChatService.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Application\\ChatService.cs",
               "RelativeDocumentMoniker": "Social.Core\\Core\\Application\\ChatService.cs",
               "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Application\\ChatService.cs",
               "RelativeToolTip": "Social.Core\\Core\\Application\\ChatService.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwC8AAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-22T18:19:47.244Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.Infrastructure\\Notification\\ChatHub.cs",
               "RelativeDocumentMoniker": "Social.Core\\Social.Infrastructure\\Notification\\ChatHub.cs",
               "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Social.Infrastructure\\Notification\\ChatHub.cs",
               "RelativeToolTip": "Social.Core\\Social.Infrastructure\\Notification\\ChatHub.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-22T18:11:06.866Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ChatCoreTests.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatCoreTests.cs",
-              "RelativeDocumentMoniker": "Social.CoreTests\\ChatCoreTests.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatCoreTests.cs",
-              "RelativeToolTip": "Social.CoreTests\\ChatCoreTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-23T07:07:43.906Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ChatServiceTests.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatServiceTests.cs",
-              "RelativeDocumentMoniker": "Social.CoreTests\\ChatServiceTests.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.CoreTests\\ChatServiceTests.cs",
-              "RelativeToolTip": "Social.CoreTests\\ChatServiceTests.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAuwHcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T18:17:20.095Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PostService.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Application\\PostService.cs",
-              "RelativeDocumentMoniker": "Social.Core\\Core\\Application\\PostService.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Application\\PostService.cs",
-              "RelativeToolTip": "Social.Core\\Core\\Application\\PostService.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAgwBcAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T18:33:44.409Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IChatRepository.cs",
-              "DocumentMoniker": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Outgoing\\IChatRepository.cs",
-              "RelativeDocumentMoniker": "Social.Core\\Core\\Ports\\Outgoing\\IChatRepository.cs",
-              "ToolTip": "C:\\Users\\pibm9\\Documents\\Datamatiker\\Programmering\\4. semester\\CatchUp-Social-core\\Social.Core\\Core\\Ports\\Outgoing\\IChatRepository.cs",
-              "RelativeToolTip": "Social.Core\\Core\\Ports\\Outgoing\\IChatRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T19:36:23.852Z",
               "EditorCaption": ""
             }
           ]

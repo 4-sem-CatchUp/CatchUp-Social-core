@@ -54,7 +54,7 @@ jobs:
 
       # Kører unit tests med NUnit
       - name: Run unit tests
-        run: dotnet test Social.CoreTests/Social.CoreTests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --verbosity normal
+        run: dotnet test Social.CoreTests/SocialCoreTests.csproj --configuration Release --logger "trx;LogFileName=test_results.trx" --verbosity normal
         continue-on-error: true  # Kør videre, selv hvis tests fejler
 
       # Uploader testresultater (selv hvis tests fejler)

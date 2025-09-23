@@ -11,7 +11,7 @@ namespace Social.Social.Infrastructure.Notification
             throw new NotImplementedException();
         }
 
-        public Task NotifyMessageSent(ChatMessage message)
+        public async Task NotifyMessageSent(ChatMessage message)
         {
             throw new NotImplementedException();
         }
