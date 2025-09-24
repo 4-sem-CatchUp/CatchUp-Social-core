@@ -1,7 +1,7 @@
 ﻿using Social.Core;
 using Social.Core.Ports.Outgoing;
 
-namespace Social.Infrastructure
+namespace Social.Social.Infrastructure.Persistens
 {
     public class PostDbAdapter : IPostRepository
     {

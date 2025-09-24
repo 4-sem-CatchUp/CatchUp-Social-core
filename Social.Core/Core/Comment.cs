@@ -8,13 +8,9 @@ namespace Social.Core
         public Guid AuthorId { get; private set; }
 
         public string? Content { get; set; }
-        public byte[]? Image { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-        private readonly List<Vote> _votes = new();
-
-        public IReadOnlyList<Vote> Votes => _votes.AsReadOnly();
         private int _karma;
         public int Karma
         {
@@ -28,31 +24,39 @@ namespace Social.Core
             }
         }
 
+        private readonly List<Vote> _votes = new();
+        public IReadOnlyList<Vote> Votes => _votes.AsReadOnly();
+
+        private readonly List<Image> _images = new();
+        public IReadOnlyList<Image> Images => _images.AsReadOnly();
+
         public Comment() { }
 
         public Comment(
             Guid authorId,
             string text,
-            byte[] image,
             DateTime timeStamp,
             List<Vote> votes
         )
         {
             AuthorId = authorId;
             Content = text;
-            Image = image;
             Timestamp = timeStamp;
             _votes = votes;
         }
 
-        public static Comment CreateNewComment(Guid authorId, string text, byte[] image)
+        public static Comment CreateNewComment(Guid authorId, string text)
         {
             return new Comment
             {
                 AuthorId = authorId,
                 Content = text,
-                Image = image,
             };
+        }
+
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            _images.Add(new Image(fileName, contentType, data));
         }
 
         public Vote AddVote(Guid userId, bool upvote)

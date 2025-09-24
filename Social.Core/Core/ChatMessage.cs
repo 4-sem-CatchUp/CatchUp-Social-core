@@ -8,6 +8,8 @@
         public string Content { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public bool Seen { get; private set; }
+        public readonly List<Image> _images = new();
+        public IReadOnlyList<Image> Images => _images.AsReadOnly();
 
         public ChatMessage() { }
 
@@ -17,6 +19,10 @@
             Sender = sender;
             Content = content;
             Seen = false;
+        }
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            _images.Add(new Image(fileName, contentType, data));
         }
 
         public void MarkAsSeen()

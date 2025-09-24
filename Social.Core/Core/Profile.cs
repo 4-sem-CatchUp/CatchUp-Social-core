@@ -4,10 +4,11 @@
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
-        public byte[] ProfilePic { get; set; } = Array.Empty<byte>();
         public string Bio { get; set; } = string.Empty;
         public DateOnly DateOfSub { get; private set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
+        public readonly List<Image> _images = new();
+        public IReadOnlyList<Image> Images => _images.AsReadOnly();
 
         public Profile()
         {
@@ -24,12 +25,15 @@
             return new Profile(name);
         }
 
-        public void UpdateProfile(string? name, byte[]? profilePic, string? bio)
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            _images.Add(new Image(fileName, contentType, data));
+        }
+
+        public void UpdateProfile(string? name, string? bio)
         {
             if (name != null)
                 Name = name;
-            if (profilePic != null)
-                ProfilePic = profilePic;
             if (bio != null)
                 Bio = bio;
         }

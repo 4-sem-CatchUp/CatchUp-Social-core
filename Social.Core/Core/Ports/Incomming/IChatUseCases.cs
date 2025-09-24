@@ -4,6 +4,14 @@
     {
         Task<Chat> CreateChat(Profile creator, List<Profile> participants);
         Task<ChatMessage> SendMessage(Guid chatId, Profile sender, string content);
+        Task SendImage(
+            Guid chatId,
+            Guid messageId,
+            Profile sender,
+            string fileName,
+            string contentType,
+            byte[] data
+        );
         Task<ChatMessage> EditMessage(
             Guid chatId,
             Guid messageId,
