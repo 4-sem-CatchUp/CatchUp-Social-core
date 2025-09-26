@@ -20,6 +20,7 @@
             Content = content;
             Seen = false;
         }
+
         public void AddImage(string fileName, string contentType, byte[] data)
         {
             _images.Add(new Image(fileName, contentType, data));

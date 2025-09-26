@@ -32,12 +32,7 @@ namespace Social.Core
 
         public Comment() { }
 
-        public Comment(
-            Guid authorId,
-            string text,
-            DateTime timeStamp,
-            List<Vote> votes
-        )
+        public Comment(Guid authorId, string text, DateTime timeStamp, List<Vote> votes)
         {
             AuthorId = authorId;
             Content = text;
@@ -47,11 +42,7 @@ namespace Social.Core
 
         public static Comment CreateNewComment(Guid authorId, string text)
         {
-            return new Comment
-            {
-                AuthorId = authorId,
-                Content = text,
-            };
+            return new Comment { AuthorId = authorId, Content = text };
         }
 
         public void AddImage(string fileName, string contentType, byte[] data)

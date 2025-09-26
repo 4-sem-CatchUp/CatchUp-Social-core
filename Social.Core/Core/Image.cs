@@ -21,6 +21,7 @@
         public ChatMessage? ChatMessage { get; set; }
 
         public Image() { }
+
         public Image(string fileName, string contentType, byte[] data)
         {
             FileName = fileName;
