@@ -11,7 +11,7 @@ namespace SocialCoreTests
         public void Setup()
         {
             _authorId = Guid.NewGuid();
-            _post = Post.CreateNewPost(_authorId, "Title", "Content", null);
+            _post = Post.CreateNewPost(_authorId, "Title", "Content");
         }
 
         // --- CREATE ---
@@ -21,48 +21,73 @@ namespace SocialCoreTests
             Assert.That(_post.AuthorId, Is.EqualTo(_authorId));
             Assert.That(_post.Title, Is.EqualTo("Title"));
             Assert.That(_post.Content, Is.EqualTo("Content"));
-            Assert.That(_post.Image, Is.Null);
+            Assert.That(_post.Images.Count, Is.EqualTo(0));
             Assert.That(_post.Votes.Count, Is.EqualTo(0));
             Assert.That(_post.Comments.Count, Is.EqualTo(0));
         }
 
         [Test]
-        public void CreateNewPost_WithImageOnly_ShouldHaveNullContent()
+        public void AddImage_ShouldStoreImageInPost()
         {
-            var image = new byte[] { 1, 2, 3 };
-            var postWithImage = Post.CreateNewPost(_authorId, "Title", null, image);
+            var data = new byte[] { 1, 2, 3 };
+            _post.AddImage("test.png", "image/png", data);
 
-            Assert.That(postWithImage.Content, Is.Null);
-            Assert.That(postWithImage.Image, Is.EqualTo(image));
+            Assert.That(_post.Images.Count, Is.EqualTo(1));
+            Assert.That(_post.Images[0].FileName, Is.EqualTo("test.png"));
+            Assert.That(_post.Images[0].ContentType, Is.EqualTo("image/png"));
+            Assert.That(_post.Images[0].Data, Is.EqualTo(data));
         }
 
-        // --- READ / GET ---
+        // --- COMMENTS ---
         [Test]
-        public void GetUserVote_ShouldReturnCorrectVote()
+        public void AddComment_ShouldAddComment()
         {
-            var userId = Guid.NewGuid();
-            _post.AddVote(userId, true);
+            var commentAuthor = Guid.NewGuid();
+            _post.AddComment(commentAuthor, "Nice post!");
 
-            var vote = _post.GetUserVote(userId);
-            Assert.IsNotNull(vote);
-            Assert.IsTrue(vote.Value);
+            Assert.That(_post.Comments.Count, Is.EqualTo(1));
+            Assert.That(_post.Comments[0].AuthorId, Is.EqualTo(commentAuthor));
+            Assert.That(_post.Comments[0].Content, Is.EqualTo("Nice post!"));
+            Assert.That(_post.Comments[0].Images.Count, Is.EqualTo(0));
         }
 
         [Test]
-        public void GetUserVote_ShouldReturnNull_WhenNoVoteExists()
+        public void Comment_AddImage_ShouldStoreImage()
         {
-            var userId = Guid.NewGuid();
-            var vote = _post.GetUserVote(userId);
+            var commentAuthor = Guid.NewGuid();
+            var comment = _post.AddComment(commentAuthor, "with image");
+            comment.AddImage("c.png", "image/png", new byte[] { 9 });
 
-            Assert.IsNull(vote);
+            Assert.That(comment.Images.Count, Is.EqualTo(1));
+            Assert.That(comment.Images[0].FileName, Is.EqualTo("c.png"));
+            Assert.That(comment.Images[0].Data, Is.EqualTo(new byte[] { 9 }));
         }
 
-        // --- UPDATE ---
+        [Test]
+        public void UpdateComment_ShouldChangeContent()
+        {
+            var comment = _post.AddComment(Guid.NewGuid(), "Old text");
+            comment.UpdateComment("New text");
+
+            Assert.That(comment.Content, Is.EqualTo("New text"));
+        }
+
+        [Test]
+        public void RemoveComment_ShouldDeleteComment()
+        {
+            var comment = _post.AddComment(Guid.NewGuid(), "to be deleted");
+            _post.RemoveComment(comment.Id);
+
+            Assert.That(_post.Comments.Count, Is.EqualTo(0));
+        }
+
+        // --- VOTES ---
         [Test]
         public void AddVote_ShouldAddVoteOrUpdateKarma()
         {
             var userId = Guid.NewGuid();
             _post.AddVote(userId, true);
+
             Assert.That(_post.Votes.Count, Is.EqualTo(1));
             Assert.That(_post.Karma, Is.EqualTo(1));
 
@@ -83,69 +108,58 @@ namespace SocialCoreTests
         }
 
         [Test]
-        public void AddComment_ShouldAddComment()
+        public void GetUserVote_ShouldReturnCorrectVote()
         {
-            var commentAuthor = Guid.NewGuid();
-            _post.AddComment(commentAuthor, "Nice post!", null);
+            var userId = Guid.NewGuid();
+            _post.AddVote(userId, true);
 
-            Assert.That(_post.Comments.Count, Is.EqualTo(1));
-            Assert.That(_post.Comments[0].AuthorId, Is.EqualTo(commentAuthor));
-            Assert.That(_post.Comments[0].Content, Is.EqualTo("Nice post!"));
-            Assert.That(_post.Comments[0].Image, Is.Null);
+            var vote = _post.GetUserVote(userId);
+            Assert.IsTrue(vote.HasValue && vote.Value);
         }
 
         [Test]
-        public void AddComment_WithImageOnly_ShouldHaveNullContent()
+        public void GetUserVote_ShouldReturnNull_WhenNoVoteExists()
         {
-            var commentAuthor = Guid.NewGuid();
-            var image = new byte[] { 1, 2, 3 };
-            _post.AddComment(commentAuthor, null, image);
-
-            Assert.That(_post.Comments.Count, Is.EqualTo(1));
-            Assert.That(_post.Comments[0].Content, Is.Null);
-            Assert.That(_post.Comments[0].Image, Is.EqualTo(image));
+            var vote = _post.GetUserVote(Guid.NewGuid());
+            Assert.IsNull(vote);
         }
 
         [Test]
-        public void UpdatePost_ShouldChangeTitleContentAndImage()
+        public void Comment_AddVote_ShouldAffectKarma()
         {
-            var newTitle = "Updated Title";
-            var newContent = "Updated Content";
-            var newImage = new byte[] { 4, 5, 6 };
+            var comment = _post.AddComment(Guid.NewGuid(), "Comment");
+            var userId = Guid.NewGuid();
 
-            _post.UpdatePost(newTitle, newContent, newImage);
+            comment.AddVote(userId, true);
+            Assert.That(comment.Votes.Count, Is.EqualTo(1));
+            Assert.That(comment.Karma, Is.EqualTo(1));
 
-            Assert.That(_post.Title, Is.EqualTo(newTitle));
-            Assert.That(_post.Content, Is.EqualTo(newContent));
-            Assert.That(_post.Image, Is.EqualTo(newImage));
+            comment.AddVote(userId, false);
+            Assert.That(comment.Votes.Count, Is.EqualTo(1));
+            Assert.That(comment.Karma, Is.EqualTo(-1));
         }
 
+        // --- UPDATE POST ---
         [Test]
-        public void UpdateComment_ShouldChangeContentAndImage()
+        public void UpdatePost_ShouldChangeTitleAndContent()
         {
-            var post = Post.CreateNewPost(Guid.NewGuid(), "Title", "Content", null);
-            var comment = post.AddComment(Guid.NewGuid(), "Old Comment", null);
+            _post.UpdatePost("Updated title", "Updated content");
 
-            var newContent = "New Comment";
-            var newImage = new byte[] { 7, 8, 9 };
-            comment.UpdateComment(newContent);
-            comment.Image = newImage;
-
-            Assert.That(comment.Content, Is.EqualTo(newContent));
-            Assert.That(comment.Image, Is.EqualTo(newImage));
+            Assert.That(_post.Title, Is.EqualTo("Updated title"));
+            Assert.That(_post.Content, Is.EqualTo("Updated content"));
         }
 
-        // --- DELETE ---
+        // --- MULTIPLE ---
         [Test]
-        public void RemoveComment_ShouldDeleteComment()
+        public void AddMultipleImages_ShouldStoreAllImages()
         {
-            var commentAuthor = Guid.NewGuid();
-            _post.AddComment(commentAuthor, "A comment", null);
-            var commentId = _post.Comments[0].Id;
+            _post.AddImage("1.png", "image/png", new byte[] { 1 });
+            _post.AddImage("2.jpg", "image/jpeg", new byte[] { 2 });
 
-            _post.RemoveComment(commentId);
-
-            Assert.That(_post.Comments.Count, Is.EqualTo(0));
+            Assert.That(_post.Images.Count, Is.EqualTo(2));
+            Assert.That(_post.Images.Any(i => i.FileName == "1.png"));
+            Assert.That(_post.Images.Any(i => i.FileName == "2.jpg"));
         }
     }
+
 }

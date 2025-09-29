@@ -11,18 +11,7 @@ namespace Social.Core
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-        private int _karma;
-        public int Karma
-        {
-            get { return _karma; }
-            set
-            {
-                foreach (var vote in Votes)
-                {
-                    _karma += vote.Upvote ? 1 : -1;
-                }
-            }
-        }
+        public int Karma => Votes.Sum(v => v.Upvote ? 1 : -1);
 
         private readonly List<Vote> _votes = new();
         public IReadOnlyList<Vote> Votes => _votes.AsReadOnly();

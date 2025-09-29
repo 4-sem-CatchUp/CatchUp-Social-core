@@ -4,7 +4,7 @@
     {
         Task<Chat> CreateChat(Profile creator, List<Profile> participants);
         Task<ChatMessage> SendMessage(Guid chatId, Profile sender, string content);
-        Task SendImage(
+        Task<ChatMessage> SendImage(
             Guid chatId,
             Guid messageId,
             Profile sender,

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using Social.Core;
+﻿using Social.Core;
 
 namespace SocialCoreTests
 {
@@ -25,6 +19,7 @@ namespace SocialCoreTests
             _chat.AddParticipant(_user2);
         }
 
+        // --- BASIC CHAT ---
         [Test]
         public void SendMessage_ShouldAddMessage()
         {
@@ -41,10 +36,40 @@ namespace SocialCoreTests
             _chat.RemoveParticipant(_user2.Id);
             Assert.That(_chat.Participants.Count, Is.EqualTo(1));
         }
+
+        [Test]
+        public void AddParticipant_ShouldNotDuplicate()
+        {
+            _chat.AddParticipant(_user1); // already added
+            Assert.That(_chat.Participants.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void SendMessage_ShouldThrow_WhenSenderNotInChat()
+        {
+            var outsider = Profile.CreateNewProfile("Eve");
+            Assert.Throws<InvalidOperationException>(() => _chat.SendMessage(outsider, "Hej"));
+        }
+
+        [Test]
+        public void CloseChat_ShouldDeactivateChat()
+        {
+            _chat.CloseChat();
+            Assert.IsFalse(_chat.Active);
+        }
+
+        [Test]
+        public void Chat_WithConstructorParticipants_ShouldBeActive()
+        {
+            var participants = new List<Profile> { _user1, _user2 };
+            var chat2 = new Chat(participants);
+            Assert.IsTrue(chat2.Active);
+            Assert.That(chat2.Participants.Count, Is.EqualTo(2));
+        }
     }
 
     [TestFixture]
-    public class MessageCoreTests
+    public class ChatMessageTests
     {
         [Test]
         public void MarkAsSeen_ShouldSetSeenTrue()
@@ -54,6 +79,42 @@ namespace SocialCoreTests
             msg.MarkAsSeen();
 
             Assert.That(msg.Seen, Is.True);
+        }
+
+        [Test]
+        public void AddImage_ShouldStoreImage()
+        {
+            var sender = Profile.CreateNewProfile("Alice");
+            var msg = new ChatMessage(Guid.NewGuid(), sender, "Hej");
+            msg.AddImage("image.png", "image/png", new byte[] { 1, 2, 3 });
+
+            Assert.That(msg.Images.Count, Is.EqualTo(1));
+            Assert.That(msg.Images[0].FileName, Is.EqualTo("image.png"));
+            Assert.That(msg.Images[0].ContentType, Is.EqualTo("image/png"));
+            Assert.That(msg.Images[0].Data, Is.EqualTo(new byte[] { 1, 2, 3 }));
+        }
+
+        [Test]
+        public void EditContent_ShouldUpdateContentAndTimestamp()
+        {
+            var sender = Profile.CreateNewProfile("Alice");
+            var msg = new ChatMessage(Guid.NewGuid(), sender, "Old content");
+
+            var beforeEdit = msg.Timestamp;
+            System.Threading.Thread.Sleep(10); // ensure timestamp changes
+            msg.EditContent("New content");
+
+            Assert.That(msg.Content, Is.EqualTo("New content"));
+            Assert.That(msg.Timestamp, Is.GreaterThan(beforeEdit));
+        }
+
+        [Test]
+        public void Seen_Default_ShouldBeFalse()
+        {
+            var sender = Profile.CreateNewProfile("Alice");
+            var msg = new ChatMessage(Guid.NewGuid(), sender, "Hello");
+
+            Assert.IsFalse(msg.Seen);
         }
     }
 }

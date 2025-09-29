@@ -11,19 +11,7 @@
 
         public DateTime CreatedAt { get; set; }
 
-        private int _karma;
-        public int Karma
-        {
-            get
-            {
-                _karma = 0;
-                foreach (var vote in Votes)
-                {
-                    _karma += vote.Upvote ? 1 : -1;
-                }
-                return _karma;
-            }
-        }
+        public int Karma => Votes.Sum(v => v.Upvote ? 1 : -1);
 
         private readonly List<Comment> _comments = new();
 
@@ -36,6 +24,7 @@
         private readonly List<Image> _images = new();
 
         public IReadOnlyList<Image> Images => _images.AsReadOnly();
+
 
         public Post()
         {

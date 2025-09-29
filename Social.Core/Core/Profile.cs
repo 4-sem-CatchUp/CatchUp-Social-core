@@ -7,8 +7,7 @@
         public string Bio { get; set; } = string.Empty;
         public DateOnly DateOfSub { get; private set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
-        public readonly List<Image> _images = new();
-        public IReadOnlyList<Image> Images => _images.AsReadOnly();
+        public Image ProfilePic { get; set; }
 
         public Profile()
         {
@@ -27,15 +26,17 @@
 
         public void AddImage(string fileName, string contentType, byte[] data)
         {
-            _images.Add(new Image(fileName, contentType, data));
+            ProfilePic = new Image(fileName, contentType, data);
         }
 
-        public void UpdateProfile(string? name, string? bio)
+        public void UpdateProfile(string? name, string? bio, Image? pic)
         {
             if (name != null)
                 Name = name;
             if (bio != null)
                 Bio = bio;
+            if (pic != null)
+                ProfilePic = pic;
         }
 
         public void AddFriend(Guid friendId)
