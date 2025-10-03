@@ -56,7 +56,7 @@ namespace SocialCoreTests
             profile.AddFriend(friendId);
 
             // Assert
-            Assert.IsTrue(profile.Friends.Contains(friendId));
+            Assert.That(profile.Friends.Contains(friendId), Is.True);
         }
 
         [Test]

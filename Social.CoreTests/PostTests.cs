@@ -114,14 +114,14 @@ namespace SocialCoreTests
             _post.AddVote(userId, true);
 
             var vote = _post.GetUserVote(userId);
-            Assert.IsTrue(vote.HasValue && vote.Value);
+            Assert.That(vote.HasValue && vote.Value, Is.True);
         }
 
         [Test]
         public void GetUserVote_ShouldReturnNull_WhenNoVoteExists()
         {
             var vote = _post.GetUserVote(Guid.NewGuid());
-            Assert.IsNull(vote);
+            Assert.That(vote, Is.Null);
         }
 
         [Test]

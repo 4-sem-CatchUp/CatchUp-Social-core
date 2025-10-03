@@ -63,7 +63,7 @@ namespace SocialCoreTests
 
             var postId = await _service.CreatePostAsync(_userId, "Title", "Content", null);
 
-            Assert.IsNotNull(captured);
+            Assert.That(captured, Is.Not.Null);
             Assert.That(captured.AuthorId, Is.EqualTo(_userId));
             Assert.That(captured.Title, Is.EqualTo("Title"));
             Assert.That(captured.Content, Is.EqualTo("Content"));
@@ -85,7 +85,7 @@ namespace SocialCoreTests
 
             var postId = await _service.CreatePostAsync(_userId, "Title", "Content", images);
 
-            Assert.IsNotNull(captured);
+            Assert.That(captured, Is.Not.Null);
             Assert.That(captured.Images.Count, Is.EqualTo(1));
             Assert.That(captured.Id, Is.EqualTo(postId));
         }
@@ -139,7 +139,7 @@ namespace SocialCoreTests
 
             var result = await _service.GetUserPostVote(_postId, _userId);
 
-            Assert.IsTrue(result.Value);
+            Assert.That(result.Value, Is.True);
         }
     }
 }

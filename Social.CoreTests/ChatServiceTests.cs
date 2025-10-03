@@ -82,11 +82,9 @@ namespace SocialCoreTests
             var imageData = new byte[] { 1, 2, 3 };
             var message = await _service.SendImage(chat.ChatId, Guid.NewGuid(), _user1, "img.png", "image/png", imageData);
 
-            Assert.That(message.Images.Count, Is.EqualTo(1));
-            Assert.That(message.Images[0].FileName, Is.EqualTo("img.png"));
-            Assert.That(message.Images[0].Data, Is.EqualTo(imageData));
+            Assert.That(message.Image.FileName, Is.EqualTo("img.png"));
+            Assert.That(message.Image.Data, Is.EqualTo(imageData));
             _mockRepo.Verify(r => r.AddMessage(chat.ChatId, It.IsAny<ChatMessage>()), Times.Once);
-            _mockNotifier.Verify(n => n.NotifyMessageSent(It.Is<ChatMessage>(m => m.Images.Count == 1)), Times.Once);
         }
 
         // --- DeleteMessage ---

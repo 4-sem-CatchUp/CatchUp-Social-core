@@ -125,7 +125,7 @@ namespace SocialCoreTests
 
             var result = await _service.GetUserCommentVote(_postId, vote.Id, _userId);
 
-            Assert.IsTrue(result.Value);
+            Assert.That(result.Value, Is.True);
         }
     }
 }

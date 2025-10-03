@@ -55,7 +55,7 @@ namespace SocialCoreTests
         public void CloseChat_ShouldDeactivateChat()
         {
             _chat.CloseChat();
-            Assert.IsFalse(_chat.Active);
+            Assert.That(_chat.Active, Is.False);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace SocialCoreTests
         {
             var participants = new List<Profile> { _user1, _user2 };
             var chat2 = new Chat(participants);
-            Assert.IsTrue(chat2.Active);
+            Assert.That(chat2.Active, Is.True);
             Assert.That(chat2.Participants.Count, Is.EqualTo(2));
         }
     }
@@ -88,10 +88,9 @@ namespace SocialCoreTests
             var msg = new ChatMessage(Guid.NewGuid(), sender, "Hej");
             msg.AddImage("image.png", "image/png", new byte[] { 1, 2, 3 });
 
-            Assert.That(msg.Images.Count, Is.EqualTo(1));
-            Assert.That(msg.Images[0].FileName, Is.EqualTo("image.png"));
-            Assert.That(msg.Images[0].ContentType, Is.EqualTo("image/png"));
-            Assert.That(msg.Images[0].Data, Is.EqualTo(new byte[] { 1, 2, 3 }));
+            Assert.That(msg.Image.FileName, Is.EqualTo("image.png"));
+            Assert.That(msg.Image.ContentType, Is.EqualTo("image/png"));
+            Assert.That(msg.Image.Data, Is.EqualTo(new byte[] { 1, 2, 3 }));
         }
 
         [Test]
@@ -114,7 +113,7 @@ namespace SocialCoreTests
             var sender = Profile.CreateNewProfile("Alice");
             var msg = new ChatMessage(Guid.NewGuid(), sender, "Hello");
 
-            Assert.IsFalse(msg.Seen);
+            Assert.That(msg.Seen, Is.False);
         }
     }
 }

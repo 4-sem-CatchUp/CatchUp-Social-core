@@ -5,7 +5,7 @@
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public string Bio { get; set; } = string.Empty;
-        public DateOnly DateOfSub { get; private set; } = DateOnly.FromDateTime(DateTime.UtcNow);
+        public DateOnly DateOfSub { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
         public Image ProfilePic { get; set; }
 
@@ -17,6 +17,15 @@
         public Profile(string name)
         {
             Name = name;
+        }
+        public Profile(Guid id, string name, string bio, DateOnly dateOfSub, List<Guid>? friends, Image? profilePic)
+        {
+            Id = id;
+            Name = name;
+            Bio = bio;
+            DateOfSub = dateOfSub;
+            Friends = friends;
+            ProfilePic = profilePic;
         }
 
         public static Profile CreateNewProfile(string name)
