@@ -2,7 +2,7 @@
 
 namespace Social.Infrastructure.Persistens.Entities
 {
-    public class Comment
+    public class CommentEntity
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -19,6 +19,6 @@ namespace Social.Infrastructure.Persistens.Entities
         public ICollection<ImageEntity> Images { get; set; } = new List<ImageEntity>();
 
         public Guid? PostId { get; set; }
-        public Post? Post { get; set; }
+        public PostEntity? Post { get; set; }
     }
 }

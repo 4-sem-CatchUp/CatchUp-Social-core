@@ -17,14 +17,16 @@ namespace Social.Infrastructure.Persistens
 
         public async Task AddFriendAsync(Guid profileId, Guid friendId)
         {
-            var entity = await _context.Profiles
-                .Include(p => p.Friends)
+            var entity = await _context
+                .Profiles.Include(p => p.Friends)
                 .FirstOrDefaultAsync(p => p.Id == profileId);
 
-            if (entity == null) return;
+            if (entity == null)
+                return;
 
             var friendEntity = await _context.Profiles.FindAsync(friendId);
-            if (friendEntity == null) return;
+            if (friendEntity == null)
+                return;
             if (!entity.Friends.Any(f => f.Id == friendId))
             {
                 entity.Friends.Add(friendEntity);
@@ -55,8 +57,8 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<IEnumerable<Profile>> GetAllProfilesAsync()
         {
-            var entities = await _context.Profiles
-                .Include(p => p.Friends)
+            var entities = await _context
+                .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
                 .ToListAsync();
             var profiles = entities.Select(e => e.ToDomain());
@@ -65,8 +67,8 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<Profile?> GetProfileByIdAsync(Guid profileId)
         {
-            var entity = await _context.Profiles
-                .Include(p => p.Friends)
+            var entity = await _context
+                .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
                 .FirstOrDefaultAsync(p => p.Id == profileId);
             return entity?.ToDomain();
@@ -74,18 +76,19 @@ namespace Social.Infrastructure.Persistens
 
         public async Task UpdateProfileAsync(Profile profile)
         {
-            var entity = await _context.Profiles
-                .Include(p => p.Friends)
+            var entity = await _context
+                .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
                 .FirstOrDefaultAsync(p => p.Id == profile.Id);
 
-            if (entity == null) return;
+            if (entity == null)
+                return;
 
             entity.Name = profile.Name;
             entity.Bio = profile.Bio;
             entity.DateOfSub = profile.DateOfSub;
 
-            // Update Profile Picture  
+            // Update Profile Picture
             if (profile.ProfilePic != null)
             {
                 if (entity.ProfilePic == null)
@@ -94,7 +97,7 @@ namespace Social.Infrastructure.Persistens
                     {
                         FileName = profile.ProfilePic.FileName,
                         ContentType = profile.ProfilePic.ContentType,
-                        Data = profile.ProfilePic.Data
+                        Data = profile.ProfilePic.Data,
                     };
                     await _context.Images.AddAsync(newImage);
                     entity.ProfilePic = newImage;
@@ -118,25 +121,25 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
     }
+
     public static class ProfileMapper
     {
         public static ProfileEntity ToEntity(this Profile profile)
         {
+            ImageEntity pic = null;
+            if (profile.ProfilePic != null)
+                pic = profile.ProfilePic.ToEntity();
             return new ProfileEntity
             {
                 Id = profile.Id,
                 Name = profile.Name,
                 Bio = profile.Bio,
                 DateOfSub = profile.DateOfSub,
-                ProfilePic = profile.ProfilePic != null ? new ImageEntity
-                {
-                    FileName = profile.ProfilePic.FileName,
-                    ContentType = profile.ProfilePic.ContentType,
-                    Data = profile.ProfilePic.Data
-                } : null,
-                Friends = profile.Friends.Select(fid => new ProfileEntity { Id = fid }).ToList()
+                ProfilePic = pic,
+                Friends = profile.Friends.Select(fid => new ProfileEntity { Id = fid }).ToList(),
             };
         }
+
         public static Profile ToDomain(this ProfileEntity entity)
         {
             return new Profile(
@@ -145,9 +148,8 @@ namespace Social.Infrastructure.Persistens
                 entity.Bio,
                 entity.DateOfSub,
                 entity.Friends.Select(f => f.Id).ToList(),
-                entity.ProfilePic != null
-                    ? new Image(entity.ProfilePic.FileName, entity.ProfilePic.ContentType, entity.ProfilePic.Data)
-                    : null);
+                entity.ProfilePic != null ? entity.ProfilePic.ToDomain() : null
+            );
         }
     }
 }

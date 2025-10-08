@@ -5,7 +5,7 @@ using Social.Core;
 using Social.Core.Application;
 using Social.Core.Ports.Outgoing;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     [TestFixture]
     public class SubscriptionServiceTests

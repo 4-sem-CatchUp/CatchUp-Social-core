@@ -39,6 +39,12 @@ namespace Social.Core
             _images.Add(new Image(fileName, contentType, data));
         }
 
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            _images.Add(image);
+        }
+
         public Vote AddVote(Guid userId, bool upvote)
         {
             var vote = Votes.FirstOrDefault(v => v.UserId == userId);
@@ -69,6 +75,12 @@ namespace Social.Core
                 _votes.Add(vote);
             }
             return vote;
+        }
+
+        // For use when reconstructing from DB
+        public void AddVote(Vote vote)
+        {
+            _votes.Add(vote);
         }
 
         public void UpdateComment(string newText)

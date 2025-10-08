@@ -6,14 +6,12 @@ namespace Social.Infrastructure.Persistens.dbContexts
     public class SocialDbContext : DbContext
     {
         public SocialDbContext(DbContextOptions<SocialDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         // DbSets
         public DbSet<ProfileEntity> Profiles { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
+        public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<ImageEntity> Images { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
@@ -28,7 +26,8 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // Profile ↔ Friends (many-to-many)
 
             // -----------------------------
-            modelBuilder.Entity<ProfileEntity>()
+            modelBuilder
+                .Entity<ProfileEntity>()
                 .HasMany(p => p.Friends)
                 .WithMany()
                 .UsingEntity<Dictionary<string, object>>(
@@ -39,22 +38,26 @@ namespace Social.Infrastructure.Persistens.dbContexts
                     {
                         j.HasKey("ProfileId", "FriendId");
                         j.ToTable("Friendships");
-                    });
+                    }
+                );
 
             // -----------------------------
             // Profile ↔ Subscriptions
             // -----------------------------
-            modelBuilder.Entity<Subscription>()
+            modelBuilder
+                .Entity<Subscription>()
                 .HasIndex(s => new { s.SubscriberId, s.PublisherId })
                 .IsUnique();
 
-            modelBuilder.Entity<Subscription>()
+            modelBuilder
+                .Entity<Subscription>()
                 .HasOne(s => s.Subscriber)
                 .WithMany(p => p.Subscriptions)
                 .HasForeignKey(s => s.SubscriberId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Subscription>()
+            modelBuilder
+                .Entity<Subscription>()
                 .HasOne(s => s.Publisher)
                 .WithMany()
                 .HasForeignKey(s => s.PublisherId)
@@ -63,26 +66,28 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // -----------------------------
             // Chat ↔ Profile (many-to-many)
             // -----------------------------
-            modelBuilder.Entity<ChatParticipants>()
-                .HasKey(cp => new { cp.ChatId, cp.ProfileId });  // Sammensat nøgle
+            modelBuilder
+                .Entity<ChatParticipants>()
+                .HasKey(cp => new { cp.ChatId, cp.ProfileId }); // Sammensat nøgle
 
-
-            modelBuilder.Entity<Chat>()
+            modelBuilder
+                .Entity<Chat>()
                 .HasMany(c => c.Participants)
                 .WithMany(p => p.Chats)
                 .UsingEntity<ChatParticipants>();
 
-
             // -----------------------------
             // ChatMessage ↔ Chat
             // -----------------------------
-            modelBuilder.Entity<ChatMessage>()
+            modelBuilder
+                .Entity<ChatMessage>()
                 .HasOne(m => m.Chat)
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ChatId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ChatMessage>()
+            modelBuilder
+                .Entity<ChatMessage>()
                 .HasOne(m => m.Sender)
                 .WithMany(p => p.Messages) // Alternativt kan man have en Messages liste
                 .HasForeignKey(m => m.SenderId)
@@ -91,7 +96,8 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // -----------------------------
             // Post ↔ Profile
             // -----------------------------
-            modelBuilder.Entity<Post>()
+            modelBuilder
+                .Entity<PostEntity>()
                 .HasOne(p => p.Author)
                 .WithMany(a => a.Posts)
                 .HasForeignKey(p => p.AuthorId)
@@ -100,13 +106,15 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // -----------------------------
             // Comment ↔ Post
             // -----------------------------
-            modelBuilder.Entity<Comment>()
+            modelBuilder
+                .Entity<CommentEntity>()
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Comment>()
+            modelBuilder
+                .Entity<CommentEntity>()
                 .HasOne(c => c.Author)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.AuthorId)
@@ -116,25 +124,29 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // Image ↔ Post / Comment / Profile / ChatMessage
             // -----------------------------
 
-            modelBuilder.Entity<ImageEntity>()
+            modelBuilder
+                .Entity<ImageEntity>()
                 .HasOne(i => i.Post)
                 .WithMany(p => p.Images)
                 .HasForeignKey(i => i.PostId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ImageEntity>()
+            modelBuilder
+                .Entity<ImageEntity>()
                 .HasOne(i => i.Comment)
                 .WithMany(c => c.Images)
                 .HasForeignKey(i => i.CommentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ImageEntity>()
+            modelBuilder
+                .Entity<ImageEntity>()
                 .HasOne(i => i.Profile)
                 .WithOne(p => p.ProfilePic)
                 .HasForeignKey<ImageEntity>(i => i.ProfileId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<ImageEntity>()
+            modelBuilder
+                .Entity<ImageEntity>()
                 .HasOne(i => i.ChatMessage)
                 .WithMany()
                 .HasForeignKey(i => i.ChatMessageId)
@@ -143,12 +155,12 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // -----------------------------
             // Vote ↔ Profile / Post / Comment
             // -----------------------------
-            modelBuilder.Entity<VoteEntity>()
+            modelBuilder
+                .Entity<VoteEntity>()
                 .HasOne(v => v.User)
                 .WithMany(p => p.Votes)
                 .HasForeignKey(v => v.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }

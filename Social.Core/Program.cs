@@ -17,8 +17,8 @@ namespace Social
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SocialDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("SocialDb")));
-
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SocialDb"))
+            );
 
             var app = builder.Build();
 

@@ -1,14 +1,14 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using Social.Core;
 using Social.Core.Application;
 using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     [TestFixture]
     public class PostServiceTests
@@ -76,7 +76,10 @@ namespace SocialCoreTests
         public async Task CreatePostAsync_WithImages_ShouldAddPost()
         {
             Post? captured = null;
-            var images = new List<Image> { new Image("file.jpg", "image/jpeg", new byte[] { 1, 2 }) };
+            var images = new List<Image>
+            {
+                new Image("file.jpg", "image/jpeg", new byte[] { 1, 2 }),
+            };
 
             _mockPostRepo
                 .Setup(r => r.AddAsync(It.IsAny<Post>()))
@@ -130,7 +133,7 @@ namespace SocialCoreTests
                 TargetId = _postId,
                 UserId = _userId,
                 Upvote = true,
-                VoteTargetType = VoteTargetType.Post
+                VoteTargetType = VoteTargetType.Post,
             };
 
             _mockVoteRepo

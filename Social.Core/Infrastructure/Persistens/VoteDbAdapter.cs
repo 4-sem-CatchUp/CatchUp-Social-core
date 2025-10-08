@@ -1,18 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
-using Social.Infrastructure.Persistens.Entities;
 using Social.Infrastructure.Persistens.dbContexts;
+using Social.Infrastructure.Persistens.Entities;
 
 namespace Social.Infrastructure.Persistens
 {
     public class VoteDbAdapter : IVoteRepository
     {
         private readonly SocialDbContext _context;
+
         public VoteDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
+
         public async Task AddAsync(Vote vote)
         {
             var entity = vote.ToEntity();
@@ -28,7 +30,6 @@ namespace Social.Infrastructure.Persistens
                 _context.Votes.Remove(entity);
                 await _context.SaveChangesAsync();
             }
-
         }
 
         public async Task<Vote?> GetByIdAsync(Guid voteId)
@@ -37,19 +38,30 @@ namespace Social.Infrastructure.Persistens
             return entity?.ToDomain();
         }
 
-        public async Task<Vote?> GetUserVoteAsync(Guid targetId, Core.VoteTargetType targetType, Guid userId)
+        public async Task<Vote?> GetUserVoteAsync(
+            Guid targetId,
+            Core.VoteTargetType targetType,
+            Guid userId
+        )
         {
-            var entity = await _context.Votes
-                .FirstOrDefaultAsync(v => v.TargetId == targetId
-                                        && v.VoteTargetType == (Entities.VoteTargetType)targetType
-                                        && v.UserId == userId);
+            var entity = await _context.Votes.FirstOrDefaultAsync(v =>
+                v.TargetId == targetId
+                && v.VoteTargetType == (Entities.VoteTargetType)targetType
+                && v.UserId == userId
+            );
             return entity?.ToDomain();
         }
 
-        public async Task<IReadOnlyList<Vote>> GetVotesForTargetAsync(Guid targetId, Core.VoteTargetType targetType)
+        public async Task<IReadOnlyList<Vote>> GetVotesForTargetAsync(
+            Guid targetId,
+            Core.VoteTargetType targetType
+        )
         {
-            var entities = await _context.Votes
-                .Where(v => v.TargetId == targetId && v.VoteTargetType == (Entities.VoteTargetType)targetType)
+            var entities = await _context
+                .Votes.Where(v =>
+                    v.TargetId == targetId
+                    && v.VoteTargetType == (Entities.VoteTargetType)targetType
+                )
                 .ToListAsync();
             return entities.Select(e => e.ToDomain()).ToList();
         }
@@ -57,7 +69,8 @@ namespace Social.Infrastructure.Persistens
         public async Task UpdateAsync(Vote vote)
         {
             var entity = await _context.Votes.FindAsync(vote.Id);
-            if (entity == null) return;
+            if (entity == null)
+                return;
 
             entity.TargetId = vote.TargetId;
             entity.VoteTargetType = (Entities.VoteTargetType)vote.VoteTargetType;
@@ -69,6 +82,7 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
     }
+
     public static class VoteMapper
     {
         public static VoteEntity ToEntity(this Vote vote)
@@ -80,9 +94,10 @@ namespace Social.Infrastructure.Persistens
                 VoteTargetType = (Entities.VoteTargetType)vote.VoteTargetType,
                 UserId = vote.UserId,
                 Upvote = vote.Upvote,
-                Action = (Entities.VoteAction)vote.Action
+                Action = (Entities.VoteAction)vote.Action,
             };
         }
+
         public static Vote ToDomain(this VoteEntity entity)
         {
             return new Vote
@@ -92,7 +107,7 @@ namespace Social.Infrastructure.Persistens
                 VoteTargetType = (Core.VoteTargetType)entity.VoteTargetType,
                 UserId = entity.UserId,
                 Upvote = entity.Upvote,
-                Action = (Core.VoteAction)entity.Action
+                Action = (Core.VoteAction)entity.Action,
             };
         }
     }

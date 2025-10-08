@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Social.Core;
-using Social.Infrastructure.Persistens;
-using Social.Infrastructure.Persistens.dbContexts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Social.Core;
+using Social.Infrastructure.Persistens;
+using Social.Infrastructure.Persistens.dbContexts;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.Infrastructure.Persistens
 {
     public class VoteDbAdapterTests
     {
@@ -44,7 +44,7 @@ namespace SocialCoreTests
                 TargetId = Guid.NewGuid(),
                 VoteTargetType = VoteTargetType.Post,
                 UserId = Guid.NewGuid(),
-                Upvote = true
+                Upvote = true,
             };
 
             await _repository.AddAsync(vote);
@@ -63,7 +63,7 @@ namespace SocialCoreTests
                 TargetId = Guid.NewGuid(),
                 VoteTargetType = VoteTargetType.Comment,
                 UserId = Guid.NewGuid(),
-                Upvote = true
+                Upvote = true,
             };
 
             await _repository.AddAsync(vote);
@@ -83,7 +83,7 @@ namespace SocialCoreTests
                 TargetId = Guid.NewGuid(),
                 VoteTargetType = VoteTargetType.Post,
                 UserId = Guid.NewGuid(),
-                Upvote = true
+                Upvote = true,
             };
 
             await _repository.AddAsync(vote);
@@ -101,12 +101,16 @@ namespace SocialCoreTests
                 TargetId = Guid.NewGuid(),
                 VoteTargetType = VoteTargetType.Post,
                 UserId = Guid.NewGuid(),
-                Upvote = true
+                Upvote = true,
             };
 
             await _repository.AddAsync(vote);
 
-            var fromDb = await _repository.GetUserVoteAsync(vote.TargetId, vote.VoteTargetType, vote.UserId);
+            var fromDb = await _repository.GetUserVoteAsync(
+                vote.TargetId,
+                vote.VoteTargetType,
+                vote.UserId
+            );
 
             Assert.That(fromDb, Is.Not.Null);
             Assert.That(vote.UserId, Is.EqualTo(fromDb!.UserId));
@@ -117,8 +121,20 @@ namespace SocialCoreTests
         {
             var targetId = Guid.NewGuid();
 
-            var vote1 = new Vote { TargetId = targetId, VoteTargetType = VoteTargetType.Comment, UserId = Guid.NewGuid(), Upvote = true };
-            var vote2 = new Vote { TargetId = targetId, VoteTargetType = VoteTargetType.Comment, UserId = Guid.NewGuid(), Upvote = false };
+            var vote1 = new Vote
+            {
+                TargetId = targetId,
+                VoteTargetType = VoteTargetType.Comment,
+                UserId = Guid.NewGuid(),
+                Upvote = true,
+            };
+            var vote2 = new Vote
+            {
+                TargetId = targetId,
+                VoteTargetType = VoteTargetType.Comment,
+                UserId = Guid.NewGuid(),
+                Upvote = false,
+            };
 
             await _repository.AddAsync(vote1);
             await _repository.AddAsync(vote2);

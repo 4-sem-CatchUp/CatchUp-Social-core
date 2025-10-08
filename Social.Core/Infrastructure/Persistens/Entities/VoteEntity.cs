@@ -8,9 +8,9 @@ namespace Social.Infrastructure.Persistens.Entities
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public Guid TargetId { get; set; }  // Kan pege på Post eller Comment
+        public Guid TargetId { get; set; } // Kan pege på Post eller Comment
 
-        public VoteTargetType VoteTargetType { get; set; }  // Angiver om det er Post eller Comment
+        public VoteTargetType VoteTargetType { get; set; } // Angiver om det er Post eller Comment
 
         [Required]
         public Guid UserId { get; set; }
@@ -23,14 +23,13 @@ namespace Social.Infrastructure.Persistens.Entities
     public enum VoteTargetType
     {
         Post,
-        Comment
+        Comment,
     }
 
     public enum VoteAction
     {
         Add,
         Remove,
-        Update
+        Update,
     }
-
 }

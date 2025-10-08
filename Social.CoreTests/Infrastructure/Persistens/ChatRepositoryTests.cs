@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.Infrastructure.Persistens
 {
     [TestFixture]
     public class ChatRepositoryTests

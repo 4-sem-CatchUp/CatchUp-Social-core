@@ -86,11 +86,7 @@ namespace Social.Core.Application
             await _postRepository.DeleteAsync(postId);
         }
 
-        public async Task UpdatePostAsync(
-            Guid postId,
-            string? newTitle,
-            string? newContent
-        )
+        public async Task UpdatePostAsync(Guid postId, string? newTitle, string? newContent)
         {
             var post =
                 await _postRepository.GetByIdAsync(postId)

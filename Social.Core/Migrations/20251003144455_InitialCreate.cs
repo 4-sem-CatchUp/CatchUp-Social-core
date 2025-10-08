@@ -16,12 +16,13 @@ namespace Social.Migrations
                 columns: table => new
                 {
                     ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chats", x => x.ChatId);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Profiles",
@@ -31,12 +32,13 @@ namespace Social.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfSub = table.Column<DateOnly>(type: "date", nullable: false),
-                    ProfilePicId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProfilePicId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Profiles", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "ChatMessages",
@@ -47,7 +49,7 @@ namespace Social.Migrations
                     SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Seen = table.Column<bool>(type: "bit", nullable: false)
+                    Seen = table.Column<bool>(type: "bit", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -57,14 +59,17 @@ namespace Social.Migrations
                         column: x => x.ChatId,
                         principalTable: "Chats",
                         principalColumn: "ChatId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_ChatMessages_Profiles_SenderId",
                         column: x => x.SenderId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "ChatParticipants",
@@ -73,7 +78,7 @@ namespace Social.Migrations
                     ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JoinedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -83,21 +88,24 @@ namespace Social.Migrations
                         column: x => x.ChatId,
                         principalTable: "Chats",
                         principalColumn: "ChatId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_ChatParticipants_Profiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Friendships",
                 columns: table => new
                 {
                     ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FriendId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    FriendId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -107,13 +115,16 @@ namespace Social.Migrations
                         column: x => x.FriendId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_Friendships_Profiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profiles",
-                        principalColumn: "Id");
-                });
+                        principalColumn: "Id"
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Posts",
@@ -123,7 +134,7 @@ namespace Social.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -133,8 +144,10 @@ namespace Social.Migrations
                         column: x => x.AuthorId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Subscriptions",
@@ -143,7 +156,7 @@ namespace Social.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PublisherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscribedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SubscribedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -153,14 +166,17 @@ namespace Social.Migrations
                         column: x => x.PublisherId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_Subscriptions_Profiles_SubscriberId",
                         column: x => x.SubscriberId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Comments",
@@ -170,7 +186,7 @@ namespace Social.Migrations
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -180,14 +196,17 @@ namespace Social.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_Comments_Profiles_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Images",
@@ -201,7 +220,10 @@ namespace Social.Migrations
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ChatMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ChatMessageMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ChatMessageMessageId = table.Column<Guid>(
+                        type: "uniqueidentifier",
+                        nullable: true
+                    ),
                 },
                 constraints: table =>
                 {
@@ -211,31 +233,37 @@ namespace Social.Migrations
                         column: x => x.ChatMessageId,
                         principalTable: "ChatMessages",
                         principalColumn: "MessageId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_Images_ChatMessages_ChatMessageMessageId",
                         column: x => x.ChatMessageMessageId,
                         principalTable: "ChatMessages",
-                        principalColumn: "MessageId");
+                        principalColumn: "MessageId"
+                    );
                     table.ForeignKey(
                         name: "FK_Images_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_Images_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_Images_Profiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
+                        onDelete: ReferentialAction.SetNull
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Votes",
@@ -246,7 +274,7 @@ namespace Social.Migrations
                     VoteTargetType = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Upvote = table.Column<bool>(type: "bit", nullable: false),
-                    Action = table.Column<int>(type: "int", nullable: false)
+                    Action = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -256,139 +284,145 @@ namespace Social.Migrations
                         column: x => x.TargetId,
                         principalTable: "Comments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_Votes_Posts_TargetId",
                         column: x => x.TargetId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_Votes_Profiles_UserId",
                         column: x => x.UserId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_ChatId",
                 table: "ChatMessages",
-                column: "ChatId");
+                column: "ChatId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_SenderId",
                 table: "ChatMessages",
-                column: "SenderId");
+                column: "SenderId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatParticipants_ProfileId",
                 table: "ChatParticipants",
-                column: "ProfileId");
+                column: "ProfileId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",
                 table: "Comments",
-                column: "AuthorId");
+                column: "AuthorId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
                 table: "Comments",
-                column: "PostId");
+                column: "PostId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friendships_FriendId",
                 table: "Friendships",
-                column: "FriendId");
+                column: "FriendId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_ChatMessageId",
                 table: "Images",
-                column: "ChatMessageId");
+                column: "ChatMessageId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_ChatMessageMessageId",
                 table: "Images",
                 column: "ChatMessageMessageId",
                 unique: true,
-                filter: "[ChatMessageMessageId] IS NOT NULL");
+                filter: "[ChatMessageMessageId] IS NOT NULL"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_CommentId",
                 table: "Images",
-                column: "CommentId");
+                column: "CommentId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_PostId",
                 table: "Images",
-                column: "PostId");
+                column: "PostId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_ProfileId",
                 table: "Images",
                 column: "ProfileId",
                 unique: true,
-                filter: "[ProfileId] IS NOT NULL");
+                filter: "[ProfileId] IS NOT NULL"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId",
                 table: "Posts",
-                column: "AuthorId");
+                column: "AuthorId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_PublisherId",
                 table: "Subscriptions",
-                column: "PublisherId");
+                column: "PublisherId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_SubscriberId_PublisherId",
                 table: "Subscriptions",
                 columns: new[] { "SubscriberId", "PublisherId" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_TargetId",
                 table: "Votes",
-                column: "TargetId");
+                column: "TargetId"
+            );
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Votes_UserId",
-                table: "Votes",
-                column: "UserId");
+            migrationBuilder.CreateIndex(name: "IX_Votes_UserId", table: "Votes", column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ChatParticipants");
+            migrationBuilder.DropTable(name: "ChatParticipants");
 
-            migrationBuilder.DropTable(
-                name: "Friendships");
+            migrationBuilder.DropTable(name: "Friendships");
 
-            migrationBuilder.DropTable(
-                name: "Images");
+            migrationBuilder.DropTable(name: "Images");
 
-            migrationBuilder.DropTable(
-                name: "Subscriptions");
+            migrationBuilder.DropTable(name: "Subscriptions");
 
-            migrationBuilder.DropTable(
-                name: "Votes");
+            migrationBuilder.DropTable(name: "Votes");
 
-            migrationBuilder.DropTable(
-                name: "ChatMessages");
+            migrationBuilder.DropTable(name: "ChatMessages");
 
-            migrationBuilder.DropTable(
-                name: "Comments");
+            migrationBuilder.DropTable(name: "Comments");
 
-            migrationBuilder.DropTable(
-                name: "Chats");
+            migrationBuilder.DropTable(name: "Chats");
 
-            migrationBuilder.DropTable(
-                name: "Posts");
+            migrationBuilder.DropTable(name: "Posts");
 
-            migrationBuilder.DropTable(
-                name: "Profiles");
+            migrationBuilder.DropTable(name: "Profiles");
         }
     }
 }

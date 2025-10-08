@@ -1,14 +1,14 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using Social.Core;
 using Social.Core.Application;
 using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     [TestFixture]
     public class CommentServiceTests
@@ -63,7 +63,10 @@ namespace SocialCoreTests
         [Test]
         public async Task AddComment_WithImages_ShouldCallCommentRepository()
         {
-            var images = new List<Image> { new Image("file.jpg", "image/jpeg", new byte[] { 1, 2 }) };
+            var images = new List<Image>
+            {
+                new Image("file.jpg", "image/jpeg", new byte[] { 1, 2 }),
+            };
 
             await _service.AddComment(_postId, _userId, "Image comment", images);
 
@@ -116,7 +119,7 @@ namespace SocialCoreTests
                 TargetId = Guid.NewGuid(),
                 UserId = _userId,
                 Upvote = true,
-                VoteTargetType = VoteTargetType.Comment
+                VoteTargetType = VoteTargetType.Comment,
             };
 
             _mockVoteRepo

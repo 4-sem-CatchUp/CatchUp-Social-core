@@ -20,7 +20,5 @@ namespace Social.Infrastructure.Persistens.Entities
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public bool Seen { get; set; }
         public ImageEntity Image { get; set; }
-
-
     }
 }

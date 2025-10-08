@@ -1,6 +1,6 @@
 ﻿using Social.Core;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests
 {
     public class PostTests
     {
@@ -161,5 +161,4 @@ namespace SocialCoreTests
             Assert.That(_post.Images.Any(i => i.FileName == "2.jpg"));
         }
     }
-
 }

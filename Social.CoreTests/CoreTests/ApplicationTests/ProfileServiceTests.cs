@@ -7,7 +7,7 @@ using Social.Core.Application;
 using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     public class ProfileServiceTests
     {

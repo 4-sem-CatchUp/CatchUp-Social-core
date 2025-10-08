@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NUnit.Framework.Legacy;
-using Social.Core;
-using Social.Infrastructure.Persistens;
-using Social.Infrastructure.Persistens.dbContexts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework.Legacy;
+using Social.Core;
+using Social.Infrastructure.Persistens;
+using Social.Infrastructure.Persistens.dbContexts;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.Infrastructure.Persistens
 {
     [TestFixture]
     public class ProfileDbAdapterTests
@@ -44,7 +44,7 @@ namespace SocialCoreTests
             {
                 Name = "Test User",
                 Bio = "Bio",
-                ProfilePic = new Image("pic.jpg", "image/jpeg", new byte[] { 1, 2, 3 })
+                ProfilePic = new Image("pic.jpg", "image/jpeg", new byte[] { 1, 2, 3 }),
             };
 
             await _repository.AddProfileAsync(profile);
@@ -61,11 +61,7 @@ namespace SocialCoreTests
         [Test]
         public async Task UpdateProfileAsync_Should_Update_Existing_Profile()
         {
-            var profile = new Profile
-            {
-                Name = "Original",
-                Bio = "Original Bio"
-            };
+            var profile = new Profile { Name = "Original", Bio = "Original Bio" };
             await _repository.AddProfileAsync(profile);
 
             profile.Name = "Updated";

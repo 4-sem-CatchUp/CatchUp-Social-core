@@ -1,6 +1,6 @@
 ﻿using Social.Core;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests
 {
     [TestFixture]
     public class ChatCoreTests
@@ -100,7 +100,7 @@ namespace SocialCoreTests
             var msg = new ChatMessage(Guid.NewGuid(), sender, "Old content");
 
             var beforeEdit = msg.Timestamp;
-            System.Threading.Thread.Sleep(10); // ensure timestamp changes
+            Thread.Sleep(10); // ensure timestamp changes
             msg.EditContent("New content");
 
             Assert.That(msg.Content, Is.EqualTo("New content"));

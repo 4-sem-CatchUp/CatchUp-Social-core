@@ -2,10 +2,11 @@
 
 namespace Social.Infrastructure.Persistens.Entities
 {
-    public class Post
+    public class PostEntity
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
+
         [Required]
         public string Title { get; set; } = "Nyt indlæg";
         public string? Content { get; set; }
@@ -16,7 +17,7 @@ namespace Social.Infrastructure.Persistens.Entities
         public ProfileEntity Author { get; set; }
 
         // Navigation properties
-        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
         public ICollection<ImageEntity> Images { get; set; } = new List<ImageEntity>();
         public ICollection<VoteEntity> Votes { get; set; } = new List<VoteEntity>();
     }

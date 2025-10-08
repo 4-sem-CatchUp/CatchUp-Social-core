@@ -14,9 +14,9 @@ namespace Social.Infrastructure.Persistens.Entities
         public DateOnly DateOfSub { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
         // Navigation properties
-        public ICollection<Post> Posts { get; set; } = new List<Post>();
+        public ICollection<PostEntity> Posts { get; set; } = new List<PostEntity>();
         public ICollection<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
-        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
         public ICollection<Chat> Chats { get; set; } = new List<Chat>();
         public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
         public ICollection<VoteEntity> Votes { get; set; } = new List<VoteEntity>();

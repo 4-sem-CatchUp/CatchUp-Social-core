@@ -25,7 +25,6 @@
 
         public IReadOnlyList<Image> Images => _images.AsReadOnly();
 
-
         public Post()
         {
             Title = "Nyt indlæg";
@@ -48,7 +47,7 @@
             Guid authorId,
             string title,
             string? content,
-            byte[]? image,
+            Image? image,
             DateTime createdAt,
             List<Comment> comments,
             List<Vote> votes
@@ -76,12 +75,27 @@
 
         public void AddImage(string fileName, string contentType, byte[] data)
         {
-            _images.Add(new Image(fileName, contentType, data));
+            Image image = new Image(fileName, contentType, data);
+            image.PostId = Id;
+            _images.Add(image);
+        }
+
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            _images.Add(image);
         }
 
         public Comment AddComment(Guid authorId, string? text)
         {
             var comment = Comment.CreateNewComment(authorId, text);
+            _comments.Add(comment);
+            return comment;
+        }
+
+        // For use when reconstructing from DB
+        public Comment AddComment(Comment comment)
+        {
             _comments.Add(comment);
             return comment;
         }
@@ -116,6 +130,12 @@
                 _votes.Add(vote);
             }
             return vote;
+        }
+
+        // For use when reconstructing from DB
+        public void AddVote(Vote vote)
+        {
+            _votes.Add(vote);
         }
 
         public bool? GetUserVote(Guid userId)

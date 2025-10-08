@@ -18,7 +18,15 @@
         {
             Name = name;
         }
-        public Profile(Guid id, string name, string bio, DateOnly dateOfSub, List<Guid>? friends, Image? profilePic)
+
+        public Profile(
+            Guid id,
+            string name,
+            string bio,
+            DateOnly dateOfSub,
+            List<Guid>? friends,
+            Image? profilePic
+        )
         {
             Id = id;
             Name = name;
@@ -36,6 +44,12 @@
         public void AddImage(string fileName, string contentType, byte[] data)
         {
             ProfilePic = new Image(fileName, contentType, data);
+        }
+
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            ProfilePic = image;
         }
 
         public void UpdateProfile(string? name, string? bio, Image? pic)
