@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -8,7 +8,12 @@ namespace Social.Migrations
     /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Creates the initial database schema for the social application by adding tables, relationships, and indexes required for chats, profiles, posts, comments, images, votes, friendships, subscriptions, and related join tables.
+        /// </summary>
+        /// <remarks>
+        /// Adds tables: Chats, Profiles, ChatMessages, ChatParticipants, Friendships, Posts, Subscriptions, Comments, Images, and Votes; configures primary keys, foreign keys (with specified delete behaviors), composite keys, and indexes (including filtered and unique indexes) to establish the data model used by the application.
+        /// </remarks>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(

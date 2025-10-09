@@ -1,4 +1,4 @@
-﻿namespace Social.Core
+namespace Social.Core
 {
     public class Image
     {
@@ -20,8 +20,17 @@
         public Guid? ChatMessageId { get; set; }
         public ChatMessage? ChatMessage { get; set; }
 
-        public Image() { }
+        /// <summary>
+/// Initializes a new Image instance with default property values.
+/// </summary>
+public Image() { }
 
+        /// <summary>
+        /// Creates a new Image initialized with the specified file name, content type, and binary data.
+        /// </summary>
+        /// <param name="fileName">The image file name, typically including extension (e.g., "photo.jpg").</param>
+        /// <param name="contentType">The MIME content type of the image (e.g., "image/jpeg").</param>
+        /// <param name="data">The raw binary data of the image file.</param>
         public Image(string fileName, string contentType, byte[] data)
         {
             FileName = fileName;
@@ -29,6 +38,13 @@
             Data = data;
         }
 
+        /// <summary>
+        /// Initializes a new Image instance by copying values from the provided source image.
+        /// </summary>
+        /// <param name="image">The source Image whose scalar properties and, conditionally, navigation relationships are copied.</param>
+        /// <remarks>
+        /// Scalar properties (Id, FileName, ContentType, Data) are copied unconditionally. For each navigation relationship (Post, Comment, Profile, ChatMessage), the corresponding Id and navigation reference are copied from <paramref name="image"/> only if this instance already has that relationship's Id set.
+        /// </remarks>
         public Image(Image image)
         {
             Id = image.Id;

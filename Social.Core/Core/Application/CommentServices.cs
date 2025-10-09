@@ -1,4 +1,4 @@
-﻿using Social.Core.Ports.Incomming;
+using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 
 namespace Social.Core.Application
@@ -11,6 +11,9 @@ namespace Social.Core.Application
         private readonly IProfileRepository _profileRepository;
         private readonly ISubscribeUseCases _subscriptionService;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CommentServices"/> with the required repositories and subscription service.
+        /// </summary>
         public CommentServices(
             IPostRepository postRepository,
             ICommentRepository commentRepository,
@@ -26,6 +29,14 @@ namespace Social.Core.Application
             _subscriptionService = subscriptionService;
         }
 
+        /// <summary>
+        /// Creates a new comment on the specified post, optionally attaching images, and notifies the post author.
+        /// </summary>
+        /// <param name="postId">Identifier of the post to comment on.</param>
+        /// <param name="authorId">Identifier of the profile creating the comment.</param>
+        /// <param name="text">Optional text content of the comment.</param>
+        /// <param name="images">Optional list of images to attach to the comment; each image's filename, content type, and data are used.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the target post or the post author's profile cannot be found.</exception>
         public async Task AddComment(Guid postId, Guid authorId, string? text, List<Image>? images)
         {
             var post =

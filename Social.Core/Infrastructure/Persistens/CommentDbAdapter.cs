@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
 using Social.Infrastructure.Persistens;
@@ -11,12 +11,19 @@ namespace Social.Infrastructure.Persistens
     {
         private readonly SocialDbContext _context;
 
+        /// <summary>
+        /// Initializes a new CommentDbAdapter using the provided database context.
+        /// </summary>
+        /// <param name="context">The SocialDbContext used for comment persistence operations.</param>
         public CommentDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
 
-        // Add a new comment to the database
+        /// <summary>
+        /// Persists a new domain Comment into the database.
+        /// </summary>
+        /// <param name="comment">The domain Comment to add and persist.</param>
         public async Task AddAsync(Comment comment)
         {
             var entity = comment.ToEntity();
@@ -25,7 +32,10 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
 
-        // Delete a comment by its ID
+        /// <summary>
+        /// Deletes the comment with the specified identifier if it exists in the database.
+        /// </summary>
+        /// <param name="commentId">The identifier of the comment to delete.</param>
         public async Task DeleteAsync(Guid commentId)
         {
             var entity = await _context.Comments.FindAsync(commentId);
@@ -37,7 +47,10 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
-        // Get a comment by its ID along with its votes and images
+        /// <summary>
+        /// Retrieves a comment by its identifier including its votes and images.
+        /// </summary>
+        /// <returns>The found <see cref="Comment"/> populated with its votes and images, or `null` if no comment exists with the given identifier.</returns>
         public Task<Comment?> GetByIdAsync(Guid commentId)
         {
             // Get the comment with related votes and images
@@ -51,7 +64,11 @@ namespace Social.Infrastructure.Persistens
                 : Task.FromResult<Comment?>(null);
         }
 
-        // Get all comments for a specific post along with their votes and images
+        /// <summary>
+        /// Retrieves all comments for the specified post, including each comment's votes and images.
+        /// </summary>
+        /// <param name="postId">The identifier of the post whose comments should be returned.</param>
+        /// <returns>A read-only list of domain <see cref="Comment"/> objects for the specified post, each populated with votes and images.</returns>
         public async Task<IReadOnlyList<Comment>> GetByPostIdAsync(Guid postId)
         {
             var entity = await _context
@@ -63,7 +80,10 @@ namespace Social.Infrastructure.Persistens
             return entity.Select(e => e.ToDomain()).ToList();
         }
 
-        // Update an existing comment
+        /// <summary>
+        /// Updates the persisted comment matching the provided comment's Id with the provided content, images, and votes, then saves changes to the database.
+        /// </summary>
+        /// <param name="comment">The domain Comment containing the Id and new values to persist.</param>
         public async Task UpdateAsync(Comment comment)
         {
             var entity = await _context
@@ -86,7 +106,11 @@ namespace Social.Infrastructure.Persistens
 
     public static class CommentMapper
     {
-        // Map from Domain to Entity
+        /// <summary>
+        /// Converts a domain Comment into a persistence CommentEntity.
+        /// </summary>
+        /// <param name="comment">The domain Comment to convert.</param>
+        /// <returns>A CommentEntity containing the same Id, author, timestamp, content (empty string if null), and collections of votes and images converted to their entity representations.</returns>
         public static CommentEntity ToEntity(this Comment comment)
         {
             return new CommentEntity
@@ -100,7 +124,11 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
-        // Map from Entity to Domain
+        /// <summary>
+        /// Creates a domain Comment from a CommentEntity, including mapped votes and images.
+        /// </summary>
+        /// <param name="entity">The persistent CommentEntity to convert.</param>
+        /// <returns>A Comment populated with the entity's Id, AuthorId, Content, Timestamp, Votes, and Images.</returns>
         public static Comment ToDomain(this CommentEntity entity)
         {
             var comment = new Comment(

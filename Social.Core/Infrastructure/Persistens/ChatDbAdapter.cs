@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
@@ -11,12 +11,19 @@ namespace Social.Infrastructure.Persistens
     {
         private readonly SocialDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ChatDbAdapter"/> using the provided <see cref="SocialDbContext"/> for data access.
+        /// </summary>
         public ChatDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
 
-        // Create a new chat
+        /// <summary>
+        /// Creates a chat from the provided domain model and persists it to the database.
+        /// </summary>
+        /// <param name="chat">The domain Chat to create. Must include participant entries with valid profile IDs.</param>
+        /// <exception cref="System.IO.InvalidDataException">Thrown when one or more participants do not exist in the database.</exception>
         public async Task CreateChat(Chat chat)
         {
             // Validate participants exist in the database
@@ -37,7 +44,12 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
 
-        // Retrieve a chat by its ID
+        /// <summary>
+        /// Retrieves the chat identified by the provided chatId, including its participants and messages.
+        /// </summary>
+        /// <param name="chatId">Unique identifier of the chat to retrieve.</param>
+        /// <returns>The chat domain object populated with participants and messages.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if no chat with the specified id exists.</exception>
         public Task<Chat> GetChat(Guid chatId)
         {
             // Include participants and messages with senders
@@ -55,7 +67,11 @@ namespace Social.Infrastructure.Persistens
             return Task.FromResult(entity.ToDomain());
         }
 
-        // Update chat details (e.g., participants, active status)
+        /// <summary>
+        /// Updates an existing chat's active state and reconciles its participant list in the database.
+        /// </summary>
+        /// <param name="chat">Domain chat containing the ChatId to identify the persisted chat and the updated Active flag and Participants collection.</param>
+        /// <exception cref="System.Collections.Generic.KeyNotFoundException">Thrown if no chat with the given ChatId exists.</exception>
         public async Task UpdateChat(Chat chat)
         {
             // Fetch existing chat with participants and messages
@@ -96,7 +112,13 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
 
-        // Add a new message to a chat
+        /// <summary>
+        /// Adds a new message to the specified chat after validating the chat exists and the sender is a participant.
+        /// </summary>
+        /// <param name="chatId">The identifier of the chat to add the message to.</param>
+        /// <param name="message">The chat message to add.</param>
+        /// <exception cref="KeyNotFoundException">Thrown when no chat with the given <paramref name="chatId"/> exists.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the message sender is not a participant of the chat.</exception>
         public async Task AddMessage(Guid chatId, ChatMessage message)
         {
             var chat = await _context
@@ -115,7 +137,13 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
 
-        // Delete a message from a chat
+        /// <summary>
+        /// Delete the specified message from the given chat and persist the removal.
+        /// </summary>
+        /// <param name="chatId">Identifier of the chat containing the message.</param>
+        /// <param name="messageId">Identifier of the message to delete.</param>
+        /// <exception cref="KeyNotFoundException">Thrown if the message does not exist.</exception>
+        /// <exception cref="KeyNotFoundException">Thrown if the chat does not exist.</exception>
         public Task DeleteMessage(Guid chatId, Guid messageId)
         {
             // Find the message to delete
@@ -141,7 +169,13 @@ namespace Social.Infrastructure.Persistens
             return _context.SaveChangesAsync();
         }
 
-        // Retrieve a specific message by its ID within a chat
+        /// <summary>
+        /// Retrieves a chat message by its identifier within the specified chat.
+        /// </summary>
+        /// <param name="chatId">The identifier of the chat containing the message.</param>
+        /// <param name="messageId">The identifier of the message to retrieve.</param>
+        /// <returns>The requested ChatMessage mapped to the domain model.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if the message is not found in the specified chat.</exception>
         public Task<ChatMessage> GetMessage(Guid chatId, Guid messageId)
         {
             // Include sender and image details
@@ -156,7 +190,13 @@ namespace Social.Infrastructure.Persistens
             return Task.FromResult(message.ToDomain());
         }
 
-        // Retrieve a list of messages from a chat with pagination
+        /// <summary>
+        /// Retrieves a page of messages for the specified chat, ordered from newest to oldest.
+        /// </summary>
+        /// <param name="chatId">The identifier of the chat whose messages are requested.</param>
+        /// <param name="count">The maximum number of messages to return.</param>
+        /// <param name="offset">The number of most-recent messages to skip (for pagination).</param>
+        /// <returns>A list of ChatMessage objects for the specified chat ordered by timestamp descending.</returns>
         public async Task<List<ChatMessage>> GetMessages(Guid chatId, int count, int offset)
         {
             var entities = await _context
@@ -171,7 +211,12 @@ namespace Social.Infrastructure.Persistens
             return entities.Select(e => e.ToDomain()).ToList();
         }
 
-        // Update an existing message's content or image
+        /// <summary>
+        /// Updates the content and image of the first message found in the specified chat.
+        /// </summary>
+        /// <param name="chatId">The identifier of the chat containing the message to update.</param>
+        /// <param name="message">A ChatMessage whose Content and Image will replace the stored values on the found message.</param>
+        /// <exception cref="KeyNotFoundException">Thrown when no message exists for the given chat.</exception>
         public async Task UpdateMessage(Guid chatId, ChatMessage message)
         {
             var entity = await _context
@@ -191,6 +236,10 @@ namespace Social.Infrastructure.Persistens
 
     public static class ChatMapper
     {
+        /// <summary>
+        /// Converts a domain Chat into a ChatEntity suitable for persistence, including mapped participants and messages.
+        /// </summary>
+        /// <returns>A ChatEntity representing the provided domain Chat, with Participants and Messages converted to their entity types.</returns>
         public static ChatEntity ToEntity(this Chat chat)
         {
             return new ChatEntity
@@ -202,6 +251,11 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        /// <summary>
+        /// Converts a persistence ChatEntity into a domain Chat and populates its participants and messages.
+        /// </summary>
+        /// <param name="entity">The ChatEntity to convert.</param>
+        /// <returns>A domain Chat with ChatId, Active flag, Participants, and Messages copied from the entity.</returns>
         public static Chat ToDomain(this ChatEntity entity)
         {
             var chat = new Chat { ChatId = entity.ChatId, Active = entity.Active };
@@ -218,6 +272,11 @@ namespace Social.Infrastructure.Persistens
             return chat;
         }
 
+        /// <summary>
+        /// Converts a domain ChatMessage into its persistence-layer ChatMessageEntity representation.
+        /// </summary>
+        /// <param name="message">The domain chat message to convert.</param>
+        /// <returns>A ChatMessageEntity with properties mapped from the provided domain message.</returns>
         public static ChatMessageEntity ToEntity(this ChatMessage message)
         {
             return new ChatMessageEntity
@@ -232,6 +291,10 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        /// <summary>
+        /// Converts a persistence ChatMessageEntity into its domain ChatMessage representation.
+        /// </summary>
+        /// <returns>The domain ChatMessage populated with MessageId, ChatId, Content, Timestamp, Sender, Seen state, and optional Image.</returns>
         public static ChatMessage ToDomain(this ChatMessageEntity entity)
         {
             var message = new ChatMessage

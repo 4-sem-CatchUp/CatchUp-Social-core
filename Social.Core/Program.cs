@@ -5,6 +5,10 @@ namespace Social
 {
     public class Program
     {
+        /// <summary>
+        /// Builds and runs the web application: configures services (SignalR, MVC controllers, Swagger/OpenAPI, and SocialDbContext using SQL Server) and sets up the HTTP request pipeline.
+        /// </summary>
+        /// <param name="args">Command-line arguments forwarded to the web application builder.</param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);

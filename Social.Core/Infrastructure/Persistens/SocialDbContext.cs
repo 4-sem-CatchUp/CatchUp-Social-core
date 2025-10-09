@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Social.Infrastructure.Persistens.Entities;
 
 namespace Social.Infrastructure.Persistens.dbContexts
 {
     public class SocialDbContext : DbContext
     {
-        public SocialDbContext(DbContextOptions<SocialDbContext> options)
+        /// <summary>
+            /// Initializes a new instance of SocialDbContext using the provided context options.
+            /// </summary>
+            /// <param name="options">Configuration options for the SocialDbContext, such as provider, connection string, and behavior settings.</param>
+            public SocialDbContext(DbContextOptions<SocialDbContext> options)
             : base(options) { }
 
         // DbSets
@@ -18,6 +22,13 @@ namespace Social.Infrastructure.Persistens.dbContexts
         public DbSet<VoteEntity> Votes { get; set; }
         public DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
+        /// <summary>
+        /// Configures the EF Core model for social-domain entities and their relationships.
+        /// </summary>
+        /// <remarks>
+        /// Defines mappings, join tables, keys, indexes, and delete behaviors for profiles (including friendships and subscriptions), chats and participants, chat messages, posts, comments, images, and votes.
+        /// </remarks>
+        /// <param name="modelBuilder">The ModelBuilder used to configure entity mappings for the SocialDbContext.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

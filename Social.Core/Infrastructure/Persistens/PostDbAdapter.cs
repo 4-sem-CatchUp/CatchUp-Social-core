@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
 using Social.Infrastructure.Persistens.dbContexts;
@@ -10,12 +10,18 @@ namespace Social.Infrastructure.Persistens
     {
         private readonly SocialDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PostDbAdapter"/> using the provided <see cref="SocialDbContext"/>.
+        /// </summary>
         public PostDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
 
-        // Add a new post to the database
+        /// <summary>
+        /// Persists the given Post aggregate to the database.
+        /// </summary>
+        /// <param name="post">The domain Post to persist; it will be converted to a persistence entity and saved.</param>
         public async Task AddAsync(Post post)
         {
             // Ensure the user exists in the database
@@ -25,7 +31,10 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
 
-        // Delete a post by its ID
+        /// <summary>
+        /// Deletes the post with the specified identifier from the database.
+        /// </summary>
+        /// <param name="postId">Identifier of the post to remove; no action is taken if no matching post exists.</param>
         public async Task DeleteAsync(Guid postId)
         {
             // Find the post entity by its ID
@@ -39,7 +48,10 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
-        // Get all posts along with their comments, images, and votes
+        /// <summary>
+        /// Retrieves all posts from the database including their comments, votes, and images.
+        /// </summary>
+        /// <returns>A collection of domain <see cref="Post"/> instances with their related Comments, Votes, and Images populated.</returns>
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
             // Get all posts with related comments, votes, and images
@@ -52,7 +64,10 @@ namespace Social.Infrastructure.Persistens
             return entitys.Select(e => e.ToDomain()).ToList();
         }
 
-        // Get a post by its ID along with its comments, images, and votes
+        /// <summary>
+        /// Retrieve a Post aggregate by its ID including comments, images, and votes.
+        /// </summary>
+        /// <returns>The domain Post with related comments, images, and votes, or <c>null</c> if no post with the given ID exists.</returns>
         public async Task<Post?> GetByIdAsync(Guid postId)
         {
             // Get the post with related comments and images
@@ -76,7 +91,10 @@ namespace Social.Infrastructure.Persistens
             return entity?.ToDomain();
         }
 
-        // Update a post along with its comments, images, and votes
+        /// <summary>
+        /// Updates an existing post and synchronizes its comments, images, and votes with the provided domain post.
+        /// </summary>
+        /// <param name="post">The domain post containing updated scalar fields and collections to persist; if no matching persisted post exists, the call is a no-op.</param>
         public async Task UpdateAsync(Post post)
         {
             // Fetch the existing post with related comments and images
@@ -153,7 +171,11 @@ namespace Social.Infrastructure.Persistens
 
     public static class PostMapper
     {
-        // Map from Domain to Entity
+        /// <summary>
+        /// Converts a domain Post into its persistence PostEntity representation.
+        /// </summary>
+        /// <param name="post">The domain Post to convert.</param>
+        /// <returns>A PostEntity with scalar fields copied and with Comments, Votes, and Images converted; if any domain collections are null, the corresponding entity collections will be empty.</returns>
         public static PostEntity ToEntity(this Post post)
         {
             return new PostEntity
@@ -170,7 +192,12 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
-        // Map from Entity to Domain
+        /// <summary>
+        /// Converts a persistence PostEntity into a fully populated domain Post.
+        /// </summary>
+        /// <param name="entity">The persistence entity to convert.</param>
+        /// <returns>A domain Post populated with Title, Content, AuthorId, CreatedAt and with Votes, Comments, and Images attached. Nested items include their IDs and timestamps where applicable.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
         public static Post ToDomain(this PostEntity entity)
         {
             if (entity == null)

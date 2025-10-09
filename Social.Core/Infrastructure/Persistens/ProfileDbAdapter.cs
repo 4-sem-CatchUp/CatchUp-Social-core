@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
 using Social.Infrastructure.Persistens.dbContexts;
@@ -10,11 +10,22 @@ namespace Social.Infrastructure.Persistens
     {
         private readonly SocialDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ProfileDbAdapter"/> that uses the provided <see cref="SocialDbContext"/> for data operations.
+        /// </summary>
         public ProfileDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Adds the profile identified by <paramref name="friendId"/> to the friends of the profile identified by <paramref name="profileId"/>.
+        /// </summary>
+        /// <param name="profileId">The ID of the profile to which a friend will be added.</param>
+        /// <param name="friendId">The ID of the profile to add as a friend.</param>
+        /// <remarks>
+        /// If either profile does not exist or the friendship already exists, no changes are made. When added, the change is persisted to the database.
+        /// </remarks>
         public async Task AddFriendAsync(Guid profileId, Guid friendId)
         {
             // Fetch the profile along with its friends
@@ -39,6 +50,11 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
+        /// <summary>
+        /// Adds a new profile to the persistent store.
+        /// </summary>
+        /// <param name="profile">The domain Profile to persist.</param>
+        /// <exception cref="DbUpdateException">Thrown when a profile with the same ID already exists.</exception>
         public async Task AddProfileAsync(Profile profile)
         {
             // Ensure the profile does not already exist
@@ -54,6 +70,11 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
+        /// <summary>
+        /// Deletes the profile with the specified ID from the database.
+        /// </summary>
+        /// <param name="profileId">The unique identifier of the profile to delete.</param>
+        /// <exception cref="KeyNotFoundException">Thrown if no profile with the given ID exists.</exception>
         public async Task DeleteProfileAsync(Guid profileId)
         {
             // Find the profile entity by its ID
@@ -71,6 +92,10 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
+        /// <summary>
+        /// Retrieves all profiles from the database including each profile's friends and profile picture.
+        /// </summary>
+        /// <returns>An IEnumerable of domain Profile objects for all stored profiles, with friend IDs and profile picture included when present.</returns>
         public async Task<IEnumerable<Profile>> GetAllProfilesAsync()
         {
             // Fetch all profiles along with their friends and profile pictures
@@ -85,6 +110,11 @@ namespace Social.Infrastructure.Persistens
             return profiles;
         }
 
+        /// <summary>
+        /// Retrieves a profile by its identifier, eagerly including its friends and profile picture.
+        /// </summary>
+        /// <param name="profileId">The identifier of the profile to retrieve.</param>
+        /// <returns>The Profile with the specified ID, or `null` if no matching profile exists.</returns>
         public async Task<Profile?> GetProfileByIdAsync(Guid profileId)
         {
             // Find the profile entity by its ID, including friends and profile picture
@@ -96,6 +126,10 @@ namespace Social.Infrastructure.Persistens
             return entity?.ToDomain();
         }
 
+        /// <summary>
+        /// Persist changes from the given domain Profile to the corresponding database record if it exists.
+        /// </summary>
+        /// <param name="profile">Domain profile containing updated fields, optional ProfilePic, and the list of friend IDs to set.</param>
         public async Task UpdateProfileAsync(Profile profile)
         {
             // Fetch the existing profile entity
@@ -148,7 +182,11 @@ namespace Social.Infrastructure.Persistens
 
     public static class ProfileMapper
     {
-        // Map domain to entity
+        /// <summary>
+        /// Create a persistence representation of the given domain profile.
+        /// </summary>
+        /// <param name="profile">The domain profile to convert.</param>
+        /// <returns>A ProfileEntity representing the profile; includes a converted ProfilePic if present and Friends mapped as entity references with only their Id set.</returns>
         public static ProfileEntity ToEntity(this Profile profile)
         {
             ImageEntity pic = null;
@@ -165,7 +203,11 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
-        // Map entity to domain
+        /// <summary>
+        /// Converts a persisted ProfileEntity into its domain Profile representation, including friend IDs and profile picture if present.
+        /// </summary>
+        /// <param name="entity">The persisted profile entity to convert.</param>
+        /// <returns>The corresponding domain <see cref="Profile"/>.</returns>
         public static Profile ToDomain(this ProfileEntity entity)
         {
             return new Profile(
