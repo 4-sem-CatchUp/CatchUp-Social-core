@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Social.Core;
-using Social.Infrastructure.Persistens;
-using Social.Infrastructure.Persistens.dbContexts;
-using Social.Infrastructure.Persistens.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Social.Core;
+using Social.Infrastructure.Persistens;
+using Social.Infrastructure.Persistens.dbContexts;
+using Social.Infrastructure.Persistens.Entities;
 
 namespace SocialCoreTests.Infrastructure.Persistens
 {
@@ -58,7 +58,7 @@ namespace SocialCoreTests.Infrastructure.Persistens
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
                 Content = "Existing comment",
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow,
             };
             _context.Comments.Add(entity);
             await _context.SaveChangesAsync();
@@ -87,12 +87,32 @@ namespace SocialCoreTests.Infrastructure.Persistens
             // Arrange
             var postId = Guid.NewGuid();
 
-            _context.Comments.AddRange(new[]
-            {
-                new CommentEntity { Id = Guid.NewGuid(), AuthorId = Guid.NewGuid(), Content = "Comment A", PostId = postId },
-                new CommentEntity { Id = Guid.NewGuid(), AuthorId = Guid.NewGuid(), Content = "Comment B", PostId = postId },
-                new CommentEntity { Id = Guid.NewGuid(), AuthorId = Guid.NewGuid(), Content = "Other post", PostId = Guid.NewGuid() }
-            });
+            _context.Comments.AddRange(
+                new[]
+                {
+                    new CommentEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        AuthorId = Guid.NewGuid(),
+                        Content = "Comment A",
+                        PostId = postId,
+                    },
+                    new CommentEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        AuthorId = Guid.NewGuid(),
+                        Content = "Comment B",
+                        PostId = postId,
+                    },
+                    new CommentEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        AuthorId = Guid.NewGuid(),
+                        Content = "Other post",
+                        PostId = Guid.NewGuid(),
+                    },
+                }
+            );
 
             await _context.SaveChangesAsync();
 
@@ -113,17 +133,19 @@ namespace SocialCoreTests.Infrastructure.Persistens
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
-                Content = "Old content"
+                Content = "Old content",
             };
             _context.Comments.Add(entity);
             await _context.SaveChangesAsync();
 
-            var updatedComment = new Comment(entity.AuthorId, "New content", entity.Timestamp, new List<Vote>())
-            {
-            };
-            typeof(Comment)
-                .GetProperty(nameof(Comment.Id))!
-                .SetValue(updatedComment, entity.Id);
+            var updatedComment = new Comment(
+                entity.AuthorId,
+                "New content",
+                entity.Timestamp,
+                new List<Vote>()
+            )
+            { };
+            typeof(Comment).GetProperty(nameof(Comment.Id))!.SetValue(updatedComment, entity.Id);
 
             // Act
             await _adapter.UpdateAsync(updatedComment);
@@ -141,7 +163,7 @@ namespace SocialCoreTests.Infrastructure.Persistens
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
-                Content = "To delete"
+                Content = "To delete",
             };
             _context.Comments.Add(entity);
             await _context.SaveChangesAsync();

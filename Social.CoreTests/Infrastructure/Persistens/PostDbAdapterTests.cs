@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Social.Core;
 using Social.Core.Application;
@@ -6,10 +10,6 @@ using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 using Social.Infrastructure.Persistens;
 using Social.Infrastructure.Persistens.dbContexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialCoreTests.Infrastructure.Persistens
 {
@@ -63,10 +63,15 @@ namespace SocialCoreTests.Infrastructure.Persistens
             var authorId = Guid.NewGuid();
             var images = new List<Image>
             {
-                new Image("pic.jpg", "image/jpeg", new byte[] {1,2,3})
+                new Image("pic.jpg", "image/jpeg", new byte[] { 1, 2, 3 }),
             };
 
-            var postId = await _postService.CreatePostAsync(authorId, "Test Post", "Content", images);
+            var postId = await _postService.CreatePostAsync(
+                authorId,
+                "Test Post",
+                "Content",
+                images
+            );
 
             var dbPost = await _postAdapter.GetByIdAsync(postId);
 
@@ -145,52 +150,38 @@ namespace SocialCoreTests.Infrastructure.Persistens
             return Task.CompletedTask;
         }
 
-        public void Subscribe(Profile subscriber, Profile publisher)
-        {
+        public void Subscribe(Profile subscriber, Profile publisher) =>
             throw new NotImplementedException();
-        }
 
-        public void Unsubscribe(Profile subscriber, Profile publisher)
-        {
+        public void Unsubscribe(Profile subscriber, Profile publisher) =>
             throw new NotImplementedException();
-        }
     }
+
     public class FakeProfileRepository : IProfileRepository
     {
-        public Task AddFriendAsync(Guid profileId, Guid friendId)
-        {
+        public Task AddFriendAsync(Guid profileId, Guid friendId) =>
             throw new NotImplementedException();
-        }
 
-        public Task AddProfileAsync(Profile profile)
-        {
-            throw new NotImplementedException();
-        }
+        public Task AddProfileAsync(Profile profile) => throw new NotImplementedException();
 
-        public Task DeleteProfileAsync(Guid profileId)
-        {
-            throw new NotImplementedException();
-        }
+        public Task DeleteProfileAsync(Guid profileId) => throw new NotImplementedException();
 
-        public Task<IEnumerable<Profile>> GetAllProfilesAsync()
-        {
+        public Task<IEnumerable<Profile>> GetAllProfilesAsync() =>
             throw new NotImplementedException();
-        }
 
         public Task<Profile?> GetProfileByIdAsync(Guid id)
         {
             // Returner en dummy profil
-            return Task.FromResult<Profile?>(new Profile
-            {
-                Id = id,
-                Name = "TestUser",
-                Bio = "Test bio"
-            });
+            return Task.FromResult<Profile?>(
+                new Profile
+                {
+                    Id = id,
+                    Name = "TestUser",
+                    Bio = "Test bio",
+                }
+            );
         }
 
-        public Task UpdateProfileAsync(Profile profile)
-        {
-            throw new NotImplementedException();
-        }
+        public Task UpdateProfileAsync(Profile profile) => throw new NotImplementedException();
     }
 }

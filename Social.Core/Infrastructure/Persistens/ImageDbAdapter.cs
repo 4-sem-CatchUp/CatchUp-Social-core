@@ -9,6 +9,7 @@ namespace Social.Infrastructure.Persistens
     public class ImageDbAdapter : IImageRepository
     {
         private readonly SocialDbContext _context;
+
         public ImageDbAdapter(SocialDbContext context)
         {
             _context = context;
@@ -33,17 +34,15 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<IReadOnlyList<Image>> GetByChatMessageIdAsync(Guid chatMessageId)
         {
-            var entity = await _context.Images
-                .Where(i => i.ChatMessageId == chatMessageId)
+            var entity = await _context
+                .Images.Where(i => i.ChatMessageId == chatMessageId)
                 .ToListAsync();
             return entity.Select(ImageMapper.ToDomain).ToList();
         }
 
         public async Task<IReadOnlyList<Image>> GetByCommentIdAsync(Guid commentId)
         {
-            var entity = await _context.Images
-                .Where(i => i.CommentId == commentId)
-                .ToListAsync();
+            var entity = await _context.Images.Where(i => i.CommentId == commentId).ToListAsync();
             return entity.Select(ImageMapper.ToDomain).ToList();
         }
 
@@ -55,45 +54,35 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<IReadOnlyList<Image>> GetByPostIdAsync(Guid postId)
         {
-            var entity = await _context.Images
-                .Where(i => i.PostId == postId)
-                .ToListAsync();
+            var entity = await _context.Images.Where(i => i.PostId == postId).ToListAsync();
             return entity.Select(ImageMapper.ToDomain).ToList();
         }
 
         public Task<Image> GetByProfileIdAsync(Guid profileId)
         {
-            var entity = _context.Images
-                .FirstOrDefault(i => i.ProfileId == profileId);
-            return entity != null 
-                ? Task.FromResult(ImageMapper.ToDomain(entity)) 
+            var entity = _context.Images.FirstOrDefault(i => i.ProfileId == profileId);
+            return entity != null
+                ? Task.FromResult(ImageMapper.ToDomain(entity))
                 : Task.FromResult<Image>(null);
         }
     }
-    public static class ImageMapper 
-    { 
-        public static ImageEntity ToEntity(this Image image) 
-        { 
-            return new ImageEntity 
-            { 
-                Id = image.Id, 
-                FileName = image.FileName, 
-                ContentType = image.ContentType, 
-                Data = image.Data 
-            }; 
-        } 
-        public static Image ToDomain(this ImageEntity entity) 
-        { 
-            return new Image
-            (
-                entity.FileName, 
-                entity.ContentType, 
-                entity.Data
-            ) 
-            { 
-                Id = entity.Id 
-            }; 
-        } 
+
+    public static class ImageMapper
+    {
+        public static ImageEntity ToEntity(this Image image)
+        {
+            return new ImageEntity
+            {
+                Id = image.Id,
+                FileName = image.FileName,
+                ContentType = image.ContentType,
+                Data = image.Data,
+            };
+        }
+
+        public static Image ToDomain(this ImageEntity entity)
+        {
+            return new Image(entity.FileName, entity.ContentType, entity.Data) { Id = entity.Id };
+        }
     }
 }
-

@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Social.Core;
-using Social.Infrastructure.Persistens;
-using Social.Infrastructure.Persistens.dbContexts;
-using Social.Infrastructure.Persistens.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Social.Core;
+using Social.Infrastructure.Persistens;
+using Social.Infrastructure.Persistens.dbContexts;
+using Social.Infrastructure.Persistens.Entities;
 
 namespace SocialCoreTests.Infrastructure.Persistens
 {
@@ -54,7 +54,7 @@ namespace SocialCoreTests.Infrastructure.Persistens
                 Id = Guid.NewGuid(),
                 FileName = "pic.jpg",
                 ContentType = "image/jpeg",
-                Data = new byte[] { 1, 2, 3 }
+                Data = new byte[] { 1, 2, 3 },
             };
             _context.Images.Add(entity);
             await _context.SaveChangesAsync();
@@ -80,7 +80,7 @@ namespace SocialCoreTests.Infrastructure.Persistens
                 Id = Guid.NewGuid(),
                 FileName = "delete.jpg",
                 ContentType = "image/jpeg",
-                Data = new byte[] { 1 }
+                Data = new byte[] { 1 },
             };
             _context.Images.Add(entity);
             await _context.SaveChangesAsync();
@@ -95,12 +95,29 @@ namespace SocialCoreTests.Infrastructure.Persistens
         public async Task GetByCommentIdAsync_Should_Return_All_Images_For_Comment()
         {
             var commentId = Guid.NewGuid();
-            _context.Images.AddRange(new[]
-            {
-                new ImageEntity { Id = Guid.NewGuid(), FileName = "a.jpg", CommentId = commentId },
-                new ImageEntity { Id = Guid.NewGuid(), FileName = "b.jpg", CommentId = commentId },
-                new ImageEntity { Id = Guid.NewGuid(), FileName = "c.jpg", CommentId = Guid.NewGuid() }
-            });
+            _context.Images.AddRange(
+                new[]
+                {
+                    new ImageEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        FileName = "a.jpg",
+                        CommentId = commentId,
+                    },
+                    new ImageEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        FileName = "b.jpg",
+                        CommentId = commentId,
+                    },
+                    new ImageEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        FileName = "c.jpg",
+                        CommentId = Guid.NewGuid(),
+                    },
+                }
+            );
             await _context.SaveChangesAsync();
 
             var result = await _adapter.GetByCommentIdAsync(commentId);
@@ -118,7 +135,7 @@ namespace SocialCoreTests.Infrastructure.Persistens
             {
                 Id = Guid.NewGuid(),
                 FileName = "profile.jpg",
-                ProfileId = profileId
+                ProfileId = profileId,
             };
             _context.Images.Add(entity);
             await _context.SaveChangesAsync();

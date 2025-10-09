@@ -9,10 +9,12 @@ namespace Social.Infrastructure.Persistens
     public class PostDbAdapter : IPostRepository
     {
         private readonly SocialDbContext _context;
+
         public PostDbAdapter(SocialDbContext context)
         {
             _context = context;
         }
+
         public async Task AddAsync(Post post)
         {
             var entity = post.ToEntity();
@@ -32,8 +34,8 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
-            var entitys = await _context.Posts
-                .Include(p => p.Comments)
+            var entitys = await _context
+                .Posts.Include(p => p.Comments)
                 .Include(p => p.Votes)
                 .Include(p => p.Images)
                 .ToListAsync();
@@ -42,15 +44,18 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<Post?> GetByIdAsync(Guid postId)
         {
-            var entity = await _context.Posts
-                .Include(p => p.Comments)
+            var entity = await _context
+                .Posts.Include(p => p.Comments)
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == postId);
 
-            if(entity == null) return null;
-            
-            var votes = await _context.Votes
-                .Where(v => v.TargetId == postId && v.VoteTargetType == Entities.VoteTargetType.Post)
+            if (entity == null)
+                return null;
+
+            var votes = await _context
+                .Votes.Where(v =>
+                    v.TargetId == postId && v.VoteTargetType == Entities.VoteTargetType.Post
+                )
                 .ToListAsync();
 
             entity.Votes = votes;
@@ -60,12 +65,12 @@ namespace Social.Infrastructure.Persistens
 
         public async Task UpdateAsync(Post post)
         {
-
-            var entity = await _context.Posts
-                .Include(p => p.Comments)
+            var entity = await _context
+                .Posts.Include(p => p.Comments)
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == post.Id);
-            if (entity == null) return;
+            if (entity == null)
+                return;
 
             entity.Title = post.Title;
             entity.Content = post.Content;
@@ -105,13 +110,15 @@ namespace Social.Infrastructure.Persistens
             }
 
             // Add or update votes
-            var votes = await _context.Votes
-                .Where(v => v.TargetId == post.Id && v.VoteTargetType == Entities.VoteTargetType.Post)
+            var votes = await _context
+                .Votes.Where(v =>
+                    v.TargetId == post.Id && v.VoteTargetType == Entities.VoteTargetType.Post
+                )
                 .ToListAsync();
-            foreach(var vote in post.Votes)
+            foreach (var vote in post.Votes)
             {
                 var existing = votes.FirstOrDefault(v => v.Id == vote.Id);
-                if(existing != null)
+                if (existing != null)
                 {
                     existing.Upvote = vote.Upvote;
                 }
@@ -126,6 +133,7 @@ namespace Social.Infrastructure.Persistens
             await _context.SaveChangesAsync();
         }
     }
+
     public static class PostMapper
     {
         public static PostEntity ToEntity(this Post post)
@@ -137,14 +145,13 @@ namespace Social.Infrastructure.Persistens
                 Title = post.Title,
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
-                Comments = post.Comments?.Select(c => c.ToEntity()).ToList() 
-                ?? new List<CommentEntity>(),
-                Votes = post.Votes?.Select(v => v.ToEntity()).ToList() 
-                ?? new List<VoteEntity>(),
-                Images = post.Images?.Select(i => i.ToEntity()).ToList() 
-                ?? new List<ImageEntity>(),
+                Comments =
+                    post.Comments?.Select(c => c.ToEntity()).ToList() ?? new List<CommentEntity>(),
+                Votes = post.Votes?.Select(v => v.ToEntity()).ToList() ?? new List<VoteEntity>(),
+                Images = post.Images?.Select(i => i.ToEntity()).ToList() ?? new List<ImageEntity>(),
             };
         }
+
         public static Post ToDomain(this PostEntity entity)
         {
             if (entity == null)
@@ -174,7 +181,9 @@ namespace Social.Infrastructure.Persistens
             {
                 var comment = commentEntity.ToDomain();
                 typeof(Comment).GetProperty("Id")!.SetValue(comment, commentEntity.Id);
-                typeof(Comment).GetProperty("Timestamp")!.SetValue(comment, commentEntity.Timestamp);
+                typeof(Comment)
+                    .GetProperty("Timestamp")!
+                    .SetValue(comment, commentEntity.Timestamp);
                 post.AddComment(comment);
             }
 
@@ -188,7 +197,5 @@ namespace Social.Infrastructure.Persistens
 
             return post;
         }
-
     }
 }
-
