@@ -2,7 +2,7 @@
 
 namespace Social.Infrastructure.Persistens.Entities
 {
-    public class Subscription
+    public class SubscriptionEntity
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

@@ -16,7 +16,7 @@ namespace Social.Infrastructure.Persistens.dbContexts
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<VoteEntity> Votes { get; set; }
-        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,19 +45,19 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // Profile ↔ Subscriptions
             // -----------------------------
             modelBuilder
-                .Entity<Subscription>()
+                .Entity<SubscriptionEntity>()
                 .HasIndex(s => new { s.SubscriberId, s.PublisherId })
                 .IsUnique();
 
             modelBuilder
-                .Entity<Subscription>()
+                .Entity<SubscriptionEntity>()
                 .HasOne(s => s.Subscriber)
                 .WithMany(p => p.Subscriptions)
                 .HasForeignKey(s => s.SubscriberId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder
-                .Entity<Subscription>()
+                .Entity<SubscriptionEntity>()
                 .HasOne(s => s.Publisher)
                 .WithMany()
                 .HasForeignKey(s => s.PublisherId)

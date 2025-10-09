@@ -18,7 +18,7 @@ namespace Social.Infrastructure.Persistens.Entities
         public ICollection<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
         public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
         public ICollection<Chat> Chats { get; set; } = new List<Chat>();
-        public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public ICollection<SubscriptionEntity> Subscriptions { get; set; } = new List<SubscriptionEntity>();
         public ICollection<VoteEntity> Votes { get; set; } = new List<VoteEntity>();
 
         public Guid? ProfilePicId { get; set; }
