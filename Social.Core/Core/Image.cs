@@ -28,5 +28,33 @@
             ContentType = contentType;
             Data = data;
         }
+        public Image(Image image)
+        {
+            Id = image.Id;
+            FileName = image.FileName;
+            ContentType = image.ContentType;
+            Data = image.Data;
+            if (PostId != null)
+            {
+                PostId = image.PostId;
+                Post = image.Post;
+            }
+            if (CommentId != null)
+            {
+                CommentId = image.CommentId;
+                Comment = image.Comment;
+            }
+            if (ProfileId != null)
+            {
+                ProfileId = image.ProfileId;
+                Profile = image.Profile;
+            }
+            if (ChatMessageId != null)
+            {
+                ChatMessageId = image.ChatMessageId;
+                ChatMessage = image.ChatMessage;
+
+            }
+        }
     }
 }

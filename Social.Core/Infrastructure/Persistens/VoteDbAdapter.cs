@@ -17,6 +17,7 @@ namespace Social.Infrastructure.Persistens
 
         public async Task AddAsync(Vote vote)
         {
+            // Ensure the user exists in the database
             var entity = vote.ToEntity();
             _context.Votes.Add(entity);
             await _context.SaveChangesAsync();
@@ -24,7 +25,10 @@ namespace Social.Infrastructure.Persistens
 
         public async Task DeleteAsync(Guid voteId)
         {
+            // Find the vote entity by its ID
             var entity = await _context.Votes.FindAsync(voteId);
+
+            // If found, remove it
             if (entity != null)
             {
                 _context.Votes.Remove(entity);
@@ -34,6 +38,7 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<Vote?> GetByIdAsync(Guid voteId)
         {
+            // Find the vote entity by its ID
             var entity = await _context.Votes.FindAsync(voteId);
             return entity?.ToDomain();
         }
@@ -44,11 +49,15 @@ namespace Social.Infrastructure.Persistens
             Guid userId
         )
         {
+            // Find the vote entity by targetId, targetType, and userId
             var entity = await _context.Votes.FirstOrDefaultAsync(v =>
                 v.TargetId == targetId
                 && v.VoteTargetType == (Entities.VoteTargetType)targetType
                 && v.UserId == userId
             );
+            if (entity == null)
+                return null;
+
             return entity?.ToDomain();
         }
 
@@ -57,27 +66,32 @@ namespace Social.Infrastructure.Persistens
             Core.VoteTargetType targetType
         )
         {
+            // Retrieve all votes for the specified targetId and targetType
             var entities = await _context
                 .Votes.Where(v =>
                     v.TargetId == targetId
                     && v.VoteTargetType == (Entities.VoteTargetType)targetType
                 )
                 .ToListAsync();
+
             return entities.Select(e => e.ToDomain()).ToList();
         }
 
         public async Task UpdateAsync(Vote vote)
         {
+            // Find the existing vote entity by its ID
             var entity = await _context.Votes.FindAsync(vote.Id);
             if (entity == null)
                 return;
 
+            // Update the entity's properties
             entity.TargetId = vote.TargetId;
             entity.VoteTargetType = (Entities.VoteTargetType)vote.VoteTargetType;
             entity.UserId = vote.UserId;
             entity.Upvote = vote.Upvote;
             entity.Action = (Entities.VoteAction)vote.Action;
 
+            // Save changes to the database
             _context.Votes.Update(entity);
             await _context.SaveChangesAsync();
         }
@@ -85,6 +99,7 @@ namespace Social.Infrastructure.Persistens
 
     public static class VoteMapper
     {
+        // Mapping methods from Vote to VoteEntity
         public static VoteEntity ToEntity(this Vote vote)
         {
             return new VoteEntity
@@ -98,6 +113,7 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        // Mapping method from VoteEntity to Vote
         public static Vote ToDomain(this VoteEntity entity)
         {
             return new Vote

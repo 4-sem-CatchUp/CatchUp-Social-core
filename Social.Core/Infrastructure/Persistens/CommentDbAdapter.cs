@@ -16,16 +16,20 @@ namespace Social.Infrastructure.Persistens
             _context = context;
         }
 
+        // Add a new comment to the database
         public async Task AddAsync(Comment comment)
         {
             var entity = comment.ToEntity();
+
             await _context.Comments.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
+        // Delete a comment by its ID
         public async Task DeleteAsync(Guid commentId)
         {
             var entity = await _context.Comments.FindAsync(commentId);
+
             if (entity != null)
             {
                 _context.Comments.Remove(entity);
@@ -33,8 +37,10 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
+        // Get a comment by its ID along with its votes and images
         public Task<Comment?> GetByIdAsync(Guid commentId)
         {
+            // Get the comment with related votes and images
             var entity = _context
                 .Comments.Include(c => c.Votes)
                 .Include(c => c.Images)
@@ -45,6 +51,7 @@ namespace Social.Infrastructure.Persistens
                 : Task.FromResult<Comment?>(null);
         }
 
+        // Get all comments for a specific post along with their votes and images
         public async Task<IReadOnlyList<Comment>> GetByPostIdAsync(Guid postId)
         {
             var entity = await _context
@@ -56,6 +63,7 @@ namespace Social.Infrastructure.Persistens
             return entity.Select(e => e.ToDomain()).ToList();
         }
 
+        // Update an existing comment
         public async Task UpdateAsync(Comment comment)
         {
             var entity = await _context
@@ -63,6 +71,7 @@ namespace Social.Infrastructure.Persistens
                 .Include(c => c.Images)
                 .FirstOrDefaultAsync(c => c.Id == comment.Id);
 
+            // If the comment exists, update its properties
             if (entity != null)
             {
                 entity.Content = comment.Content ?? string.Empty;
@@ -70,12 +79,14 @@ namespace Social.Infrastructure.Persistens
                 entity.Votes = comment.Votes.Select(v => v.ToEntity()).ToList();
                 _context.Comments.Update(entity);
             }
+
             await _context.SaveChangesAsync();
         }
     }
 
     public static class CommentMapper
     {
+        // Map from Domain to Entity
         public static CommentEntity ToEntity(this Comment comment)
         {
             return new CommentEntity
@@ -89,6 +100,7 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        // Map from Entity to Domain
         public static Comment ToDomain(this CommentEntity entity)
         {
             var comment = new Comment(

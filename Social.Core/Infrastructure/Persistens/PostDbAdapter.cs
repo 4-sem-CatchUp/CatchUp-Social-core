@@ -15,16 +15,23 @@ namespace Social.Infrastructure.Persistens
             _context = context;
         }
 
+        // Add a new post to the database
         public async Task AddAsync(Post post)
         {
+            // Ensure the user exists in the database
             var entity = post.ToEntity();
+
             await _context.Posts.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
+        // Delete a post by its ID
         public async Task DeleteAsync(Guid postId)
         {
+            // Find the post entity by its ID
             var entity = await _context.Posts.FindAsync(postId);
+
+            // If found, remove it
             if (entity != null)
             {
                 _context.Posts.Remove(entity);
@@ -32,18 +39,23 @@ namespace Social.Infrastructure.Persistens
             }
         }
 
+        // Get all posts along with their comments, images, and votes
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
+            // Get all posts with related comments, votes, and images
             var entitys = await _context
                 .Posts.Include(p => p.Comments)
                 .Include(p => p.Votes)
                 .Include(p => p.Images)
                 .ToListAsync();
+
             return entitys.Select(e => e.ToDomain()).ToList();
         }
 
+        // Get a post by its ID along with its comments, images, and votes
         public async Task<Post?> GetByIdAsync(Guid postId)
         {
+            // Get the post with related comments and images
             var entity = await _context
                 .Posts.Include(p => p.Comments)
                 .Include(p => p.Images)
@@ -52,6 +64,7 @@ namespace Social.Infrastructure.Persistens
             if (entity == null)
                 return null;
 
+            // Load votes separately
             var votes = await _context
                 .Votes.Where(v =>
                     v.TargetId == postId && v.VoteTargetType == Entities.VoteTargetType.Post
@@ -63,8 +76,10 @@ namespace Social.Infrastructure.Persistens
             return entity?.ToDomain();
         }
 
+        // Update a post along with its comments, images, and votes
         public async Task UpdateAsync(Post post)
         {
+            // Fetch the existing post with related comments and images
             var entity = await _context
                 .Posts.Include(p => p.Comments)
                 .Include(p => p.Images)
@@ -115,8 +130,10 @@ namespace Social.Infrastructure.Persistens
                     v.TargetId == post.Id && v.VoteTargetType == Entities.VoteTargetType.Post
                 )
                 .ToListAsync();
+
             foreach (var vote in post.Votes)
             {
+                // Check if the vote already exists
                 var existing = votes.FirstOrDefault(v => v.Id == vote.Id);
                 if (existing != null)
                 {
@@ -136,6 +153,7 @@ namespace Social.Infrastructure.Persistens
 
     public static class PostMapper
     {
+        // Map from Domain to Entity
         public static PostEntity ToEntity(this Post post)
         {
             return new PostEntity
@@ -152,6 +170,7 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        // Map from Entity to Domain
         public static Post ToDomain(this PostEntity entity)
         {
             if (entity == null)

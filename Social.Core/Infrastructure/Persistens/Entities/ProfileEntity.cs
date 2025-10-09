@@ -15,10 +15,11 @@ namespace Social.Infrastructure.Persistens.Entities
 
         // Navigation properties
         public ICollection<PostEntity> Posts { get; set; } = new List<PostEntity>();
-        public ICollection<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
+        public ICollection<ChatMessageEntity> Messages { get; set; } = new List<ChatMessageEntity>();
         public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
-        public ICollection<Chat> Chats { get; set; } = new List<Chat>();
-        public ICollection<SubscriptionEntity> Subscriptions { get; set; } = new List<SubscriptionEntity>();
+        public ICollection<ChatEntity> Chats { get; set; } = new List<ChatEntity>();
+        public ICollection<SubscriptionEntity> Subscriptions { get; set; } =
+            new List<SubscriptionEntity>();
         public ICollection<VoteEntity> Votes { get; set; } = new List<VoteEntity>();
 
         public Guid? ProfilePicId { get; set; }

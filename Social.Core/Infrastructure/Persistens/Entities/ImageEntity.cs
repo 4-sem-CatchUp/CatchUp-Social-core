@@ -24,6 +24,6 @@ namespace Social.Infrastructure.Persistens.Entities
         public Guid? ProfileId { get; set; }
         public ProfileEntity? Profile { get; set; }
         public Guid? ChatMessageId { get; set; }
-        public ChatMessage? ChatMessage { get; set; }
+        public ChatMessageEntity? ChatMessage { get; set; }
     }
 }

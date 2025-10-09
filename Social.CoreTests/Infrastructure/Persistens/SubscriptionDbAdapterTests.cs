@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using Social.Core;
 using Social.Infrastructure.Persistens;
 using Social.Infrastructure.Persistens.dbContexts;
 using Social.Infrastructure.Persistens.Entities;
-using Social.Core;
-using System;
-using System.Threading.Tasks;
 
 namespace SocialCoreTests.Infrastructure.Persistens
 {
@@ -60,8 +60,8 @@ namespace SocialCoreTests.Infrastructure.Persistens
             await _adapter.Add(subscription);
 
             // Assert
-            var savedEntity = await _context.Subscriptions
-                .Include(s => s.Subscriber)
+            var savedEntity = await _context
+                .Subscriptions.Include(s => s.Subscriber)
                 .Include(s => s.Publisher)
                 .FirstOrDefaultAsync(s => s.Id == subscription.Id);
 
@@ -94,8 +94,10 @@ namespace SocialCoreTests.Infrastructure.Persistens
             var subscription = new Subscription(_subscriber, _publisher);
 
             // Act & Assert
-            Assert.DoesNotThrowAsync(async () => await _adapter.Remove(subscription),
-                "Remove kastede en undtagelse selvom subscription ikke eksisterede.");
+            Assert.DoesNotThrowAsync(
+                async () => await _adapter.Remove(subscription),
+                "Remove kastede en undtagelse selvom subscription ikke eksisterede."
+            );
         }
 
         [Test]
@@ -108,7 +110,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
 
             // Act
             await _adapter.Add(subscription1);
-            var ex = Assert.ThrowsAsync<DbUpdateException>(async () => await _adapter.Add(subscription2));
+            var ex = Assert.ThrowsAsync<DbUpdateException>(async () =>
+                await _adapter.Add(subscription2)
+            );
 
             // Assert
             Assert.That(ex, Is.Not.Null, "DbUpdateException blev ikke kastet ved duplikat.");

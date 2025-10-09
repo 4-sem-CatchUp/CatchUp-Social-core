@@ -10,6 +10,7 @@ namespace Social.Infrastructure.Persistens
     public class SubscriptionDbAdapter : ISubscriptionRepository
     {
         private readonly SocialDbContext _context;
+
         public SubscriptionDbAdapter(SocialDbContext context)
         {
             _context = context;
@@ -22,12 +23,15 @@ namespace Social.Infrastructure.Persistens
             var publisherEntity = await _context.Profiles.FindAsync(subscription.Publisher.Id);
 
             if (subscriberEntity == null || publisherEntity == null)
-                throw new InvalidCastException("Subscriber or Publisher does not exist in the database.");
+                throw new InvalidCastException(
+                    "Subscriber or Publisher does not exist in the database."
+                );
 
             // Check for existing subscription
-            var exists = await _context.Subscriptions
-                .AnyAsync(s => s.SubscriberId == subscription.Subscriber.Id
-                            && s.PublisherId == subscription.Publisher.Id);
+            var exists = await _context.Subscriptions.AnyAsync(s =>
+                s.SubscriberId == subscription.Subscriber.Id
+                && s.PublisherId == subscription.Publisher.Id
+            );
 
             if (exists)
                 throw new DbUpdateException("Subscription already exists.");
@@ -45,7 +49,8 @@ namespace Social.Infrastructure.Persistens
         {
             // Find the subscription entity by its ID
             var entity = await _context.Subscriptions.FindAsync(subscription.Id);
-             if (entity == null)
+            if (entity == null)
+
                 return; // Subscription does not exist, nothing to remove
             // If found, remove it
             if (entity != null)
@@ -58,6 +63,7 @@ namespace Social.Infrastructure.Persistens
 
     public static class SubscriptionMapper
     {
+        // Map from Domain to Entity
         public static SubscriptionEntity ToEntity(this Subscription subscription)
         {
             return new SubscriptionEntity
@@ -67,15 +73,20 @@ namespace Social.Infrastructure.Persistens
                 Subscriber = subscription.Subscriber.ToEntity(),
                 PublisherId = subscription.Publisher.Id,
                 Publisher = subscription.Publisher.ToEntity(),
-                SubscribedOn = subscription.SubscribedOn
+                SubscribedOn = subscription.SubscribedOn,
             };
         }
+
+        // Map from Entity to Domain
         public static Subscription ToDomain(this SubscriptionEntity entity)
         {
-            var subscriber = new Subscription(entity.Subscriber.ToDomain(), entity.Publisher.ToDomain());
-            typeof(Subscription).GetProperty("Id")!
-                .SetValue(subscriber, entity.Id);
-            typeof(Subscription).GetProperty("SubscribedOn")!
+            var subscriber = new Subscription(
+                entity.Subscriber.ToDomain(),
+                entity.Publisher.ToDomain()
+            );
+            typeof(Subscription).GetProperty("Id")!.SetValue(subscriber, entity.Id);
+            typeof(Subscription)
+                .GetProperty("SubscribedOn")!
                 .SetValue(subscriber, entity.SubscribedOn);
             return subscriber;
         }

@@ -5,7 +5,7 @@ namespace Social.Infrastructure.Persistens.Entities
     public class ChatParticipants
     {
         public Guid ChatId { get; set; }
-        public Chat Chat { get; set; }
+        public ChatEntity Chat { get; set; }
 
         public Guid ProfileId { get; set; }
         public ProfileEntity Profile { get; set; }

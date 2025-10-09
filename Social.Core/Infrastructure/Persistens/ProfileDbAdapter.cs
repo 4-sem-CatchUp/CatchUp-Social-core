@@ -17,6 +17,7 @@ namespace Social.Infrastructure.Persistens
 
         public async Task AddFriendAsync(Guid profileId, Guid friendId)
         {
+            // Fetch the profile along with its friends
             var entity = await _context
                 .Profiles.Include(p => p.Friends)
                 .FirstOrDefaultAsync(p => p.Id == profileId);
@@ -24,9 +25,13 @@ namespace Social.Infrastructure.Persistens
             if (entity == null)
                 return;
 
+            // Fetch the friend profile
             var friendEntity = await _context.Profiles.FindAsync(friendId);
+
             if (friendEntity == null)
                 return;
+
+            // Avoid adding duplicate friends
             if (!entity.Friends.Any(f => f.Id == friendId))
             {
                 entity.Friends.Add(friendEntity);
@@ -36,14 +41,25 @@ namespace Social.Infrastructure.Persistens
 
         public async Task AddProfileAsync(Profile profile)
         {
+            // Ensure the profile does not already exist
             var entity = profile.ToEntity();
-            await _context.Profiles.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Profiles.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException("Profile with the same ID already exists.", ex);
+            }
         }
 
         public async Task DeleteProfileAsync(Guid profileId)
         {
+            // Find the profile entity by its ID
             var entity = await _context.Profiles.FindAsync(profileId);
+
+            // If found, remove it
             if (entity != null)
             {
                 _context.Profiles.Remove(entity);
@@ -57,25 +73,32 @@ namespace Social.Infrastructure.Persistens
 
         public async Task<IEnumerable<Profile>> GetAllProfilesAsync()
         {
+            // Fetch all profiles along with their friends and profile pictures
             var entities = await _context
                 .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
                 .ToListAsync();
+
+            // Map entities to domain models
             var profiles = entities.Select(e => e.ToDomain());
+
             return profiles;
         }
 
         public async Task<Profile?> GetProfileByIdAsync(Guid profileId)
         {
+            // Find the profile entity by its ID, including friends and profile picture
             var entity = await _context
                 .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
                 .FirstOrDefaultAsync(p => p.Id == profileId);
+
             return entity?.ToDomain();
         }
 
         public async Task UpdateProfileAsync(Profile profile)
         {
+            // Fetch the existing profile entity
             var entity = await _context
                 .Profiles.Include(p => p.Friends)
                 .Include(p => p.ProfilePic)
@@ -84,6 +107,7 @@ namespace Social.Infrastructure.Persistens
             if (entity == null)
                 return;
 
+            // Update basic fields
             entity.Name = profile.Name;
             entity.Bio = profile.Bio;
             entity.DateOfSub = profile.DateOfSub;
@@ -124,6 +148,7 @@ namespace Social.Infrastructure.Persistens
 
     public static class ProfileMapper
     {
+        // Map domain to entity
         public static ProfileEntity ToEntity(this Profile profile)
         {
             ImageEntity pic = null;
@@ -140,6 +165,7 @@ namespace Social.Infrastructure.Persistens
             };
         }
 
+        // Map entity to domain
         public static Profile ToDomain(this ProfileEntity entity)
         {
             return new Profile(

@@ -13,8 +13,8 @@ namespace Social.Infrastructure.Persistens.dbContexts
         public DbSet<PostEntity> Posts { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<ImageEntity> Images { get; set; }
-        public DbSet<Chat> Chats { get; set; }
-        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<ChatEntity> Chats { get; set; }
+        public DbSet<ChatMessageEntity> ChatMessages { get; set; }
         public DbSet<VoteEntity> Votes { get; set; }
         public DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
@@ -71,7 +71,7 @@ namespace Social.Infrastructure.Persistens.dbContexts
                 .HasKey(cp => new { cp.ChatId, cp.ProfileId }); // Sammensat nøgle
 
             modelBuilder
-                .Entity<Chat>()
+                .Entity<ChatEntity>()
                 .HasMany(c => c.Participants)
                 .WithMany(p => p.Chats)
                 .UsingEntity<ChatParticipants>();
@@ -80,14 +80,14 @@ namespace Social.Infrastructure.Persistens.dbContexts
             // ChatMessage ↔ Chat
             // -----------------------------
             modelBuilder
-                .Entity<ChatMessage>()
+                .Entity<ChatMessageEntity>()
                 .HasOne(m => m.Chat)
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ChatId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder
-                .Entity<ChatMessage>()
+                .Entity<ChatMessageEntity>()
                 .HasOne(m => m.Sender)
                 .WithMany(p => p.Messages) // Alternativt kan man have en Messages liste
                 .HasForeignKey(m => m.SenderId)
