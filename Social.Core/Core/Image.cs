@@ -28,6 +28,7 @@
             ContentType = contentType;
             Data = data;
         }
+
         public Image(Image image)
         {
             Id = image.Id;
@@ -53,7 +54,6 @@
             {
                 ChatMessageId = image.ChatMessageId;
                 ChatMessage = image.ChatMessage;
-
             }
         }
     }

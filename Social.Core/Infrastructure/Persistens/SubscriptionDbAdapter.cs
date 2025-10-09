@@ -50,7 +50,6 @@ namespace Social.Infrastructure.Persistens
             // Find the subscription entity by its ID
             var entity = await _context.Subscriptions.FindAsync(subscription.Id);
             if (entity == null)
-
                 return; // Subscription does not exist, nothing to remove
             // If found, remove it
             if (entity != null)

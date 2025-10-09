@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Social.Core;
 using Social.Core.Ports.Outgoing;
 using Social.Infrastructure.Persistens.dbContexts;
 using Social.Infrastructure.Persistens.Entities;
-using System.Threading.Tasks;
 
 namespace Social.Infrastructure.Persistens
 {
     public class ChatDbAdapter : IChatRepository
     {
         private readonly SocialDbContext _context;
+
         public ChatDbAdapter(SocialDbContext context)
         {
             _context = context;
@@ -19,8 +20,8 @@ namespace Social.Infrastructure.Persistens
         public async Task CreateChat(Chat chat)
         {
             // Validate participants exist in the database
-            var participants= await _context.Profiles
-                .Where(p => chat.Participants.Select(cp => cp.Id).Contains(p.Id))
+            var participants = await _context
+                .Profiles.Where(p => chat.Participants.Select(cp => cp.Id).Contains(p.Id))
                 .ToListAsync();
 
             // Ensure all participants exist
@@ -40,10 +41,10 @@ namespace Social.Infrastructure.Persistens
         public Task<Chat> GetChat(Guid chatId)
         {
             // Include participants and messages with senders
-            var entity = _context.Chats
-                .Include(c => c.Participants)
+            var entity = _context
+                .Chats.Include(c => c.Participants)
                 .Include(c => c.Messages)
-                    .ThenInclude(m => m.Sender)
+                .ThenInclude(m => m.Sender)
                 .FirstOrDefault(c => c.ChatId == chatId);
 
             // If not found, throw an exception
@@ -58,8 +59,8 @@ namespace Social.Infrastructure.Persistens
         public async Task UpdateChat(Chat chat)
         {
             // Fetch existing chat with participants and messages
-            var entity = _context.Chats
-                .Include(c => c.Participants)
+            var entity = _context
+                .Chats.Include(c => c.Participants)
                 .Include(c => c.Messages)
                 .FirstOrDefault(c => c.ChatId == chat.ChatId);
 
@@ -70,20 +71,20 @@ namespace Social.Infrastructure.Persistens
             // Update properties
             entity.Active = chat.Active;
 
-            var participantsFromDb = await _context.Profiles
-                .Where(p => chat.Participants.Select(cp => cp.Id).Contains(p.Id))
+            var participantsFromDb = await _context
+                .Profiles.Where(p => chat.Participants.Select(cp => cp.Id).Contains(p.Id))
                 .ToListAsync();
 
             // Add new participants
             foreach (var p in participantsFromDb)
             {
-                if(!entity.Participants.Any(ep => ep.Id == p.Id))
+                if (!entity.Participants.Any(ep => ep.Id == p.Id))
                     entity.Participants.Add(p);
             }
 
             // Remove participants not in the updated chat
-            var toRemove = entity.Participants
-                .Where(ep => !chat.Participants.Any(cp => cp.Id == ep.Id))
+            var toRemove = entity
+                .Participants.Where(ep => !chat.Participants.Any(cp => cp.Id == ep.Id))
                 .ToList();
 
             foreach (var remove in toRemove)
@@ -98,8 +99,8 @@ namespace Social.Infrastructure.Persistens
         // Add a new message to a chat
         public async Task AddMessage(Guid chatId, ChatMessage message)
         {
-            var chat = await _context.Chats
-                .Include(c => c.Participants)
+            var chat = await _context
+                .Chats.Include(c => c.Participants)
                 .FirstOrDefaultAsync(c => c.ChatId == chatId);
 
             if (chat == null)
@@ -118,14 +119,15 @@ namespace Social.Infrastructure.Persistens
         public Task DeleteMessage(Guid chatId, Guid messageId)
         {
             // Find the message to delete
-            var message = _context.ChatMessages
-                .FirstOrDefault(m => m.ChatId == chatId && m.MessageId == messageId);
+            var message = _context.ChatMessages.FirstOrDefault(m =>
+                m.ChatId == chatId && m.MessageId == messageId
+            );
             if (message == null)
                 throw new KeyNotFoundException("Message not found.");
 
             // Find the chat to update its message list
-            var chat = _context.Chats
-                .Include(c => c.Messages)
+            var chat = _context
+                .Chats.Include(c => c.Messages)
                 .FirstOrDefault(c => c.ChatId == chatId);
             if (chat == null)
                 throw new KeyNotFoundException("Chat not found.");
@@ -143,8 +145,8 @@ namespace Social.Infrastructure.Persistens
         public Task<ChatMessage> GetMessage(Guid chatId, Guid messageId)
         {
             // Include sender and image details
-            var message = _context.ChatMessages
-                .Include(m => m.Sender)
+            var message = _context
+                .ChatMessages.Include(m => m.Sender)
                 .Include(m => m.Image)
                 .FirstOrDefault(m => m.ChatId == chatId && m.MessageId == messageId);
 
@@ -157,8 +159,8 @@ namespace Social.Infrastructure.Persistens
         // Retrieve a list of messages from a chat with pagination
         public async Task<List<ChatMessage>> GetMessages(Guid chatId, int count, int offset)
         {
-            var entities = await _context.ChatMessages
-                .Include(m => m.Sender)
+            var entities = await _context
+                .ChatMessages.Include(m => m.Sender)
                 .Include(m => m.Image)
                 .Where(m => m.ChatId == chatId)
                 .OrderByDescending(m => m.Timestamp)
@@ -172,8 +174,8 @@ namespace Social.Infrastructure.Persistens
         // Update an existing message's content or image
         public async Task UpdateMessage(Guid chatId, ChatMessage message)
         {
-            var entity = await _context.ChatMessages
-                .Include(m => m.Sender)
+            var entity = await _context
+                .ChatMessages.Include(m => m.Sender)
                 .Include(m => m.Image)
                 .FirstOrDefaultAsync(m => m.ChatId == chatId);
             if (entity == null)
@@ -184,7 +186,6 @@ namespace Social.Infrastructure.Persistens
             entity.Image = message.Image?.ToEntity() ?? null;
 
             await _context.SaveChangesAsync();
-
         }
     }
 
@@ -197,16 +198,13 @@ namespace Social.Infrastructure.Persistens
                 ChatId = chat.ChatId,
                 Active = chat.Active,
                 Participants = chat.Participants.Select(p => p.ToEntity()).ToList(),
-                Messages = chat.Messages.Select(m => m.ToEntity()).ToList()
+                Messages = chat.Messages.Select(m => m.ToEntity()).ToList(),
             };
         }
+
         public static Chat ToDomain(this ChatEntity entity)
         {
-            var chat = new Chat
-            {
-                ChatId = entity.ChatId,
-                Active = entity.Active,
-            };
+            var chat = new Chat { ChatId = entity.ChatId, Active = entity.Active };
 
             foreach (var participant in entity.Participants)
             {
@@ -241,7 +239,7 @@ namespace Social.Infrastructure.Persistens
                 MessageId = entity.MessageId,
                 ChatId = entity.ChatId,
                 Content = entity.Content,
-                Timestamp = entity.Timestamp
+                Timestamp = entity.Timestamp,
             };
             // Set Sender using reflection or internal setter
             typeof(ChatMessage).GetProperty("Sender")!.SetValue(message, entity.Sender.ToDomain());
@@ -256,7 +254,6 @@ namespace Social.Infrastructure.Persistens
             if (entity.Image != null)
             {
                 message.AddImage(entity.Image.ToDomain());
-
             }
 
             return message;

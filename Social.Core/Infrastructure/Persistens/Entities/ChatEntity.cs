@@ -9,6 +9,7 @@ namespace Social.Infrastructure.Persistens.Entities
         public bool Active { get; set; } = false;
 
         public ICollection<ProfileEntity> Participants { get; set; } = new List<ProfileEntity>();
-        public ICollection<ChatMessageEntity> Messages { get; set; } = new List<ChatMessageEntity>();
+        public ICollection<ChatMessageEntity> Messages { get; set; } =
+            new List<ChatMessageEntity>();
     }
 }

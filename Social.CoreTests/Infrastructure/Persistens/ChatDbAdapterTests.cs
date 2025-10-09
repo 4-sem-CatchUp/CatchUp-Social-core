@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Social.Core;
 using Social.Infrastructure.Persistens;
 using Social.Infrastructure.Persistens.dbContexts;
 using Social.Infrastructure.Persistens.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialCoreTests.Infrastructure.Persistens
 {
@@ -58,8 +58,8 @@ namespace SocialCoreTests.Infrastructure.Persistens
 
             await _adapter.CreateChat(chat);
 
-            var saved = await _context.Chats
-                .Include(c => c.Participants)
+            var saved = await _context
+                .Chats.Include(c => c.Participants)
                 .FirstOrDefaultAsync(c => c.ChatId == chat.ChatId);
 
             Assert.That(saved, Is.Not.Null);
@@ -72,7 +72,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
         {
             var chat = new Chat(new List<Profile> { _userA, _userB });
 
-            var ex = Assert.ThrowsAsync<InvalidDataException>(async () => await _adapter.CreateChat(chat));
+            var ex = Assert.ThrowsAsync<InvalidDataException>(async () =>
+                await _adapter.CreateChat(chat)
+            );
             Assert.That(ex.Message, Is.EqualTo("One or more participants do not exist."));
         }
 
@@ -86,7 +88,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
             var message = new ChatMessage(chat.ChatId, _userA, "Hej med dig!");
             await _adapter.AddMessage(chat.ChatId, message);
 
-            var saved = await _context.ChatMessages.FirstOrDefaultAsync(m => m.MessageId == message.MessageId);
+            var saved = await _context.ChatMessages.FirstOrDefaultAsync(m =>
+                m.MessageId == message.MessageId
+            );
             Assert.That(saved, Is.Not.Null);
             Assert.That(saved.Content, Is.EqualTo("Hej med dig!"));
             Assert.That(saved.SenderId, Is.EqualTo(_userA.Id));
@@ -102,7 +106,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
             var outsider = new Profile("Outsider");
             var message = new ChatMessage(chat.ChatId, outsider, "Jeg burde ikke kunne skrive her");
 
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () => await _adapter.AddMessage(chat.ChatId, message));
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _adapter.AddMessage(chat.ChatId, message)
+            );
             Assert.That(ex.Message, Is.EqualTo("Sender is not a participant of the chat."));
         }
 
@@ -131,7 +137,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
 
             await _adapter.DeleteMessage(chat.ChatId, message.MessageId);
 
-            var deleted = await _context.ChatMessages.FirstOrDefaultAsync(m => m.MessageId == message.MessageId);
+            var deleted = await _context.ChatMessages.FirstOrDefaultAsync(m =>
+                m.MessageId == message.MessageId
+            );
             Assert.That(deleted, Is.Null);
         }
 
@@ -146,7 +154,8 @@ namespace SocialCoreTests.Infrastructure.Persistens
             chat.AddParticipant(_userB);
             await _adapter.UpdateChat(chat);
 
-            var saved = await _context.Chats.Include(c => c.Participants)
+            var saved = await _context
+                .Chats.Include(c => c.Participants)
                 .FirstOrDefaultAsync(c => c.ChatId == chat.ChatId);
             Assert.That(saved.Participants.Count, Is.EqualTo(2));
 
@@ -154,7 +163,8 @@ namespace SocialCoreTests.Infrastructure.Persistens
             chat.RemoveParticipant(_userA.Id);
             await _adapter.UpdateChat(chat);
 
-            saved = await _context.Chats.Include(c => c.Participants)
+            saved = await _context
+                .Chats.Include(c => c.Participants)
                 .FirstOrDefaultAsync(c => c.ChatId == chat.ChatId);
             Assert.That(saved.Participants.Count, Is.EqualTo(1));
             Assert.That(saved.Participants.First().Id, Is.EqualTo(_userB.Id));
@@ -173,7 +183,9 @@ namespace SocialCoreTests.Infrastructure.Persistens
             message.EditContent("Redigeret besked");
             await _adapter.UpdateMessage(chat.ChatId, message);
 
-            var updated = await _context.ChatMessages.FirstAsync(m => m.MessageId == message.MessageId);
+            var updated = await _context.ChatMessages.FirstAsync(m =>
+                m.MessageId == message.MessageId
+            );
             Assert.That(updated.Content, Is.EqualTo("Redigeret besked"));
         }
 
@@ -201,7 +213,10 @@ namespace SocialCoreTests.Infrastructure.Persistens
 
             for (int i = 1; i <= 5; i++)
             {
-                await _adapter.AddMessage(chat.ChatId, new ChatMessage(chat.ChatId, _userA, $"Besked {i}"));
+                await _adapter.AddMessage(
+                    chat.ChatId,
+                    new ChatMessage(chat.ChatId, _userA, $"Besked {i}")
+                );
             }
 
             var messages = await _adapter.GetMessages(chat.ChatId, 2, 1); // take 2, skip 1

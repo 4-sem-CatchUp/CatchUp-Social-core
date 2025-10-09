@@ -15,7 +15,8 @@ namespace Social.Infrastructure.Persistens.Entities
 
         // Navigation properties
         public ICollection<PostEntity> Posts { get; set; } = new List<PostEntity>();
-        public ICollection<ChatMessageEntity> Messages { get; set; } = new List<ChatMessageEntity>();
+        public ICollection<ChatMessageEntity> Messages { get; set; } =
+            new List<ChatMessageEntity>();
         public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
         public ICollection<ChatEntity> Chats { get; set; } = new List<ChatEntity>();
         public ICollection<SubscriptionEntity> Subscriptions { get; set; } =
