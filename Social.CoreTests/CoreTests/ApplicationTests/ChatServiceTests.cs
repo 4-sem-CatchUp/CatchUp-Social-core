@@ -8,7 +8,7 @@ using Social.Core.Application;
 using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     [TestFixture]
     public class ChatServiceTests
@@ -30,6 +30,7 @@ namespace SocialCoreTests
             _user2 = Profile.CreateNewProfile("Bob");
         }
 
+        // --- CreateChat ---
         [Test]
         public async Task CreateChat_ShouldReturnChatWithParticipants()
         {
@@ -46,6 +47,7 @@ namespace SocialCoreTests
             _mockNotifier.Verify(n => n.NotifyChatCreated(It.IsAny<Chat>()), Times.Once);
         }
 
+        // --- SendMessage ---
         [Test]
         public async Task SendMessage_ShouldAddMessageAndTriggerNotifier()
         {
@@ -70,6 +72,44 @@ namespace SocialCoreTests
             );
         }
 
+        [Test]
+        public void SendMessage_ChatNotFound_ShouldThrow()
+        {
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync((Chat)null);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.SendMessage(Guid.NewGuid(), _user1, "Hej")
+            );
+        }
+
+        // --- SendImage ---
+        [Test]
+        public async Task SendImage_ShouldAddImageAndTriggerNotifier()
+        {
+            var chat = new Chat(new List<Profile> { _user1 });
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync(chat);
+            _mockRepo
+                .Setup(r => r.AddMessage(It.IsAny<Guid>(), It.IsAny<ChatMessage>()))
+                .Returns(Task.CompletedTask);
+            _mockNotifier
+                .Setup(n => n.NotifyMessageSent(It.IsAny<ChatMessage>()))
+                .Returns(Task.CompletedTask);
+
+            var imageData = new byte[] { 1, 2, 3 };
+            var message = await _service.SendImage(
+                chat.ChatId,
+                Guid.NewGuid(),
+                _user1,
+                "img.png",
+                "image/png",
+                imageData
+            );
+
+            Assert.That(message.Image.FileName, Is.EqualTo("img.png"));
+            Assert.That(message.Image.Data, Is.EqualTo(imageData));
+            _mockRepo.Verify(r => r.AddMessage(chat.ChatId, It.IsAny<ChatMessage>()), Times.Once);
+        }
+
+        // --- DeleteMessage ---
         [Test]
         public async Task DeleteMessage_ShouldCallRepository()
         {
@@ -100,6 +140,18 @@ namespace SocialCoreTests
         }
 
         [Test]
+        public void DeleteMessage_MessageNotFound_ShouldThrow()
+        {
+            _mockRepo
+                .Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .ReturnsAsync((ChatMessage)null);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.DeleteMessage(Guid.NewGuid(), Guid.NewGuid(), _user1)
+            );
+        }
+
+        // --- EditMessage ---
+        [Test]
         public async Task EditMessage_ShouldUpdateContent()
         {
             var message = new ChatMessage(Guid.NewGuid(), _user1, "Old");
@@ -122,6 +174,31 @@ namespace SocialCoreTests
         }
 
         [Test]
+        public void EditMessage_ByAnotherUser_ShouldThrow()
+        {
+            var message = new ChatMessage(Guid.NewGuid(), _user1, "Hello");
+            _mockRepo
+                .Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .ReturnsAsync(message);
+
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.EditMessage(Guid.NewGuid(), message.MessageId, _user2, "New")
+            );
+        }
+
+        [Test]
+        public void EditMessage_MessageNotFound_ShouldThrow()
+        {
+            _mockRepo
+                .Setup(r => r.GetMessage(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .ReturnsAsync((ChatMessage)null);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.EditMessage(Guid.NewGuid(), Guid.NewGuid(), _user1, "New")
+            );
+        }
+
+        // --- GetMessages ---
+        [Test]
         public async Task GetMessages_ShouldReturnList()
         {
             var chat = new Chat(new List<Profile> { _user1 });
@@ -140,6 +217,26 @@ namespace SocialCoreTests
 
             Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result[0].Content, Is.EqualTo("Hello"));
+        }
+
+        [Test]
+        public void GetMessages_RequesterNotParticipant_ShouldThrow()
+        {
+            var chat = new Chat(new List<Profile> { _user1 });
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync(chat);
+
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.GetMessages(chat.ChatId, _user2, 10, 0)
+            );
+        }
+
+        [Test]
+        public void GetMessages_ChatNotFound_ShouldThrow()
+        {
+            _mockRepo.Setup(r => r.GetChat(It.IsAny<Guid>())).ReturnsAsync((Chat)null);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _service.GetMessages(Guid.NewGuid(), _user1, 10, 0)
+            );
         }
     }
 }

@@ -64,3 +64,21 @@ jobs:
         with:
           name: Test Results
           path: "**/test_results.trx"
+
+      # Run unit tests with code coverage
+      - name: Run unit tests with code coverage
+        run: |
+          dotnet test Social.CoreTests/SocialCoreTests.csproj \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults \
+            --logger "trx;LogFileName=test_results.trx" \
+            --verbosity normal
+
+      # Upload code coverage results
+      - name: Upload code coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code Coverage
+          path: TestResults/**/coverage.cobertura.xml
+
+

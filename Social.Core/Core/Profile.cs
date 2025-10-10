@@ -4,10 +4,10 @@
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
-        public byte[] ProfilePic { get; set; } = Array.Empty<byte>();
         public string Bio { get; set; } = string.Empty;
-        public DateOnly DateOfSub { get; private set; } = DateOnly.FromDateTime(DateTime.UtcNow);
+        public DateOnly DateOfSub { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public List<Guid> Friends { get; private set; } = new List<Guid>();
+        public Image ProfilePic { get; set; }
 
         public Profile()
         {
@@ -19,19 +19,47 @@
             Name = name;
         }
 
+        public Profile(
+            Guid id,
+            string name,
+            string bio,
+            DateOnly dateOfSub,
+            List<Guid>? friends,
+            Image? profilePic
+        )
+        {
+            Id = id;
+            Name = name;
+            Bio = bio;
+            DateOfSub = dateOfSub;
+            Friends = friends;
+            ProfilePic = profilePic;
+        }
+
         public static Profile CreateNewProfile(string name)
         {
             return new Profile(name);
         }
 
-        public void UpdateProfile(string? name, byte[]? profilePic, string? bio)
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            ProfilePic = new Image(fileName, contentType, data);
+        }
+
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            ProfilePic = image;
+        }
+
+        public void UpdateProfile(string? name, string? bio, Image? pic)
         {
             if (name != null)
                 Name = name;
-            if (profilePic != null)
-                ProfilePic = profilePic;
             if (bio != null)
                 Bio = bio;
+            if (pic != null)
+                ProfilePic = pic;
         }
 
         public void AddFriend(Guid friendId)

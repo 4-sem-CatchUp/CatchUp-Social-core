@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Social.Infrastructure.Persistens.dbContexts;
+
 namespace Social
 {
     public class Program
@@ -13,6 +16,9 @@ namespace Social
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<SocialDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SocialDb"))
+            );
 
             var app = builder.Build();
 

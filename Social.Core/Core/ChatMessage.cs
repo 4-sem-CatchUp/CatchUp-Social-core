@@ -5,9 +5,10 @@
         public Guid MessageId { get; set; } = Guid.NewGuid();
         public Guid ChatId { get; set; }
         public Profile Sender { get; set; }
-        public string Content { get; set; }
+        public string? Content { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public bool Seen { get; private set; }
+        public Image? Image { get; private set; }
 
         public ChatMessage() { }
 
@@ -17,6 +18,17 @@
             Sender = sender;
             Content = content;
             Seen = false;
+        }
+
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            Image = new Image(fileName, contentType, data);
+        }
+
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            Image = image;
         }
 
         public void MarkAsSeen()

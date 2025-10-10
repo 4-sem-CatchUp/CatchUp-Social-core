@@ -8,51 +8,41 @@ namespace Social.Core
         public Guid AuthorId { get; private set; }
 
         public string? Content { get; set; }
-        public byte[]? Image { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-        private readonly List<Vote> _votes = new();
+        public int Karma => Votes.Sum(v => v.Upvote ? 1 : -1);
 
+        private readonly List<Vote> _votes = new();
         public IReadOnlyList<Vote> Votes => _votes.AsReadOnly();
-        private int _karma;
-        public int Karma
-        {
-            get { return _karma; }
-            set
-            {
-                foreach (var vote in Votes)
-                {
-                    _karma += vote.Upvote ? 1 : -1;
-                }
-            }
-        }
+
+        private readonly List<Image> _images = new();
+        public IReadOnlyList<Image> Images => _images.AsReadOnly();
 
         public Comment() { }
 
-        public Comment(
-            Guid authorId,
-            string text,
-            byte[] image,
-            DateTime timeStamp,
-            List<Vote> votes
-        )
+        public Comment(Guid authorId, string text, DateTime timeStamp, List<Vote> votes)
         {
             AuthorId = authorId;
             Content = text;
-            Image = image;
             Timestamp = timeStamp;
             _votes = votes;
         }
 
-        public static Comment CreateNewComment(Guid authorId, string text, byte[] image)
+        public static Comment CreateNewComment(Guid authorId, string text)
         {
-            return new Comment
-            {
-                AuthorId = authorId,
-                Content = text,
-                Image = image,
-            };
+            return new Comment { AuthorId = authorId, Content = text };
+        }
+
+        public void AddImage(string fileName, string contentType, byte[] data)
+        {
+            _images.Add(new Image(fileName, contentType, data));
+        }
+
+        // For use when reconstructing from DB
+        public void AddImage(Image image)
+        {
+            _images.Add(image);
         }
 
         public Vote AddVote(Guid userId, bool upvote)
@@ -85,6 +75,12 @@ namespace Social.Core
                 _votes.Add(vote);
             }
             return vote;
+        }
+
+        // For use when reconstructing from DB
+        public void AddVote(Vote vote)
+        {
+            _votes.Add(vote);
         }
 
         public void UpdateComment(string newText)

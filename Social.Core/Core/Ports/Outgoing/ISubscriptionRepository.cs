@@ -2,7 +2,7 @@
 {
     public interface ISubscriptionRepository
     {
-        void Add(Subscription subscription);
-        void Remove(Subscription subscription);
+        Task Add(Subscription subscription);
+        Task Remove(Subscription subscription);
     }
 }

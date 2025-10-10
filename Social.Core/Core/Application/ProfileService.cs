@@ -23,14 +23,14 @@ namespace Social.Core.Application
         public async Task UpdateProfileAsync(
             Guid profileId,
             string? name,
-            byte[]? profilePic,
+            Image? profilePic,
             string? bio
         )
         {
             var profile =
                 await _profileRepository.GetProfileByIdAsync(profileId)
                 ?? throw new InvalidOperationException("Profile not found");
-            profile.UpdateProfile(name, profilePic, bio);
+            profile.UpdateProfile(name, bio, profilePic);
             await _profileRepository.UpdateProfileAsync(profile);
         }
 

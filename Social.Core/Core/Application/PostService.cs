@@ -32,10 +32,17 @@ namespace Social.Core.Application
             Guid authorId,
             string title,
             string? content,
-            byte[]? image
+            List<Image>? images
         )
         {
-            var post = Post.CreateNewPost(authorId, title, content, image);
+            var post = Post.CreateNewPost(authorId, title, content);
+            if (images != null)
+            {
+                foreach (var image in images)
+                {
+                    post.AddImage(image.FileName, image.ContentType, image.Data);
+                }
+            }
             await _postRepository.AddAsync(post);
             return post.Id;
         }
@@ -79,17 +86,12 @@ namespace Social.Core.Application
             await _postRepository.DeleteAsync(postId);
         }
 
-        public async Task UpdatePostAsync(
-            Guid postId,
-            string? newTitle,
-            string? newContent,
-            byte[]? image
-        )
+        public async Task UpdatePostAsync(Guid postId, string? newTitle, string? newContent)
         {
             var post =
                 await _postRepository.GetByIdAsync(postId)
                 ?? throw new InvalidOperationException("Post not found");
-            post.UpdatePost(newTitle, newContent, image);
+            post.UpdatePost(newTitle, newContent);
             await _postRepository.UpdateAsync(post);
         }
     }

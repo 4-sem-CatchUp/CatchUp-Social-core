@@ -73,6 +73,25 @@ namespace Social.Core.Application
             return messages;
         }
 
+        public async Task<ChatMessage> SendImage(
+            Guid chatId,
+            Guid messageId,
+            Profile sender,
+            string fileName,
+            string contentType,
+            byte[] data
+        )
+        {
+            var chat = await _chatRepository.GetChat(chatId);
+            if (chat == null)
+                throw new InvalidOperationException("Chat not found");
+            var message = chat.SendMessage(sender, "");
+            message.AddImage(fileName, contentType, data);
+            await _chatRepository.AddMessage(chatId, message);
+            await _chatNotifier.NotifyMessageSent(message);
+            return message;
+        }
+
         public async Task<ChatMessage> SendMessage(Guid chatId, Profile sender, string content)
         {
             var chat = await _chatRepository.GetChat(chatId);

@@ -7,7 +7,7 @@ using Social.Core.Application;
 using Social.Core.Ports.Incomming;
 using Social.Core.Ports.Outgoing;
 
-namespace SocialCoreTests
+namespace SocialCoreTests.CoreTests.ApplicationTests
 {
     public class ProfileServiceTests
     {
@@ -86,7 +86,7 @@ namespace SocialCoreTests
             await _service.AddFriendAsync(profileId, friendId);
 
             // Assert
-            Assert.IsTrue(profile.Friends.Contains(friendId));
+            Assert.That(profile.Friends.Contains(friendId), Is.True);
             _mockRepo.Verify(r => r.UpdateProfileAsync(profile), Times.Once);
         }
 

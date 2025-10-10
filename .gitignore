@@ -68,3 +68,10 @@ _ReSharper*/
 .cache
 .dswa.cache.json
 .rjsm.cache.json
+
+# =========================
+# Appsettings / Secret files
+# =========================
+# Ignore appsettings.json and environment-specific versions
+**/appsettings.json
+**/appsettings.*.json
