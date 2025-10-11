@@ -74,7 +74,7 @@ jobs:
           reports: 'TestResults/**/coverage.cobertura.xml'
           targetdir: 'coveragereport'
           reporttypes: 'HtmlInline_AzurePipelines_Dark'
-          classfilter: '-Social.Program'
+          classfilters: '-Social.Program;-Social.Migrations*'
       
       # Upload HTML coverage report
       - name: Upload coverage report
