@@ -36,15 +36,19 @@ namespace Social.Core.Application
 
         public async Task AddFriendAsync(Guid profileId, Guid friendId)
         {
+            if (profileId == friendId)
+                throw new InvalidOperationException("You cannot add yourself as a friend.");
+
             var profile =
                 await _profileRepository.GetProfileByIdAsync(profileId)
-                ?? throw new InvalidOperationException("Profile not found");
-            if (await _profileRepository.GetProfileByIdAsync(friendId) != null)
-            {
-                profile.AddFriend(friendId);
-            }
-            else
-                throw new InvalidOperationException("Friend not found");
+                ?? throw new KeyNotFoundException("Profile not found");
+
+            var friend =
+                await _profileRepository.GetProfileByIdAsync(friendId)
+                ?? throw new KeyNotFoundException("Friend not found");
+
+            profile.AddFriend(friendId);
+
             await _profileRepository.UpdateProfileAsync(profile);
         }
     }

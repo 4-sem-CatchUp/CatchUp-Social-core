@@ -102,7 +102,7 @@ namespace SocialCoreTests.CoreTests.ApplicationTests
             _mockRepo.Setup(r => r.GetProfileByIdAsync(friendId)).ReturnsAsync((Profile)null!);
 
             // Act & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await _service.AddFriendAsync(profileId, friendId);
             });
