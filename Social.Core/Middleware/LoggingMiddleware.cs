@@ -22,12 +22,10 @@ namespace Social.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var stopwatch = Stopwatch.StartNew();
+            var method = context.Request.Method;
+            var path = context.Request.Path;
 
-            _logger.LogInformation(
-                "Handling {Method} {Path}",
-                context.Request.Method,
-                context.Request.Path
-            );
+            _logger.LogInformation("Handling {Method} {Path}", method, path);
 
             await _next(context);
 

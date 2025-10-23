@@ -75,6 +75,7 @@ jobs:
           targetdir: 'coveragereport'
           reporttypes: 'HtmlInline_AzurePipelines_Dark'
           classfilters: '-Social.Program;-Social.Migrations*'
+          filefilters: '-**/Middleware/*'
       
       # Upload HTML coverage report
       - name: Upload coverage report
