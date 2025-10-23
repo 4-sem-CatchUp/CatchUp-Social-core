@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Social.Infrastructure.Persistens.dbContexts;
+using Social.Middleware;
 
 namespace Social
 {
@@ -8,6 +9,10 @@ namespace Social
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Add logging config
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
 
             // Add services to the container.
             builder.Services.AddSignalR();
@@ -32,6 +37,10 @@ namespace Social
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            // Middleware
+            app.UseMiddleware<ExceptionHandlingMiddleware>(); // Catches all errors
+            app.UseMiddleware<RequestLoggingMiddleware>(); // Logging all successes
 
             app.MapControllers();
 

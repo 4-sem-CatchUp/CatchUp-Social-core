@@ -1,0 +1,24 @@
+﻿@Social_HostAddress = https://localhost:7087
+
+POST {{Social_HostAddress}}/api/Profiles
+Content-Type: application/json
+
+{
+  //CreateProfileRequest
+  "UserName": "Johnny"
+}
+
+###
+
+GET {{Social_HostAddress}}/api/profiles/{id:guid}
+
+###
+
+POST {{Social_HostAddress}}/api/profiles/{id:guid}/friends/{friendId:guid}
+Content-Type: application/json
+
+{
+  //Guid
+}
+
+###
